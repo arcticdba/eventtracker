@@ -1,0 +1,2651 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataroot xmlns:od="urn:schemas-microsoft-com:officedata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  xsi:noNamespaceSchemaLocation="tblEvents.xsd" generated="2026-01-16T06:41:56">
+<tblEvents>
+<EventID>4</EventID>
+<DateStart>2016-08-27T00:00:00</DateStart>
+<DateEnd>2016-08-27T00:00:00</DateEnd>
+<City>Gothenburg</City>
+<Country>Sweden</Country>
+<EventName>SQL Saturday #536</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>17</EventID>
+<DateStart>2016-09-03T00:00:00</DateStart>
+<DateEnd>2016-09-03T00:00:00</DateEnd>
+<City>Oslo</City>
+<Country>Norway</Country>
+<EventName>SQL Saturday #532</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>19</EventID>
+<DateStart>2016-09-10T00:00:00</DateStart>
+<DateEnd>2016-09-10T00:00:00</DateEnd>
+<City>Cambridge</City>
+<Country>United Kingdom</Country>
+<EventName>SQL Saturday #520</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>5</EventID>
+<DateStart>2016-11-16T00:00:00</DateStart>
+<DateEnd>2016-11-17T00:00:00</DateEnd>
+<City>Stockholm</City>
+<Country>Sweden</Country>
+<EventName>TechDays Sweden</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>18</EventID>
+<DateStart>2017-02-25T00:00:00</DateStart>
+<DateEnd>2017-02-25T00:00:00</DateEnd>
+<City>Pordenone</City>
+<Country>Italy</Country>
+<EventName>SQL Saturday #589</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>16</EventID>
+<DateStart>2017-03-11T00:00:00</DateStart>
+<DateEnd>2017-03-11T00:00:00</DateEnd>
+<City>Lisbon</City>
+<Country>Portugal</Country>
+<EventName>SQL Saturday #583</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>22</EventID>
+<DateStart>2017-03-18T00:00:00</DateStart>
+<DateEnd>2017-03-18T00:00:00</DateEnd>
+<City>Reykjavik</City>
+<Country>Iceland</Country>
+<EventName>SQL Saturday #602</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>21</EventID>
+<DateStart>2017-03-18T00:00:00</DateStart>
+<DateEnd>2017-03-18T00:00:00</DateEnd>
+<City>Belgrade</City>
+<Country>Serbia</Country>
+<EventName>SQL Saturday #601</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>6</EventID>
+<DateStart>2017-05-18T00:00:00</DateStart>
+<DateEnd>2017-05-18T00:00:00</DateEnd>
+<City>Linköping</City>
+<Country>Sweden</Country>
+<EventName>.NET User Group Meeting</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>23</EventID>
+<DateStart>2017-05-20T00:00:00</DateStart>
+<DateEnd>2017-05-20T00:00:00</DateEnd>
+<City>Kyiv</City>
+<Country>Ukraine</Country>
+<EventName>SQL Saturday #616</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>20</EventID>
+<DateStart>2017-05-27T00:00:00</DateStart>
+<DateEnd>2017-05-27T00:00:00</DateEnd>
+<City>Plovdiv</City>
+<Country>Bulgaria</Country>
+<EventName>SQL Saturday #599</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>25</EventID>
+<DateStart>2017-09-02T00:00:00</DateStart>
+<DateEnd>2017-09-02T00:00:00</DateEnd>
+<City>Oslo</City>
+<Country>Norway</Country>
+<EventName>SQL Saturday #667</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>24</EventID>
+<DateStart>2017-09-16T00:00:00</DateStart>
+<DateEnd>2017-09-16T00:00:00</DateEnd>
+<City>Toulouse</City>
+<Country>France</Country>
+<EventName>SQL Saturday #658</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>7</EventID>
+<DateStart>2017-09-23T00:00:00</DateStart>
+<DateEnd>2017-09-23T00:00:00</DateEnd>
+<City>Gothenburg</City>
+<Country>Sweden</Country>
+<EventName>SQL Saturday #657</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>29</EventID>
+<DateStart>2017-10-25T00:00:00</DateStart>
+<DateEnd>2017-10-25T00:00:00</DateEnd>
+<City>Stockholm</City>
+<Country>Sweden</Country>
+<EventName>TechDays Sweden</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>26</EventID>
+<DateStart>2017-11-18T00:00:00</DateStart>
+<DateEnd>2017-11-18T00:00:00</DateEnd>
+<City>Talinn</City>
+<Country>Latvia</Country>
+<EventName>SQL Saturday #668</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>8</EventID>
+<DateStart>2017-11-27T00:00:00</DateStart>
+<DateEnd>2017-11-27T00:00:00</DateEnd>
+<City>Stockholm</City>
+<Country>Sweden</Country>
+<EventName>SQL UG</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (User Group)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>9</EventID>
+<DateStart>2018-01-19T00:00:00</DateStart>
+<DateEnd>2018-01-19T00:00:00</DateEnd>
+<City>Vienna</City>
+<Country>Austria</Country>
+<EventName>SQL Saturday #679</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>10</EventID>
+<DateStart>2018-01-30T00:00:00</DateStart>
+<DateEnd>2018-02-02T00:00:00</DateEnd>
+<City>Oslo</City>
+<Country>Norway</Country>
+<EventName>Nordic Infrastructure Conference</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>11</EventID>
+<DateStart>2018-03-10T00:00:00</DateStart>
+<DateEnd>2018-03-10T00:00:00</DateEnd>
+<City>Reykjavik</City>
+<Country>Iceland</Country>
+<EventName>SQL Saturday #704</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>14</EventID>
+<DateStart>2018-03-14T00:00:00</DateStart>
+<DateEnd>2018-03-14T00:00:00</DateEnd>
+<City>Antwerp</City>
+<Country>Belgium</Country>
+<EventName>IT Proud</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>12</EventID>
+<DateStart>2018-03-21T00:00:00</DateStart>
+<DateEnd>2018-03-22T00:00:00</DateEnd>
+<City>Helsinki</City>
+<Country>Finland</Country>
+<EventName>TechDays Finland</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>13</EventID>
+<DateStart>2018-04-21T00:00:00</DateStart>
+<DateEnd>2018-04-21T00:00:00</DateEnd>
+<City>Linköping</City>
+<Country>Sweden</Country>
+<EventName>Global Azure Bootcamp</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Local)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>15</EventID>
+<DateStart>2018-04-26T00:00:00</DateStart>
+<DateEnd>2018-04-26T00:00:00</DateEnd>
+<City>Tel Aviv</City>
+<Country>Israel</Country>
+<EventName>SQL Saturday #738</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>39</EventID>
+<DateStart>2018-05-12T00:00:00</DateStart>
+<DateEnd>2018-05-12T00:00:00</DateEnd>
+<City>Helsinki</City>
+<Country>Finland</Country>
+<EventName>SQL Saturday #735</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>28</EventID>
+<DateStart>2018-05-22T00:00:00</DateStart>
+<DateEnd>2018-05-24T00:00:00</DateEnd>
+<City>Antwerp</City>
+<Country>Belgium</Country>
+<EventName>Techorama BE 2018</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>36</EventID>
+<DateStart>2018-05-26T00:00:00</DateStart>
+<DateEnd>2018-05-26T00:00:00</DateEnd>
+<City>Munich</City>
+<Country>Germany</Country>
+<EventName>Azure Saturday</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>35</EventID>
+<DateStart>2018-05-29T00:00:00</DateStart>
+<DateEnd>2018-05-30T00:00:00</DateEnd>
+<City>Copenhagen</City>
+<Country>Denmark</Country>
+<EventName>Intelligent Cloud Conference</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>38</EventID>
+<DateStart>2018-05-29T00:00:00</DateStart>
+<DateEnd>2018-05-31T00:00:00</DateEnd>
+<City>Riga</City>
+<Country>Latvia</Country>
+<EventName>Riga DevDays 2018</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>31</EventID>
+<DateStart>2018-06-09T00:00:00</DateStart>
+<DateEnd>2018-06-09T00:00:00</DateEnd>
+<City>Cork</City>
+<Country>Ireland</Country>
+<EventName>SQL Saturday #742</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>27</EventID>
+<DateStart>2018-06-16T00:00:00</DateStart>
+<DateEnd>2018-06-16T00:00:00</DateEnd>
+<City>Athens</City>
+<Country>Greece</Country>
+<EventName>SQL Saturday #731</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>58</EventID>
+<DateStart>2018-06-19T00:00:00</DateStart>
+<DateEnd>2018-06-19T00:00:00</DateEnd>
+<City>Sao Paolo</City>
+<Country>Brazil</Country>
+<EventName>SQLManiacs SQL Server User Group</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>1</IsRemote>
+<MVPKind>Speaking (User Group)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>30</EventID>
+<DateStart>2018-06-21T00:00:00</DateStart>
+<DateEnd>2018-06-22T00:00:00</DateEnd>
+<City>Lingen</City>
+<Country>Germany</Country>
+<EventName>SQL Grillen 2018</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>32</EventID>
+<DateStart>2018-07-14T00:00:00</DateStart>
+<DateEnd>2018-07-14T00:00:00</DateEnd>
+<City>Manchester</City>
+<Country>United Kingdom</Country>
+<EventName>SQL Saturday #730</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>34</EventID>
+<DateStart>2018-09-01T00:00:00</DateStart>
+<DateEnd>2018-09-01T00:00:00</DateEnd>
+<City>Oslo</City>
+<Country>Norway</Country>
+<EventName>SQL Saturday #746</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>55</EventID>
+<DateStart>2018-09-08T00:00:00</DateStart>
+<DateEnd>2018-09-08T00:00:00</DateEnd>
+<City>Cambridge</City>
+<Country>United Kingdom</Country>
+<EventName>SQL Saturday #748</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>62</EventID>
+<DateStart>2018-09-13T00:00:00</DateStart>
+<DateEnd>2018-09-13T00:00:00</DateEnd>
+<City>Victoria</City>
+<Country>Canada</Country>
+<EventName>PASS Professional Development Virtual Chapter</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>1</IsRemote>
+<MVPKind>Speaking (User Group)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>44</EventID>
+<DateStart>2018-09-15T00:00:00</DateStart>
+<DateEnd>2018-09-15T00:00:00</DateEnd>
+<City>Gothenburg</City>
+<Country>Sweden</Country>
+<EventName>SQL Saturday #775</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>33</EventID>
+<DateStart>2018-10-01T00:00:00</DateStart>
+<DateEnd>2018-10-03T00:00:00</DateEnd>
+<City>Ede</City>
+<Country>Netherlands</Country>
+<EventName>Techorama NL 2018</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>50</EventID>
+<DateStart>2018-10-06T00:00:00</DateStart>
+<DateEnd>2018-10-06T00:00:00</DateEnd>
+<City>Copenhagen</City>
+<Country>Denmark</Country>
+<EventName>SQL Saturday #765</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>52</EventID>
+<DateStart>2018-10-10T00:00:00</DateStart>
+<DateEnd>2018-10-12T00:00:00</DateEnd>
+<City>Birmingham</City>
+<Country>United Kingdom</Country>
+<EventName>SQL Relay 2018</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>54</EventID>
+<DateStart>2018-10-13T00:00:00</DateStart>
+<DateEnd>2018-10-13T00:00:00</DateEnd>
+<City>Utrecht</City>
+<Country>Netherlands</Country>
+<EventName>SQL Saturday #790</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>56</EventID>
+<DateStart>2018-10-16T00:00:00</DateStart>
+<DateEnd>2018-10-16T00:00:00</DateEnd>
+<City>Ghent</City>
+<Country>Belgium</Country>
+<EventName>DataMinds</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>72</EventID>
+<DateStart>2018-10-18T00:00:00</DateStart>
+<DateEnd>2018-10-18T00:00:00</DateEnd>
+<City>Leeds</City>
+<Country>United Kingdom</Country>
+<EventName>TechUG Leeds</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>49</EventID>
+<DateStart>2018-10-24T00:00:00</DateStart>
+<DateEnd>2018-10-25T00:00:00</DateEnd>
+<City>Stockholm</City>
+<Country>Sweden</Country>
+<EventName>TechDays SE 2018</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>43</EventID>
+<DateStart>2018-10-22T00:00:00</DateStart>
+<DateEnd>2018-10-26T00:00:00</DateEnd>
+<City>Köln</City>
+<Country>Germany</Country>
+<EventName>MCT Global Summit</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>41</EventID>
+<DateStart>2018-11-06T00:00:00</DateStart>
+<DateEnd>2018-11-09T00:00:00</DateEnd>
+<City>Seattle</City>
+<Country>USA</Country>
+<EventName>PASS Summit 2018</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>63</EventID>
+<DateStart>2018-11-24T00:00:00</DateStart>
+<DateEnd>2018-11-24T00:00:00</DateEnd>
+<City>Talinn</City>
+<Country>Estonia</Country>
+<EventName>SQL Saturday #789</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>69</EventID>
+<DateStart>2018-11-27T00:00:00</DateStart>
+<DateEnd>2018-11-27T00:00:00</DateEnd>
+<City>Edinburgh</City>
+<Country>United Kingdom</Country>
+<EventName>Edinburgh Azure User Group</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (User Group)</MVPKind>
+<CfCURL>https://forms.office.com/Pages/ResponsePage.aspx?id=v4j5cvGGr0GRqy180BHbR8MmDF0HuhJMgovMVCr3UjpUREhXUlVQWElXODNZMzFEWkk4SlRLTDc0OS4u</CfCURL>
+</tblEvents>
+<tblEvents>
+<EventID>40</EventID>
+<DateStart>2018-11-26T00:00:00</DateStart>
+<DateEnd>2018-11-29T00:00:00</DateEnd>
+<City>Copenhagen</City>
+<Country>Denmark</Country>
+<EventName>ESPC18</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>76</EventID>
+<DateStart>2018-11-26T00:00:00</DateStart>
+<DateEnd>2018-11-30T00:00:00</DateEnd>
+<City>Amsterdam</City>
+<Country>Netherlands</Country>
+<EventName>Power Platform Summit Europe</EventName>
+<EventStatus>Submitted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>74</EventID>
+<DateStart>2018-12-03T00:00:00</DateStart>
+<DateEnd>2018-12-03T00:00:00</DateEnd>
+<City>London</City>
+<Country>United Kingdom</Country>
+<EventName>UK Cloud Infrastructure UG</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (User Group)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>47</EventID>
+<DateStart>2018-12-02T00:00:00</DateStart>
+<DateEnd>2018-12-07T00:00:00</DateEnd>
+<City>Orlando</City>
+<Country>USA</Country>
+<EventName>Live! 360</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>48</EventID>
+<DateStart>2018-12-08T00:00:00</DateStart>
+<DateEnd>2018-12-08T00:00:00</DateEnd>
+<City>Prague</City>
+<Country>Czech Republic</Country>
+<EventName>SQL Saturday #779</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>59</EventID>
+<DateStart>2018-12-12T00:00:00</DateStart>
+<DateEnd>2018-12-12T00:00:00</DateEnd>
+<City>Glasgow</City>
+<Country>United Kingdom</Country>
+<EventName>Glasgow SQL Usergroup</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (User Group)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>79</EventID>
+<DateStart>2019-02-26T00:00:00</DateStart>
+<DateEnd>2018-12-27T00:00:00</DateEnd>
+<City>London</City>
+<Country>United Kingdom</Country>
+<EventName>Ignite Tour</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>64</EventID>
+<DateStart>2019-01-19T00:00:00</DateStart>
+<DateEnd>2019-01-19T00:00:00</DateEnd>
+<City>Linz</City>
+<Country>Austria</Country>
+<EventName>SQL Saturday 810</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>73</EventID>
+<DateStart>2019-01-26T00:00:00</DateStart>
+<DateEnd>2019-01-27T00:00:00</DateEnd>
+<City>Mechelen</City>
+<Country>Belgium</Country>
+<EventName>Power BI Days</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/power-bi-days-2019-01</CfCURL>
+<CfCLastDate>2018-10-31T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>65</EventID>
+<DateStart>2019-02-06T00:00:00</DateStart>
+<DateEnd>2019-02-08T00:00:00</DateEnd>
+<City>Oslo</City>
+<Country>Norway</Country>
+<EventName>NIC 2019</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://www.papercall.io/nic2019</CfCURL>
+</tblEvents>
+<tblEvents>
+<EventID>67</EventID>
+<DateStart>2019-02-19T00:00:00</DateStart>
+<DateEnd>2019-02-21T00:00:00</DateEnd>
+<City>Darmstadt</City>
+<Country>Germany</Country>
+<EventName>SQLKonferenz</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/sql-server-konferenz-2019/</CfCURL>
+</tblEvents>
+<tblEvents>
+<EventID>82</EventID>
+<DateStart>2019-02-21T00:00:00</DateStart>
+<DateEnd>2019-02-22T00:00:00</DateEnd>
+<City>Hong Kong</City>
+<Country>Hong Kong</Country>
+<EventName>Ignite Tour</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>71</EventID>
+<DateStart>2019-02-27T00:00:00</DateStart>
+<DateEnd>2019-03-02T00:00:00</DateEnd>
+<City>Manchester</City>
+<Country>United Kingdom</Country>
+<EventName>SQLBits 2019</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCLastDate>2018-10-16T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>81</EventID>
+<DateStart>2019-03-27T00:00:00</DateStart>
+<DateEnd>2019-03-28T00:00:00</DateEnd>
+<City>Dubai</City>
+<Country>United Arab Emirates</Country>
+<EventName>Ignite Tour</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>77</EventID>
+<DateStart>2019-04-04T00:00:00</DateStart>
+<DateEnd>2019-04-04T00:00:00</DateEnd>
+<City>Stockholm</City>
+<Country>Sweden</Country>
+<EventName>SQL Saturday #851</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>80</EventID>
+<DateStart>2019-04-24T00:00:00</DateStart>
+<DateEnd>2019-04-25T00:00:00</DateEnd>
+<City>Stockholm</City>
+<Country>Sweden</Country>
+<EventName>Ignite Tour</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>88</EventID>
+<DateStart>2019-05-05T00:00:00</DateStart>
+<DateEnd>2019-05-08T00:00:00</DateEnd>
+<City>Seattle</City>
+<Country>United States</Country>
+<EventName>Microsoft Build</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/build</CfCURL>
+<CfCLastDate>2019-03-16T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>68</EventID>
+<DateStart>2019-05-29T00:00:00</DateStart>
+<DateEnd>2019-05-29T00:00:00</DateEnd>
+<City>Oslo</City>
+<Country>Norway</Country>
+<EventName>Experts Live Norway</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/experts-live-norway-2019/</CfCURL>
+</tblEvents>
+<tblEvents>
+<EventID>61</EventID>
+<DateStart>2019-06-20T00:00:00</DateStart>
+<DateEnd>2019-06-21T00:00:00</DateEnd>
+<City>Lingen</City>
+<Country>Germany</Country>
+<EventName>DataGrillen 2019</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/datagrillen-2019/?utm_source=SQLGrillen+Speakers&amp;utm_campaign=ead64398f7-EMAIL_CAMPAIGN_2018_09_29_12_54&amp;utm_medium=email&amp;utm_term=0_0b10a7e80b-ead64398f7-516735217&amp;mc_cid=ead64398f7&amp;mc_eid=6d7bc02325</CfCURL>
+<CfCLastDate>2018-12-14T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>78</EventID>
+<DateStart>2019-08-05T00:00:00</DateStart>
+<DateEnd>2019-08-09T00:00:00</DateEnd>
+<City>Seattle</City>
+<Country>USA</Country>
+<EventName>TechMentor Redmond</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/techmentor-2019</CfCURL>
+<CfCLastDate>2019-01-11T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>101</EventID>
+<DateStart>2019-08-10T00:00:00</DateStart>
+<DateEnd>2019-08-10T00:00:00</DateEnd>
+<City>Dublin</City>
+<Country>Ireland</Country>
+<EventName>DataCeili</EventName>
+<EventStatus>Submitted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/data-ceili-dublin-2020/</CfCURL>
+<CfCLastDate>2020-01-10T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>89</EventID>
+<DateStart>2019-08-27T00:00:00</DateStart>
+<DateEnd>2019-08-20T00:00:00</DateEnd>
+<City>Salt Lake City</City>
+<Country>United States</Country>
+<EventName>Pluralsight LIVE</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://pluralsightevent.com/LIVE-call-for-speakers</CfCURL>
+<CfCLastDate>2019-02-28T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>85</EventID>
+<DateStart>2019-08-28T00:00:00</DateStart>
+<DateEnd>2019-08-29T00:00:00</DateEnd>
+<City>London</City>
+<Country>United Kingdom</Country>
+<EventName>Power Platform World Tour</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://www.powerplatformworldtour.com/london-cfp</CfCURL>
+<CfCLastDate>2019-06-05T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>84</EventID>
+<DateStart>2019-08-31T00:00:00</DateStart>
+<DateEnd>2019-08-31T00:00:00</DateEnd>
+<City>Oslo</City>
+<Country>Norway</Country>
+<EventName>SQL Saturday #854</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://www.sqlsaturday.com/854/speakers/submission.aspx</CfCURL>
+<CfCLastDate>2019-03-31T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>83</EventID>
+<DateStart>2019-09-13T00:00:00</DateStart>
+<DateEnd>2019-09-13T00:00:00</DateEnd>
+<City>Glasgow</City>
+<Country>United Kingdom</Country>
+<EventName>DATA:Scotland</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/datascotland2019</CfCURL>
+<CfCLastDate>2019-03-31T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>87</EventID>
+<DateStart>2019-09-18T00:00:00</DateStart>
+<DateEnd>2019-09-21T00:00:00</DateEnd>
+<City>Vilnius</City>
+<Country>Lithuania</Country>
+<EventName>MCT Summit 2019</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://www.mctsummit2019.org/registration</CfCURL>
+<CfCLastDate>2019-03-30T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>94</EventID>
+<DateStart>2019-09-28T00:00:00</DateStart>
+<DateEnd>2019-09-28T00:00:00</DateEnd>
+<City>Madrid</City>
+<Country>Spain</Country>
+<EventName>SQL Saturday #904</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://www.sqlsaturday.com/904/speakers/submission.aspx</CfCURL>
+<CfCLastDate>2019-07-28T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>90</EventID>
+<DateStart>2019-09-30T00:00:00</DateStart>
+<DateEnd>2019-10-02T00:00:00</DateEnd>
+<City>Ede</City>
+<Country>Netherlands</Country>
+<EventName>Techorama NL</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/techoramanetherlands2019</CfCURL>
+<CfCLastDate>2019-03-31T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>98</EventID>
+<DateStart>2019-10-05T00:00:00</DateStart>
+<DateEnd>2019-10-05T00:00:00</DateEnd>
+<City>Utrecht</City>
+<Country>Netherlands</Country>
+<EventName>Data Saturday Holland</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>86</EventID>
+<DateStart>2019-10-07T00:00:00</DateStart>
+<DateEnd>2019-10-08T00:00:00</DateEnd>
+<City>Mechelen</City>
+<Country>Belgium</Country>
+<EventName>DataMinds Connect</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/datamindsconnect2019/b</CfCURL>
+<CfCLastDate>2019-06-14T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>102</EventID>
+<DateStart>2019-10-10T00:00:00</DateStart>
+<DateEnd>2019-10-10T00:00:00</DateEnd>
+<City>Linköping</City>
+<Country>Sweden</Country>
+<EventName>GroupBy Online Conference</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>1</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>www.groupby.org</CfCURL>
+</tblEvents>
+<tblEvents>
+<EventID>92</EventID>
+<DateStart>2019-10-22T00:00:00</DateStart>
+<DateEnd>2019-10-24T00:00:00</DateEnd>
+<City>Stockholm</City>
+<Country>Sweden</Country>
+<EventName>Microsoft TechDays</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/microsoft-techdays-2019/</CfCURL>
+<CfCLastDate>2019-06-03T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>95</EventID>
+<DateStart>2019-10-29T00:00:00</DateStart>
+<DateEnd>2019-10-30T00:00:00</DateEnd>
+<City>Vienna</City>
+<Country>Austria</Country>
+<EventName>Power Platform World Tour</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://www.powerplatformug.com/engage/volunteeropportunities/volunteer-opportunity-details?VolunteerOpportunityKey=f1111912-3c15-4b3f-afbd-8f582ee63b7f</CfCURL>
+</tblEvents>
+<tblEvents>
+<EventID>100</EventID>
+<DateStart>2019-11-04T00:00:00</DateStart>
+<DateEnd>2019-11-08T00:00:00</DateEnd>
+<City>Orlando</City>
+<Country>United States</Country>
+<EventName>Microsoft Ignite</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>96</EventID>
+<DateStart>2019-11-20T00:00:00</DateStart>
+<DateEnd>2019-11-21T00:00:00</DateEnd>
+<City>Madrid</City>
+<Country>Spain</Country>
+<EventName>Power Platform World Tour</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>91</EventID>
+<DateStart>2019-11-17T00:00:00</DateStart>
+<DateEnd>2019-11-22T00:00:00</DateEnd>
+<City>Orlando</City>
+<Country>United States</Country>
+<EventName>Live360</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/live360_2019</CfCURL>
+<CfCLastDate>2019-04-12T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>93</EventID>
+<DateStart>2019-11-20T00:00:00</DateStart>
+<DateEnd>2019-11-22T00:00:00</DateEnd>
+<City>Prague</City>
+<Country>Czech Republic</Country>
+<EventName>Experts Live EU</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/experts-live-europe-2019</CfCURL>
+<CfCLastDate>2019-06-30T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>97</EventID>
+<DateStart>2019-11-23T00:00:00</DateStart>
+<DateEnd>2019-11-23T00:00:00</DateEnd>
+<City>Lisbon</City>
+<Country>Portugal</Country>
+<EventName>SPS Lisbon</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/sps-lisbon-2019/</CfCURL>
+<CfCLastDate>2019-05-31T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>105</EventID>
+<DateStart>2020-02-06T00:00:00</DateStart>
+<DateEnd>2020-02-07T00:00:00</DateEnd>
+<City>Oslo</City>
+<Country>Norway</Country>
+<EventName>Nordic Infrastructure Conference 2020</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://www.papercall.io/nic2020</CfCURL>
+<CfCLastDate>2019-10-31T00:00:00</CfCLastDate>
+<LoginForCFC>O365 Arcticdba</LoginForCFC>
+</tblEvents>
+<tblEvents>
+<EventID>99</EventID>
+<DateStart>2020-02-29T00:00:00</DateStart>
+<DateEnd>2020-02-29T00:00:00</DateEnd>
+<City>Glasgow</City>
+<Country>United Kingdom</Country>
+<EventName>Scottish Summit</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/SS290220/</CfCURL>
+<CfCLastDate>2019-08-31T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>112</EventID>
+<DateStart>2020-03-03T00:00:00</DateStart>
+<DateEnd>2020-03-05T00:00:00</DateEnd>
+<City>Darmstadt</City>
+<Country>Germany</Country>
+<EventName>SQLKonferenz</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/sql-server-konferenz-2020/</CfCURL>
+<CfCLastDate>2019-12-06T00:00:00</CfCLastDate>
+<LoginForCFC>O365 Sessionize</LoginForCFC>
+</tblEvents>
+<tblEvents>
+<EventID>106</EventID>
+<DateStart>2020-03-05T00:00:00</DateStart>
+<DateEnd>2020-03-06T00:00:00</DateEnd>
+<City>Helsinki</City>
+<Country>Finland</Country>
+<EventName>TechDays Finland</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/microsoft-techdays-2020/</CfCURL>
+<CfCLastDate>2019-11-29T00:00:00</CfCLastDate>
+<LoginForCFC>O365 Arcticdba</LoginForCFC>
+</tblEvents>
+<tblEvents>
+<EventID>108</EventID>
+<DateStart>2020-03-14T00:00:00</DateStart>
+<DateEnd>2020-03-14T00:00:00</DateEnd>
+<City>Victoria</City>
+<Country>Canada</Country>
+<EventName>SQL Saturday #950</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCLastDate>2020-01-03T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>126</EventID>
+<DateStart>2020-04-29T00:00:00</DateStart>
+<DateEnd>2020-04-29T00:00:00</DateEnd>
+<City>Online</City>
+<Country>Online</Country>
+<EventName>Data Platform Discovery Day US</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>1</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/data-platform-discovery-day-us</CfCURL>
+</tblEvents>
+<tblEvents>
+<EventID>124</EventID>
+<DateStart>2020-04-30T00:00:00</DateStart>
+<DateEnd>2020-04-30T00:00:00</DateEnd>
+<City>Online</City>
+<Country>Online</Country>
+<EventName>Data Platform Discovery Day Europe</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>1</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/data-platform-discovery-day-europe</CfCURL>
+<CfCLastDate>2020-04-07T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>125</EventID>
+<DateStart>2020-05-02T00:00:00</DateStart>
+<DateEnd>2020-05-02T00:00:00</DateEnd>
+<City>Online</City>
+<Country>Online</Country>
+<EventName>Data Weekender Europe</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>1</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>109</EventID>
+<DateStart>2020-05-05T00:00:00</DateStart>
+<DateEnd>2020-05-06T00:00:00</DateEnd>
+<City>Stockholm</City>
+<Country>Sweden</Country>
+<EventName>Microsoft Ignite The Tour - Stockholm</EventName>
+<EventStatus>Cancelled</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>110</EventID>
+<DateStart>2020-05-09T00:00:00</DateStart>
+<DateEnd>2020-05-09T00:00:00</DateEnd>
+<City>Stockholm</City>
+<Country>Sweden</Country>
+<EventName>SQL Saturday #949 Stockholm</EventName>
+<EventStatus>Cancelled</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>123</EventID>
+<DateStart>2020-05-12T00:00:00</DateStart>
+<DateEnd>2020-05-13T00:00:00</DateEnd>
+<City>Online</City>
+<Country>Online</Country>
+<EventName>GroupBy</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>1</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/groupby-conference-europe-May2020</CfCURL>
+<CfCLastDate>2020-04-06T00:00:00</CfCLastDate>
+<LoginForCFC>O365</LoginForCFC>
+</tblEvents>
+<tblEvents>
+<EventID>104</EventID>
+<DateStart>2020-05-28T00:00:00</DateStart>
+<DateEnd>2020-05-29T00:00:00</DateEnd>
+<City>Lingen</City>
+<Country>Germany</Country>
+<EventName>DataGrillen 2020</EventName>
+<EventStatus>Cancelled</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/datagrillen-2020/</CfCURL>
+<CfCLastDate>2019-12-16T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>113</EventID>
+<DateStart>2020-06-08T00:00:00</DateStart>
+<DateEnd>2020-06-12T00:00:00</DateEnd>
+<City>Oslo</City>
+<Country>Norway</Country>
+<EventName>NDC Oslo</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>1</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/ndc-oslo-2020/</CfCURL>
+<CfCLastDate>2020-02-15T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>128</EventID>
+<DateStart>2020-06-12T00:00:00</DateStart>
+<DateEnd>2020-06-12T00:00:00</DateEnd>
+<City>Online</City>
+<Country>Online</Country>
+<EventName>Azure Day Rome</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>1</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/azure-day-rome-2020/</CfCURL>
+<CfCLastDate>2020-05-22T00:00:00</CfCLastDate>
+<LoginForCFC>Sessionize O365</LoginForCFC>
+</tblEvents>
+<tblEvents>
+<EventID>121</EventID>
+<DateStart>2020-06-25T00:00:00</DateStart>
+<DateEnd>2020-06-25T00:00:00</DateEnd>
+<City>Manchester</City>
+<Country>United Kingdom</Country>
+<EventName>PBIMCR</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>1</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>111</EventID>
+<DateStart>2020-07-02T00:00:00</DateStart>
+<DateEnd>2020-07-04T00:00:00</DateEnd>
+<City>Antwerp</City>
+<Country>Belgium</Country>
+<EventName>Techorama BE</EventName>
+<EventStatus>Cancelled</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/techoramabelgium2020/</CfCURL>
+<CfCLastDate>2020-01-15T00:00:00</CfCLastDate>
+<LoginForCFC>O365 Sessionize</LoginForCFC>
+</tblEvents>
+<tblEvents>
+<EventID>107</EventID>
+<DateStart>2020-07-09T00:00:00</DateStart>
+<DateEnd>2020-07-10T00:00:00</DateEnd>
+<City>Dublin</City>
+<Country>Ireland</Country>
+<EventName>DataCeili</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/data-ceili-dublin-2020/</CfCURL>
+<CfCLastDate>2020-01-31T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>132</EventID>
+<DateStart>2020-07-13T00:00:00</DateStart>
+<DateEnd>2020-07-13T00:00:00</DateEnd>
+<City>Online</City>
+<Country>Online</Country>
+<EventName>PASS BI Chapter</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>1</IsRemote>
+<MVPKind>Speaking (User Group)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>115</EventID>
+<DateStart>2020-08-03T00:00:00</DateStart>
+<DateEnd>2020-08-07T00:00:00</DateEnd>
+<City>Redmond</City>
+<Country>United States</Country>
+<EventName>TechMentor Redmond 2020</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>1</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/techmentor-2020</CfCURL>
+<CfCLastDate>2020-01-10T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>133</EventID>
+<DateStart>2020-08-18T00:00:00</DateStart>
+<DateEnd>2020-08-18T00:00:00</DateEnd>
+<City>Online</City>
+<Country>Online</Country>
+<EventName>DataMinds</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>1</IsRemote>
+<MVPKind>Speaking (User Group)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>137</EventID>
+<DateStart>2020-09-10T00:00:00</DateStart>
+<DateEnd>2020-09-10T00:00:00</DateEnd>
+<City>Online</City>
+<Country>Online</Country>
+<EventName>Glasgow Azure User Group</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>1</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>114</EventID>
+<DateStart>2020-09-29T00:00:00</DateStart>
+<DateEnd>2020-10-03T00:00:00</DateEnd>
+<City>London</City>
+<Country>United Kingdom</Country>
+<EventName>SQLBits 2019</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>1</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sqlbits.com/profile/mysessions</CfCURL>
+<CfCLastDate>2019-12-13T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>129</EventID>
+<DateStart>2020-10-13T00:00:00</DateStart>
+<DateEnd>2020-10-13T00:00:00</DateEnd>
+<City>Online</City>
+<Country>Online</Country>
+<EventName>DataMinds Connect 2020</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>1</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/dataminds-connect-2020/</CfCURL>
+<CfCLastDate>2020-07-31T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>138</EventID>
+<DateStart>2020-10-17T00:00:00</DateStart>
+<DateEnd>2020-10-17T00:00:00</DateEnd>
+<City>Online</City>
+<Country>Online</Country>
+<EventName>Data Weekender 2020</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>1</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/DataWeekender-TheSQL/</CfCURL>
+<CfCLastDate>2020-09-25T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>134</EventID>
+<DateStart>2020-10-28T00:00:00</DateStart>
+<DateEnd>2020-10-28T00:00:00</DateEnd>
+<City>Online</City>
+<Country>Online</Country>
+<EventName>GroupBy 2020</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>1</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/groupby-conference-october-2020/</CfCURL>
+<CfCLastDate>2020-09-04T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>142</EventID>
+<DateStart>2020-11-20T00:00:00</DateStart>
+<DateEnd>2020-11-20T00:00:00</DateEnd>
+<City>Online</City>
+<Country>Online</Country>
+<EventName>PowerPlatform French Summit</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>1</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/powerplatform-french-summit</CfCURL>
+<CfCLastDate>2020-10-11T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>141</EventID>
+<DateStart>2020-11-28T00:00:00</DateStart>
+<DateEnd>2020-11-28T00:00:00</DateEnd>
+<City>Singapore</City>
+<Country>Singapore</Country>
+<EventName>SQL Saturday #1019 Singapore</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>1</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://www.sqlsaturday.com/1019/Speakers/Submission</CfCURL>
+<CfCLastDate>2020-10-24T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>135</EventID>
+<DateStart>2020-12-02T00:00:00</DateStart>
+<DateEnd>2020-12-04T00:00:00</DateEnd>
+<City>Online</City>
+<Country>Online</Country>
+<EventName>Data Platform Summit</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>1</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://dps10.com/break-out-session-submission/</CfCURL>
+</tblEvents>
+<tblEvents>
+<EventID>143</EventID>
+<DateStart>2020-12-15T00:00:00</DateStart>
+<DateEnd>2020-12-15T00:00:00</DateEnd>
+<City>Hamburg</City>
+<Country>Germany</Country>
+<EventName>Power BI Day Hamburg</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>1</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/munich-power-bi-days-2020-09-15-copy6788/</CfCURL>
+</tblEvents>
+<tblEvents>
+<EventID>139</EventID>
+<DateStart>2021-01-08T00:00:00</DateStart>
+<DateEnd>2021-01-08T00:00:00</DateEnd>
+<City>Linz</City>
+<Country>Austria</Country>
+<EventName>Experts Live Austria 2021</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>1</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/experts-live-austria-2021</CfCURL>
+<CfCLastDate>2020-09-30T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>140</EventID>
+<DateStart>2021-01-15T00:00:00</DateStart>
+<DateEnd>2021-01-15T00:00:00</DateEnd>
+<City>Vienna</City>
+<Country>Austria</Country>
+<EventName>SQL Saturday 1015 - Vienna</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>1</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>154</EventID>
+<DateStart>2021-01-23T00:00:00</DateStart>
+<DateEnd>2021-01-23T00:00:00</DateEnd>
+<Country>Guatemala</Country>
+<EventName>Data Saturdays Guatemala 2021</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/data-saturday-guatemala-2021</CfCURL>
+<CfCLastDate>2021-01-15T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>148</EventID>
+<DateStart>2021-01-28T00:00:00</DateStart>
+<DateEnd>2021-01-28T00:00:00</DateEnd>
+<City>Birmingham</City>
+<Country>United Kingdom</Country>
+<EventName>Collabdays 2021</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>1</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/collabdays-birmingham-virtual-2021</CfCURL>
+<CfCLastDate>2021-01-03T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>147</EventID>
+<DateStart>2021-01-25T00:00:00</DateStart>
+<DateEnd>2021-01-29T00:00:00</DateEnd>
+<City>London</City>
+<Country>United Kingdom</Country>
+<EventName>NCD London Online</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>1</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/ndc-london-2021/</CfCURL>
+<CfCLastDate>2020-11-29T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>151</EventID>
+<DateStart>2021-01-29T00:00:00</DateStart>
+<DateEnd>2021-01-30T00:00:00</DateEnd>
+<City>Seattle</City>
+<Country>USA</Country>
+<EventName>SQL Server Virtual Conference</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>1</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/sql-server-virtual-conference-2021/</CfCURL>
+<CfCLastDate>2021-01-03T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>146</EventID>
+<DateStart>2021-02-10T00:00:00</DateStart>
+<DateEnd>2021-02-11T00:00:00</DateEnd>
+<City>Online</City>
+<Country>Online</Country>
+<EventName>Nordic Virtual Conference</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>1</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/nordic-virtual-summit/</CfCURL>
+<CfCLastDate>2020-11-30T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>136</EventID>
+<DateStart>2021-02-27T00:00:00</DateStart>
+<DateEnd>2021-02-27T00:00:00</DateEnd>
+<City>Online</City>
+<Country>Online</Country>
+<EventName>Scottish Summit 20201</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>1</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/ss2021</CfCURL>
+<CfCLastDate>2020-10-31T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>184</EventID>
+<DateStart>2021-03-04T00:00:00</DateStart>
+<DateEnd>2021-03-04T00:00:00</DateEnd>
+<City>Online</City>
+<Country>Online</Country>
+<EventName>Cloud Data Driven Meetup</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>152</EventID>
+<DateStart>2021-03-11T00:00:00</DateStart>
+<DateEnd>2021-03-11T00:00:00</DateEnd>
+<City>Online</City>
+<Country>Belgium</Country>
+<EventName>TheCloudFirst</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>1</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/thecloudfirst/?fbclid=IwAR3X3DWpDQimD6Bj2okoOGZiXA5HY1T4pBB0Q54LTelvGHhd31daKekPR28</CfCURL>
+<CfCLastDate>2021-01-31T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>159</EventID>
+<DateStart>2021-03-11T00:00:00</DateStart>
+<DateEnd>2021-03-12T00:00:00</DateEnd>
+<City>Philadelphia</City>
+<Country>United States</Country>
+<EventName>Power Platform Virtual Conference 2021</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>1</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/power-platform-virtual-conference/</CfCURL>
+<CfCLastDate>2021-02-06T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>183</EventID>
+<DateStart>2021-04-08T00:00:00</DateStart>
+<DateEnd>2021-04-08T00:00:00</DateEnd>
+<City>Dublin</City>
+<Country>Ireland</Country>
+<EventName>CloudCamp Quarterly #1</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>1</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>182</EventID>
+<DateStart>2021-04-13T00:00:00</DateStart>
+<DateEnd>2021-04-13T00:00:00</DateEnd>
+<City>Stockholm</City>
+<Country>Sweden</Country>
+<EventName>Swedish SQL Server User Group</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>1</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>158</EventID>
+<DateStart>2021-04-14T00:00:00</DateStart>
+<DateEnd>2021-04-14T00:00:00</DateEnd>
+<City>Split</City>
+<Country>Croatia</Country>
+<EventName>SQL Server User Group Croatia 2021</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>1</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/sql-server-user-group-croatia-2021/?goal=0_9fb03860c6-7eb0e2a578-387882163</CfCURL>
+</tblEvents>
+<tblEvents>
+<EventID>157</EventID>
+<DateStart>2021-04-17T00:00:00</DateStart>
+<DateEnd>2021-04-17T00:00:00</DateEnd>
+<City>Redmond</City>
+<Country>United States</Country>
+<EventName>Data Saturday #5</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>1</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/data-saturday-redmond-2021</CfCURL>
+<CfCLastDate>2021-03-31T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>153</EventID>
+<DateStart>2021-04-24T00:00:00</DateStart>
+<DateEnd>2021-04-24T00:00:00</DateEnd>
+<City>Valetta</City>
+<Country>Malta</Country>
+<EventName>Data Saturday Malta 2021</EventName>
+<EventStatus>Declined</EventStatus>
+<IsRemote>1</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/malta-data-saturday-2021</CfCURL>
+<CfCLastDate>2021-02-28T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>164</EventID>
+<DateStart>2021-05-15T00:00:00</DateStart>
+<DateEnd>2021-05-15T00:00:00</DateEnd>
+<City>Online</City>
+<Country>Online</Country>
+<EventName>DataWeekender 3.1</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/DataWeekender-v31/</CfCURL>
+<CfCLastDate>2021-04-10T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>166</EventID>
+<DateStart>2021-05-15T00:00:00</DateStart>
+<DateEnd>2021-05-15T00:00:00</DateEnd>
+<City>Online</City>
+<Country>Online</Country>
+<EventName>Data Saturday Southwest US 2021</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>1</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/data-saturday-southwest-us/</CfCURL>
+<CfCLastDate>2021-03-19T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>150</EventID>
+<DateStart>2021-05-17T00:00:00</DateStart>
+<DateEnd>2021-05-19T00:00:00</DateEnd>
+<City>Amsterdam</City>
+<Country>The Netherlands</Country>
+<EventName>Techorama 2021</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>1</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/techorama2021/</CfCURL>
+<CfCLastDate>2021-01-31T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>163</EventID>
+<DateStart>2021-05-25T00:00:00</DateStart>
+<DateEnd>2021-05-26T00:00:00</DateEnd>
+<City>Stockholm</City>
+<Country>Sweden</Country>
+<EventName>GroupBy May 2021</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>1</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/groupby-conference-may-2021/?goal=0_9fb03860c6-f5f05800e3-387882163</CfCURL>
+<CfCLastDate>2021-04-05T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>162</EventID>
+<DateStart>2021-05-28T00:00:00</DateStart>
+<DateEnd>2021-05-28T00:00:00</DateEnd>
+<City>Dublin</City>
+<Country>Ireland</Country>
+<EventName>DataCeili 2021</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>1</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/data-ceili-2021/</CfCURL>
+<CfCLastDate>2021-04-02T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>160</EventID>
+<DateStart>2021-06-01T00:00:00</DateStart>
+<DateEnd>2021-06-02T00:00:00</DateEnd>
+<City>Online</City>
+<Country>Online</Country>
+<EventName>ESPC21</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>1</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://www.sharepointeurope.com/submit-to-speak/?utm_source=C4SEM&amp;utm_medium=C4SEM&amp;utm_campaign=C4SEM</CfCURL>
+<CfCLastDate>2021-02-05T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>161</EventID>
+<DateStart>2021-06-04T00:00:00</DateStart>
+<DateEnd>2021-06-04T00:00:00</DateEnd>
+<City>Online</City>
+<Country>Online</Country>
+<EventName>3rd cloud8 virtual Summit 2021</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>1</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/3rd-cloud8-virtual-summit-2021/</CfCURL>
+<CfCLastDate>2021-02-28T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>181</EventID>
+<DateStart>2021-06-11T00:00:00</DateStart>
+<DateEnd>2021-06-11T00:00:00</DateEnd>
+<City>Online</City>
+<Country>Online</Country>
+<EventName>DataMinutes</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>1</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>145</EventID>
+<DateStart>2021-06-14T00:00:00</DateStart>
+<DateEnd>2021-06-16T00:00:00</DateEnd>
+<City>Wiesbaden</City>
+<Country>Germany</Country>
+<EventName>European Collaboration Summit</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>1</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://www.collabsummit.eu/en/profile/lectures/create</CfCURL>
+</tblEvents>
+<tblEvents>
+<EventID>155</EventID>
+<DateStart>2021-06-26T00:00:00</DateStart>
+<DateEnd>2021-06-26T00:00:00</DateEnd>
+<City>Cologne</City>
+<Country>France</Country>
+<EventName>Azure Saturday Cologne 2021</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/cloudconfcologne/</CfCURL>
+<CfCLastDate>2021-03-11T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>149</EventID>
+<DateStart>2021-01-01T00:00:00</DateStart>
+<DateEnd>2021-07-30T00:00:00</DateEnd>
+<City>Helsinki</City>
+<Country>Finland</Country>
+<EventName>Finland Azure User Group</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>1</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/finland-azure-user-group/</CfCURL>
+<CfCLastDate>2020-12-14T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>180</EventID>
+<DateStart>2021-08-05T00:00:00</DateStart>
+<DateEnd>2021-08-05T00:00:00</DateEnd>
+<City>Birmingham Data Meetup Group</City>
+<Country>United Kingdom</Country>
+<EventName>Birmingham Data Meetup Group</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>1</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>168</EventID>
+<DateStart>2021-08-07T00:00:00</DateStart>
+<DateEnd>2021-08-07T00:00:00</DateEnd>
+<City>Online</City>
+<Country>Online</Country>
+<EventName>Data Geeks Saturday 2021</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>1</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/data-geeks-saturday-conference/</CfCURL>
+<CfCLastDate>2021-06-01T00:00:00</CfCLastDate>
+<LoginForCFC>Sess</LoginForCFC>
+</tblEvents>
+<tblEvents>
+<EventID>171</EventID>
+<DateStart>2021-09-04T00:00:00</DateStart>
+<DateEnd>2021-09-04T00:00:00</DateEnd>
+<City>Oslo</City>
+<Country>Norway</Country>
+<EventName>Data Saturday Oslo 2021</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>1</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/data-saturday-oslo-2021</CfCURL>
+<CfCLastDate>2021-05-29T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>172</EventID>
+<DateStart>2021-09-15T00:00:00</DateStart>
+<DateEnd>2021-09-17T00:00:00</DateEnd>
+<City>Kansas City</City>
+<Country>United States</Country>
+<EventName>Kansas City Developer Conference</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/kcdc-2021</CfCURL>
+<CfCLastDate>2021-06-06T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>167</EventID>
+<DateStart>2021-09-17T00:00:00</DateStart>
+<DateEnd>2021-09-17T00:00:00</DateEnd>
+<City>Copenhagen</City>
+<Country>Denmark</Country>
+<EventName>Power BI Next Step</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/power-bi-next-step</CfCURL>
+<CfCLastDate>2021-05-31T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>170</EventID>
+<DateStart>2021-10-11T00:00:00</DateStart>
+<DateEnd>2021-10-12T00:00:00</DateEnd>
+<City>Mechelen</City>
+<Country>Belgium</Country>
+<EventName>DataMinds Connect</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/dataminds-connect-2021</CfCURL>
+<CfCLastDate>2021-06-06T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>178</EventID>
+<DateStart>2021-11-06T00:00:00</DateStart>
+<DateEnd>2021-11-06T00:00:00</DateEnd>
+<City>Online</City>
+<Country>Online</Country>
+<EventName>DataWeekender 4.2</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/DataWeekender-v42</CfCURL>
+</tblEvents>
+<tblEvents>
+<EventID>173</EventID>
+<DateStart>2021-11-08T00:00:00</DateStart>
+<DateEnd>2021-11-12T00:00:00</DateEnd>
+<City>Online</City>
+<Country>Online</Country>
+<EventName>PASS Data Community Summit</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>1</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>165</EventID>
+<DateStart>2021-11-14T00:00:00</DateStart>
+<DateEnd>2021-11-19T00:00:00</DateEnd>
+<City>Orlando</City>
+<Country>United States</Country>
+<EventName>Live 360 2021</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/live360_2021</CfCURL>
+<CfCLastDate>2021-05-24T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>175</EventID>
+<DateStart>2021-11-20T00:00:00</DateStart>
+<DateEnd>2021-11-20T00:00:00</DateEnd>
+<City>Online</City>
+<Country>Online</Country>
+<EventName>Power BI Fest</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>1</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/power-bi-fest-2021/</CfCURL>
+<CfCLastDate>2021-09-18T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>156</EventID>
+<DateStart>2021-11-29T00:00:00</DateStart>
+<DateEnd>2021-12-01T00:00:00</DateEnd>
+<City>Mainz</City>
+<Country>Germany</Country>
+<EventName>European CollabSummit 2021</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://www.cloudsummit.eu/en/call-for-speakers</CfCURL>
+<CfCLastDate>2021-03-31T00:00:00</CfCLastDate>
+<LoginForCFC>O365 Arctic</LoginForCFC>
+</tblEvents>
+<tblEvents>
+<EventID>169</EventID>
+<DateStart>2021-11-29T00:00:00</DateStart>
+<DateEnd>2021-12-03T00:00:00</DateEnd>
+<City>Oslo</City>
+<Country>Norway</Country>
+<EventName>NDC Oslo 2021</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/ndc-oslo-2021/</CfCURL>
+<CfCLastDate>2021-08-01T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>174</EventID>
+<DateStart>2021-12-07T00:00:00</DateStart>
+<DateEnd>2021-12-09T00:00:00</DateEnd>
+<City>Las Vegas</City>
+<Country>United States</Country>
+<EventName>SQL &amp; Azure SQL Conference Fall 2021</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/sqlconference2021/</CfCURL>
+<CfCLastDate>2021-07-30T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>179</EventID>
+<DateStart>2022-01-21T00:00:00</DateStart>
+<DateEnd>2022-01-21T00:00:00</DateEnd>
+<City>Online</City>
+<Country>Online</Country>
+<EventName>DataMinutes #2</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/dataminutes-2</CfCURL>
+<CfCLastDate>2021-10-17T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>176</EventID>
+<DateStart>2022-01-24T00:00:00</DateStart>
+<DateEnd>2022-01-28T00:00:00</DateEnd>
+<City>London</City>
+<Country>United Kingdom</Country>
+<EventName>NDC London 2022</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/ndc-london-2022</CfCURL>
+<CfCLastDate>2021-09-26T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>185</EventID>
+<DateStart>2022-02-09T00:00:00</DateStart>
+<DateEnd>2022-02-11T00:00:00</DateEnd>
+<City>Oslo</City>
+<Country>Norway</Country>
+<EventName>Nordic Infrastructure Conference 2022</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>187</EventID>
+<DateStart>2022-03-08T00:00:00</DateStart>
+<DateEnd>2022-03-12T00:00:00</DateEnd>
+<City>London</City>
+<Country>United Kingdom</Country>
+<EventName>SQLBits 2022</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/sqlbits</CfCURL>
+<CfCLastDate>2021-11-26T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>188</EventID>
+<DateStart>2022-05-21T00:00:00</DateStart>
+<DateEnd>2022-05-21T00:00:00</DateEnd>
+<City>Stockholm</City>
+<Country>Sweden</Country>
+<EventName>Data Saturday Stockholm</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/datasatsto-2022/</CfCURL>
+<CfCLastDate>2022-01-16T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>186</EventID>
+<DateStart>2022-05-23T00:00:00</DateStart>
+<DateEnd>2022-05-25T00:00:00</DateEnd>
+<City>Antwerp</City>
+<Country>Belgium</Country>
+<EventName>Techorama BE 2022</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/techorama-2022-be/</CfCURL>
+<CfCLastDate>2021-12-31T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>189</EventID>
+<DateStart>2022-06-02T00:00:00</DateStart>
+<DateEnd>2022-06-03T00:00:00</DateEnd>
+<City>Lingen</City>
+<Country>Germany</Country>
+<EventName>Data Grillen 2022</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/datagrillen-2022/</CfCURL>
+<CfCLastDate>2021-12-19T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>177</EventID>
+<DateStart>2022-02-25T00:00:00</DateStart>
+<DateEnd>2022-06-10T00:00:00</DateEnd>
+<City>Glasgow</City>
+<Country>Scotland</Country>
+<EventName>Scottish Summit 2022</EventName>
+<EventStatus>Declined</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/SS2022</CfCURL>
+<CfCLastDate>2021-10-31T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>192</EventID>
+<DateStart>2022-06-30T00:00:00</DateStart>
+<DateEnd>2022-06-30T00:00:00</DateEnd>
+<City>Utrecht</City>
+<Country>The Netherlands</Country>
+<EventName>Azure Lowlands</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/azure-lowlands-2022/</CfCURL>
+<CfCLastDate>2022-03-15T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>190</EventID>
+<DateStart>2022-08-08T00:00:00</DateStart>
+<DateEnd>2022-08-12T00:00:00</DateEnd>
+<City>Seattle</City>
+<Country>United States</Country>
+<EventName>TechMentor</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/techmentor-microsoft-hq-2022/</CfCURL>
+</tblEvents>
+<tblEvents>
+<EventID>191</EventID>
+<DateStart>2022-09-01T00:00:00</DateStart>
+<DateEnd>2022-09-02T00:00:00</DateEnd>
+<City>Glasgow</City>
+<Country>United Kingdom</Country>
+<EventName>Data:Scotland 2022</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/datascotland2022</CfCURL>
+</tblEvents>
+<tblEvents>
+<EventID>197</EventID>
+<DateStart>2022-09-10T00:00:00</DateStart>
+<DateEnd>2022-09-10T00:00:00</DateEnd>
+<City>Oslo</City>
+<Country>Norway</Country>
+<EventName>Data Saturday Oslo 2022</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/data-saturday-oslo-2022/</CfCURL>
+<CfCLastDate>2022-05-31T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>198</EventID>
+<DateStart>2022-09-19T00:00:00</DateStart>
+<DateEnd>2022-09-19T00:00:00</DateEnd>
+<City>BIllund</City>
+<Country>Denmark</Country>
+<EventName>Power BI Next Step</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/power-bi-next-step/</CfCURL>
+<CfCLastDate>2022-05-29T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>196</EventID>
+<DateStart>2022-09-24T00:00:00</DateStart>
+<DateEnd>2022-09-24T00:00:00</DateEnd>
+<City>Stockholm</City>
+<Country>Sweden</Country>
+<EventName>Power Platform Nordic Summit 2022</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/power-platform-nordic-summit-2022/</CfCURL>
+<CfCLastDate>2022-05-31T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>200</EventID>
+<DateStart>2022-09-28T00:00:00</DateStart>
+<DateEnd>2022-09-28T00:00:00</DateEnd>
+<City>Online</City>
+<Country>Online</Country>
+<EventName>Future Data Driven</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>1</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/Future-Data-Driven-Summit/</CfCURL>
+<CfCLastDate>2022-06-03T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>195</EventID>
+<DateStart>2022-10-11T00:00:00</DateStart>
+<DateEnd>2022-10-11T00:00:00</DateEnd>
+<City>Mechelen</City>
+<Country>Belgium</Country>
+<EventName>DataMinds Connect 2022</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/dataminds-connect-2022/</CfCURL>
+<CfCLastDate>2022-06-04T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>193</EventID>
+<DateStart>2022-11-13T00:00:00</DateStart>
+<DateEnd>2022-11-18T00:00:00</DateEnd>
+<City>Orlando</City>
+<Country>United States</Country>
+<EventName>Live 360! 2022</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/live3602022</CfCURL>
+<CfCLastDate>2022-04-18T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>194</EventID>
+<DateStart>2022-11-15T00:00:00</DateStart>
+<DateEnd>2022-11-18T00:00:00</DateEnd>
+<City>Seattle</City>
+<Country>United States</Country>
+<EventName>PASS Community Summit 2022</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://reg.passdatacommunitysummit.com/flow/redgate/summit2022/cfs/form/session</CfCURL>
+<CfCLastDate>2022-03-31T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>206</EventID>
+<DateStart>2023-01-23T00:00:00</DateStart>
+<DateEnd>2023-01-23T00:00:00</DateEnd>
+<City>Vienna</City>
+<Country>Austria</Country>
+<EventName>Data Community Day Austria 2023</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>1</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/data-community-austria-day-2023</CfCURL>
+<CfCLastDate>2022-12-23T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>207</EventID>
+<DateStart>2023-01-28T00:00:00</DateStart>
+<DateEnd>2023-01-28T00:00:00</DateEnd>
+<City>Online</City>
+<Country>Online</Country>
+<EventName>Data Toboggan Winter Edition 2023</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/data-toboggan-2023</CfCURL>
+</tblEvents>
+<tblEvents>
+<EventID>201</EventID>
+<DateStart>2023-03-13T00:00:00</DateStart>
+<DateEnd>2023-03-15T00:00:00</DateEnd>
+<City>Newport</City>
+<Country>United Kingdom</Country>
+<EventName>SQLBits Training day</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/sqlbits-TrainingDays2023</CfCURL>
+</tblEvents>
+<tblEvents>
+<EventID>203</EventID>
+<DateStart>2023-03-16T00:00:00</DateStart>
+<DateEnd>2023-03-18T00:00:00</DateEnd>
+<City>Newport</City>
+<Country>United Kingdom</Country>
+<EventName>SQLBits</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/sqlbits-2023</CfCURL>
+<CfCLastDate>2022-10-28T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>202</EventID>
+<DateStart>2023-04-23T00:00:00</DateStart>
+<DateEnd>2023-04-24T00:00:00</DateEnd>
+<City>Copenhagen</City>
+<Country>Denmark</Country>
+<EventName>Power BI Cruise</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>204</EventID>
+<DateStart>2023-05-15T00:00:00</DateStart>
+<DateEnd>2023-05-17T00:00:00</DateEnd>
+<City>Antwerp</City>
+<Country>Belgium</Country>
+<EventName>Techorama BE</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/techorama-2023-be/</CfCURL>
+<CfCLastDate>2023-01-10T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>208</EventID>
+<DateStart>2023-06-29T00:00:00</DateStart>
+<DateEnd>2023-06-29T00:00:00</DateEnd>
+<City>Utrecht</City>
+<Country>Netherlands</Country>
+<EventName>Azure Lowlands 2023</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/azure-lowlands-2023/</CfCURL>
+<CfCLastDate>2023-02-01T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>205</EventID>
+<DateStart>2023-07-17T00:00:00</DateStart>
+<DateEnd>2023-07-21T00:00:00</DateEnd>
+<City>Seattle</City>
+<Country>United States</Country>
+<EventName>TechMentor Redmond 2023</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/TM2023_MSHQ/</CfCURL>
+<CfCLastDate>2022-11-28T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>212</EventID>
+<DateStart>2023-08-26T00:00:00</DateStart>
+<DateEnd>2023-08-26T00:00:00</DateEnd>
+<City>Gothenburg</City>
+<Country>Sweden</Country>
+<EventName>DataSat Gothenburg 2023</EventName>
+<EventStatus>Withdrawn</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/data-saturday-gothenburg-2023</CfCURL>
+<CfCLastDate>2023-05-14T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>213</EventID>
+<DateStart>2023-09-02T00:00:00</DateStart>
+<DateEnd>2023-09-02T00:00:00</DateEnd>
+<City>Oslo</City>
+<Country>Norway</Country>
+<EventName>DataSat Oslo 2023</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/data-saturday-oslo-2023/</CfCURL>
+<CfCLastDate>2023-03-31T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>216</EventID>
+<DateStart>2023-09-08T00:00:00</DateStart>
+<DateEnd>2023-09-08T00:00:00</DateEnd>
+<City>Ediniburgh</City>
+<Country>United Kingdom</Country>
+<EventName>Data:Scotland 2023</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/datascotland-2023</CfCURL>
+<CfCLastDate>2023-05-01T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>209</EventID>
+<DateStart>2023-09-08T00:00:00</DateStart>
+<DateEnd>2023-09-08T00:00:00</DateEnd>
+<City>Dublin</City>
+<Country>Ireland</Country>
+<EventName>Data Céili</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/data-ceili-2023/</CfCURL>
+<CfCLastDate>2023-02-28T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>215</EventID>
+<DateStart>2023-09-11T00:00:00</DateStart>
+<DateEnd>2023-09-13T00:00:00</DateEnd>
+<City>Frankfurt</City>
+<Country>Germany</Country>
+<EventName>SQLKonferenz 2023</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/sql-konferenz-2023/</CfCURL>
+<CfCLastDate>2023-04-16T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>220</EventID>
+<DateStart>2023-09-23T00:00:00</DateStart>
+<DateEnd>2023-09-23T00:00:00</DateEnd>
+<City>Copenhagen</City>
+<Country>Denmark</Country>
+<EventName>Nordic Summit</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/nordic-summit-2023/</CfCURL>
+<CfCLastDate>2023-04-30T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>221</EventID>
+<DateStart>2023-10-07T00:00:00</DateStart>
+<DateEnd>2023-10-07T00:00:00</DateEnd>
+<City>Utrecht</City>
+<Country>Netherlands</Country>
+<EventName>DataSaturday Holland 2023</EventName>
+<EventStatus>Submitted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/data-saturday-holland-2023</CfCURL>
+<CfCLastDate>2023-06-16T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>214</EventID>
+<DateStart>2023-10-09T00:00:00</DateStart>
+<DateEnd>2023-10-10T00:00:00</DateEnd>
+<City>Mechelen</City>
+<Country>Belgium</Country>
+<EventName>DataMinds Connect 2023</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/dataminds-connect-2023/</CfCURL>
+<CfCLastDate>2023-03-03T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>219</EventID>
+<DateStart>2023-11-14T00:00:00</DateStart>
+<DateEnd>2023-11-17T00:00:00</DateEnd>
+<City>Seattle</City>
+<Country>United States</Country>
+<EventName>PASS Data Community Summit 2023</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://reg.passdatacommunitysummit.com/flow/redgate/summit2023/cfs/cfpHome</CfCURL>
+<CfCLastDate>2023-03-30T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>211</EventID>
+<DateStart>2023-11-12T00:00:00</DateStart>
+<DateEnd>2023-11-17T00:00:00</DateEnd>
+<City>Orlando</City>
+<Country>United States</Country>
+<EventName>Live! 360 Orlando 2023</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/live360_2023</CfCURL>
+<CfCLastDate>2023-03-17T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>223</EventID>
+<DateStart>2024-02-08T00:00:00</DateStart>
+<DateEnd>2024-02-08T00:00:00</DateEnd>
+<City>Oslo</City>
+<Country>Norway</Country>
+<EventName>Fabric February</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/fabric-february-2024</CfCURL>
+</tblEvents>
+<tblEvents>
+<EventID>222</EventID>
+<DateStart>2024-03-19T00:00:00</DateStart>
+<DateEnd>2024-03-21T00:00:00</DateEnd>
+<City>Farnborough</City>
+<Country>United Kingdom</Country>
+<EventName>SQLBits</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCLastDate>2023-11-01T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>224</EventID>
+<DateStart>2024-05-16T00:00:00</DateStart>
+<DateEnd>2024-05-17T00:00:00</DateEnd>
+<City>Lingen</City>
+<Country>Germany</Country>
+<EventName>Data Grillen</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/datagrillen-2024/</CfCURL>
+<CfCLastDate>2023-12-17T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>225</EventID>
+<DateStart>2024-05-25T00:00:00</DateStart>
+<DateEnd>2024-05-25T00:00:00</DateEnd>
+<City>Stockholm</City>
+<Country>Sweden</Country>
+<EventName>DataSatSto</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/data-saturday-stockholm-2024/</CfCURL>
+<CfCLastDate>2024-01-15T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>228</EventID>
+<DateStart>2024-06-06T00:00:00</DateStart>
+<DateEnd>2024-06-07T00:00:00</DateEnd>
+<City>Helsinki</City>
+<Country>Finland</Country>
+<EventName>IglooConf Midsummer 2024</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/app/speaker/event/details/14852</CfCURL>
+</tblEvents>
+<tblEvents>
+<EventID>226</EventID>
+<DateStart>2024-06-13T00:00:00</DateStart>
+<DateEnd>2024-06-14T00:00:00</DateEnd>
+<City>Copenhagen</City>
+<Country>Denmark</Country>
+<EventName>Data Platform Next Step</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/data-platform-next-step/?goal=0_9fb03860c6-4f0bc2ecfa-387882163</CfCURL>
+<CfCLastDate>2024-01-22T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>227</EventID>
+<DateStart>2024-06-13T00:00:00</DateStart>
+<DateEnd>2024-06-14T00:00:00</DateEnd>
+<City>Dublin</City>
+<Country>Ireland</Country>
+<EventName>Data Ceili</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/data-ceili-2024/?goal=0_9fb03860c6-99c6cc2161-387882163</CfCURL>
+<CfCLastDate>2024-01-24T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>232</EventID>
+<DateStart>2024-08-31T00:00:00</DateStart>
+<DateEnd>2024-08-31T00:00:00</DateEnd>
+<City>Oslo</City>
+<Country>Norway</Country>
+<EventName>Data Saturday Oslo</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>231</EventID>
+<DateStart>2024-09-13T00:00:00</DateStart>
+<DateEnd>2024-09-13T00:00:00</DateEnd>
+<City>Glasgow</City>
+<Country>United Kingdom</Country>
+<EventName>Data:Scotland 2024</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/datascotland-2024/</CfCURL>
+<CfCLastDate>2024-04-21T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>235</EventID>
+<DateStart>2024-09-24T00:00:00</DateStart>
+<DateEnd>2024-09-27T00:00:00</DateEnd>
+<City>Stockholm</City>
+<Country>Sweden</Country>
+<EventName>European Microsoft Fabric Community Conference</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/european-microsoft-fabric-community-conf</CfCURL>
+<CfCLastDate>2024-06-12T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>234</EventID>
+<DateStart>2024-10-04T00:00:00</DateStart>
+<DateEnd>2024-10-05T00:00:00</DateEnd>
+<City>Utrecht</City>
+<Country>the Netherlands</Country>
+<EventName>Data Saturday &amp; Fabric Friday Holland 2024</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/data-saturday-holland-2024?goal=0_9fb03860c6-e66cc7ff48-387882163</CfCURL>
+<CfCLastDate>2024-06-02T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>233</EventID>
+<DateStart>2024-10-07T00:00:00</DateStart>
+<DateEnd>2024-10-09T00:00:00</DateEnd>
+<City>Mechelen</City>
+<Country>Belgium</Country>
+<EventName>DataMinds Connect 2024</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/dataminds-connect-2024/</CfCURL>
+</tblEvents>
+<tblEvents>
+<EventID>230</EventID>
+<DateStart>2024-11-04T00:00:00</DateStart>
+<DateEnd>2024-11-08T00:00:00</DateEnd>
+<City>Seattle</City>
+<Country>United States</Country>
+<EventName>PASS Community Summit</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://reg.passdatacommunitysummit.com/flow/redgate/summit2024/communitycfs/participant</CfCURL>
+<CfCLastDate>2024-04-10T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>229</EventID>
+<DateStart>2024-11-17T00:00:00</DateStart>
+<DateEnd>2024-11-22T00:00:00</DateEnd>
+<City>Orlando</City>
+<Country>USA</Country>
+<EventName>Live 360 Orlando</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/live-360-orlando-2024/</CfCURL>
+<CfCLastDate>2024-03-26T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>236</EventID>
+<DateStart>2025-02-05T00:00:00</DateStart>
+<DateEnd>2025-02-07T00:00:00</DateEnd>
+<City>Oslo</City>
+<Country>Norway</Country>
+<EventName>Fabric February</EventName>
+<EventStatus>Submitted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/fabric-february-2025/</CfCURL>
+<CfCLastDate>2024-07-31T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>240</EventID>
+<DateStart>2025-08-29T00:00:00</DateStart>
+<DateEnd>2025-08-30T00:00:00</DateEnd>
+<City>Oslo</City>
+<Country>Norway</Country>
+<EventName>Data Saturday Oslo 2025</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>239</EventID>
+<DateStart>2025-09-12T00:00:00</DateStart>
+<DateEnd>2025-09-12T00:00:00</DateEnd>
+<City>Edinburgh</City>
+<Country>United Kingdom</Country>
+<EventName>Data:Scotland 2025</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/app/speaker/event/details/18382</CfCURL>
+</tblEvents>
+<tblEvents>
+<EventID>241</EventID>
+<DateStart>2025-09-15T00:00:00</DateStart>
+<DateEnd>2025-09-18T00:00:00</DateEnd>
+<City>Vienna</City>
+<Country>Austria</Country>
+<EventName>European Microsoft Fabric Community Conference 2025</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>245</EventID>
+<DateStart>2025-10-01T00:00:00</DateStart>
+<DateEnd>2025-10-02T00:00:00</DateEnd>
+<City>Utrecht</City>
+<Country>the Netherlands</Country>
+<EventName>PASS On Tour 2025</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>243</EventID>
+<DateStart>2025-10-03T00:00:00</DateStart>
+<DateEnd>2025-10-04T00:00:00</DateEnd>
+<City>Utrecht</City>
+<Country>the Netherlands</Country>
+<EventName>Data Saturday &amp; Fabric Friday Holland 2025</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/data-saturday-fabric-friday-holland-20?utm_source=callfordataspeakers&amp;utm_campaign=list-of-events</CfCURL>
+<CfCLastDate>2025-05-25T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>238</EventID>
+<DateStart>2025-10-06T00:00:00</DateStart>
+<DateEnd>2025-10-08T00:00:00</DateEnd>
+<City>Mechelen</City>
+<Country>Belgium</Country>
+<EventName>DataMinds Connect 2025</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/app/speaker/event/details/17967</CfCURL>
+<CfCLastDate>2025-05-15T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>237</EventID>
+<DateStart>2025-10-27T00:00:00</DateStart>
+<DateEnd>2025-10-29T00:00:00</DateEnd>
+<City>Utrecht</City>
+<Country>The Netherlands</Country>
+<EventName>Techorama 2025 Netherlands</EventName>
+<EventStatus>Rejected</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+</tblEvents>
+<tblEvents>
+<EventID>244</EventID>
+<DateStart>2025-11-17T00:00:00</DateStart>
+<DateEnd>2025-11-19T00:00:00</DateEnd>
+<City>Budapest</City>
+<Country>Hungary</Country>
+<EventName>Budapest BI Forum 2025</EventName>
+<EventStatus>Accepted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/budapestbi25/</CfCURL>
+</tblEvents>
+<tblEvents>
+<EventID>242</EventID>
+<DateStart>2025-12-03T00:00:00</DateStart>
+<DateEnd>2025-12-05T00:00:00</DateEnd>
+<City>Prague</City>
+<Country>Czech Republic</Country>
+<EventName>Power Conference Prague 2025</EventName>
+<EventStatus>Submitted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/power-conference-2025</CfCURL>
+</tblEvents>
+<tblEvents>
+<EventID>247</EventID>
+<DateStart>2026-02-04T00:00:00</DateStart>
+<DateEnd>2026-02-06T00:00:00</DateEnd>
+<City>Oslo</City>
+<Country>Norway</Country>
+<EventName>Fabric February 2026</EventName>
+<EventStatus>Submitted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/fabric-february-2026/</CfCURL>
+<CfCLastDate>2025-08-31T00:00:00</CfCLastDate>
+</tblEvents>
+<tblEvents>
+<EventID>246</EventID>
+<DateStart>2026-03-05T00:00:00</DateStart>
+<DateEnd>2026-03-07T00:00:00</DateEnd>
+<City>Utrecht</City>
+<Country>The Netherlands</Country>
+<EventName>Power BI Gebruikersdagen 2026</EventName>
+<EventStatus>Submitted</EventStatus>
+<IsRemote>0</IsRemote>
+<MVPKind>Speaking (Conference)</MVPKind>
+<CfCURL>https://sessionize.com/power-bi-gebruikersdag-2026/</CfCURL>
+<CfCLastDate>2025-10-01T00:00:00</CfCLastDate>
+</tblEvents>
+</dataroot>

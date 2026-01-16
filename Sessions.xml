@@ -1,0 +1,671 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataroot xmlns:od="urn:schemas-microsoft-com:officedata" generated="2026-01-15T21:08:41">
+<Sessions>
+<Retired>0</Retired>
+<SessionID>5</SessionID>
+<SessionName>SQL Server Hates you(?)  - What the DBAs Forgot to Tell the Developers</SessionName>
+<SessionAbstract>Have you had performance tank despite the code working fine in another environment? Maybe heard that some SQL is bad but not why? If so, this is the session for you!
+This session will start with a walkthrough of some of the basic settings in SQL Server and how they affect you as a developer. It follows with key tips on what settings to change, why some code will wreak havoc on your performance and how isolation levels matter (and why NOLOCK can be an exceptionally bad idea!) The session is led by a 20-year DBA veteran who decided to try to help developers understand performance issues by seeing things from his perspective.
+If you want to explore how default settings kill your performance, investigate why harmless SQL might not be quite so harmless and gain insight into how isolation levels affect function and performance, then this session will provide you with the tools to think outside the box and incorporate database engine knowledge into your developer prowess!</SessionAbstract>
+<SessionLevel>200</SessionLevel>
+<Goals>Gain a better understanding of the consequences of leaving things at the default setting, 
+Learn to identify and avoid common developer mistakes, 
+Gain a better understanding of how SQL Server process queries</Goals>
+<Elevator_x0020_pitch>Have you had performance tank despite the code working fine in another environment? Maybe heard that some SQL is bad but not why?
+This session will start with a walkthrough of some of the basic settings in SQL Server and how they affect you as a developer. It follows with key tips on what settings to change, why some code will wreak havoc on your performance and how isolation levels matter (and why NOLOCK can be an exceptionally bad idea!) This session will provide you with the tools to think outside the box and incorporate database engine knowledge into your developer prowess!</Elevator_x0020_pitch>
+</Sessions>
+<Sessions>
+<Retired>0</Retired>
+<SessionID>6</SessionID>
+<SessionName>Boring Is Stable, Stable Is Good - SQL Server Best Practices In Practice</SessionName>
+<SessionAbstract>Have you ever wondered why there are so many, sometimes contradictory, best practices for SQL Server available on the internet? Have you considered creating your own but don&apos;t know what to include? Then this is the session for you.
+Best practices are like standards - most everyone has them. But why do they look like they do? Why would you use a specific set of &quot;best practices&quot; that someone else has put together? This session goes through the set of best practices that I&apos;ve accumulated over 20 years of DBA work. We will disassemble each and every one of them to see how they came about and discuss why I still use them - or not. 
+There is no such thing as the &quot;ultimate&quot; set of best practices.  I aim to provide the attendee with as much food for thought as possible in order to let each and everyone decide on their own path forward. The session covers primarily SQL Server 2012 to 2016, with SQL Server 2017 and 2019 thrown in for good measure.</SessionAbstract>
+<SessionLevel>300</SessionLevel>
+<Goals>Gain insight into what constitutes a best practice, Learn about what to change from defaults and why,  Ask unexpected questions</Goals>
+</Sessions>
+<Sessions>
+<Retired>0</Retired>
+<SessionID>11</SessionID>
+<SessionName>The Cloud  Awakens - Azure SQL Server for the On-premises DBA</SessionName>
+<SessionAbstract>Have you ever asked what the cloud means for your database environment? Do you wonder if Azure is a viable platform for your next project? If so, look no further!
+
+This session begins with an overview of Azure and where SQL Server fits in among the other services of the cloud. It follows with key differences between the Azure SQL Server offerings, introduces how to move data to the cloud as well as discuss some of the pros, cons, and challenges of putting a database in the cloud in the first place. 
+
+If you are eager to explore the database offerings in Azure, gain a basic understanding of which toys to use when and develop a plan for harnessing the power of the cloud, then this session will provide the tools you need to step into a new world.</SessionAbstract>
+<SessionLevel>200</SessionLevel>
+<Goals>Get an overview of available database options in Azure, Gain insight into how to best leverage the options in Azure, Learn how cloud databases differ from classic on-prem implementations</Goals>
+<Elevator_x0020_pitch>The cloud offers many exciting opportunities, especially for data-heavy applications. But trying to keep up with developments in the cloud is like drinking from a fire hose - this session aims to provide a quick run-down of the SQL Server offerings in the Microsoft Azure cloud.</Elevator_x0020_pitch>
+</Sessions>
+<Sessions>
+<Retired>0</Retired>
+<SessionID>15</SessionID>
+<SessionName>Talk Tech to Me - Improving Your Technical Presentation Skills</SessionName>
+<SessionAbstract>Technical speakers are most often very good at the &quot;technical&quot; part of speaking but sometimes leave the &quot;speaking&quot; part with something to be desired. The body language may be stilted (or in some cases nonexistent), the voice can be a dull monotone or the font size can make the demos unreadable from more than five feet away. We have all been there - the technical content is great but the presenter just won&apos;t cut it. This session is for anyone who either is or aspires to become a technical speaker, and I will go through tips and techniques for better understanding and using body language, how to use your voice for maximum benefit and finally give some pointers, ideas and software tips to make sure your demos are as clear and readable as possible.</SessionAbstract>
+<SessionLevel>100</SessionLevel>
+<Summary>Become a better speaker by improving your body language, learn to make better use of technical resources and make clearer demos.</Summary>
+<Goals>Learn about body language, Learn how to better use technical resources, Learn how to better structure and deliver demos</Goals>
+</Sessions>
+<Sessions>
+<Retired>0</Retired>
+<SessionID>16</SessionID>
+<SessionName>Azure Machine Learning for the Absolute Beginner</SessionName>
+<SessionAbstract>Machine learning is one of the hottest trends on the market. According to the popular belief, machine learning will help you do everything from water your plants to help run your multi-million dollar company. Some of the hype is true, much of it is false.  But what IS machine learning - really? How can it be used? What questions can it answer? How hard is it to get started?
+Join Alexander for a session that will give you a thorough overview of what machine learning tools are available in Azure, how to actually find any use for machine learning, what preconceptions are wrong and how to get started on your first machine learning project.</SessionAbstract>
+<SessionLevel>100</SessionLevel>
+<Goals>Find out what machine learning is, explore what Azure Machine Learning can offer, Gain an understanding of how machine learning can be utilized</Goals>
+</Sessions>
+<Sessions>
+<Retired>0</Retired>
+<SessionID>20</SessionID>
+<SessionName>Building an Empire - Implementing Power BI Step by Step</SessionName>
+<SessionAbstract>Trying to implement a BI project can be extremely tedious, take unreasonable amounts of time and in the end turn out to be something that the users didn&apos;t want.
+This session goes through how to use Power BI and dataflows to iteratively build a BI solution - starting from the absolute beginning with just an excel file, moving to combining data from several data sources, and finally explaining how to use Power BI dataflows and shared datasets to deliver maximum analytical power to the right users with a minimum of wasted time. You will walk away with new ideas how to start and grow your BI projects as well as an insight into Power BI dataflows and its uses.</SessionAbstract>
+<SessionLevel>200</SessionLevel>
+<Goals>Explore a new way of looking at BI projects, Get an overview of Power BI and Power BI dataflows, Learn how to leverage Power BI and other technologies for maximum benefit</Goals>
+<Elevator_x0020_pitch>Stop trying to implement a BI solution the old, agonizing way. Too late, too much work, and in the end a customer that thinks they&apos;re not getting what they really want. Use Power BI and Power BI Dataflows to create an iterative, relevant and simple to use solution instead - let me show you how.</Elevator_x0020_pitch>
+</Sessions>
+<Sessions>
+<Retired>0</Retired>
+<SessionID>21</SessionID>
+<SessionName>Build as They Talk - Using Power BI as a Prototype Tool</SessionName>
+<SessionAbstract>We&apos;ve all been there - the user wants a report, gives you some random requirements and expect you to &quot;sort it out&quot;. When the report is done and presented to the user, the silence heralds yet another less-than-successful report delivery. It&apos;s time to turn this on its head: build the report as they watch, while having a constant discussion about the content! In this session I go through a new approach to capturing requirements and creating a report on the fly, all with the benefit of a happier user, a more relevant report and - perhaps surprisingly - less work for the report developer!</SessionAbstract>
+<SessionLevel>100</SessionLevel>
+<Elevator_x0020_pitch>There are a thousand ways to screw up when creating a report. At least half of them stem from an inability to get the client to actually tell you what they want. So - don&apos;t; get them involved, get them to be a part of the story and see your Power BI report success skyrocket!</Elevator_x0020_pitch>
+</Sessions>
+<Sessions>
+<Retired>0</Retired>
+<SessionID>22</SessionID>
+<SessionName>DAX for the SQL Developer</SessionName>
+<SessionAbstract>&quot;Learn DAX&quot;, they said. &quot;It&apos;ll be easy with your background&quot;, they said. Well, it turns out that it wasn&apos;t. Transitioning from SQL to DAX gave me nightmares and ulcers, and this session is for everyone who is looking over the edge and considering undertaking the challenge. It is in no way impossible, only frustrating, as DAX has a very different approach to data from what a SQL programmer is used to. In this introduction to the DAX language, I&apos;ll be putting a somewhat different spin on DAX from a beginners&apos; standpoint.  I&apos;ll be going over the basic mental mistakes that many people trying to learn DAX do, how to solve them and how to put your brain on the right track!</SessionAbstract>
+<SessionLevel>100</SessionLevel>
+</Sessions>
+<Sessions>
+<Retired>0</Retired>
+<SessionID>23</SessionID>
+<SessionName>Learning to Swim - An Introduction to Azure Data Lake</SessionName>
+<SessionAbstract>Data lakes have been the hyped technology of choice for several years, but what is it? What does it do? How does it work? And most importantly - why should I care? Depending on your job role, the answers to the previous questions can be very different.
+With the second generation of Azure data lake storage right around the corner, it&apos;s time to get to grips with this technology. Regardless of if you&apos;re a DBA wanting to swim in a different pond, a BI architect already knee-deep in data or a data scientist who is skeptical to drinking from something you know little or nothing about, this session will give you new insights and ideas. Let&apos;s wade through the hype and see where this piece of the puzzle fits in your data landscape!</SessionAbstract>
+<SessionLevel>100</SessionLevel>
+<Summary>Azure Data Lake. Deep. Boundless. Useless? Come find out!</Summary>
+<Elevator_x0020_pitch>Azure Data Lake. Deep. Boundless. Useless? This session is an introduction that aim to answer questions like: what is a data lake, how does it work, when is it useful and - most importantly - when is it useless? Regardless of your role, let&apos;s get our feet wet and see what lies beneath the surface!</Elevator_x0020_pitch>
+</Sessions>
+<Sessions>
+<Retired>0</Retired>
+<SessionID>26</SessionID>
+<SessionName>Improving Your Presentation Skills - Practical Examples by Two Very Different Speakers</SessionName>
+<SessionAbstract>There are many ways to deliver a presentation. But what is the best way?
+
+The answer is as simple as it is frustrating. There is no such thing as the best way - only the way that is best for you. How do you start and end your presentation with confidence? Where do you put your hands while talking? What can you do to ensure your attendees remember your key takeaways?
+
+In this session, two experienced speakers with two very different styles share their top tips for improving your presentation skills. Through practical examples and friendly disagreements, Cathrine and Alexander will show you how to find your unique style and deliver your best presentations.
+
+All it takes is a little preparation and practice.</SessionAbstract>
+<SessionLevel>100</SessionLevel>
+<Summary>There are many ways to deliver a presentation. Two experienced speakers with different styles share their top tips for improving your presentation skills.</Summary>
+</Sessions>
+<Sessions>
+<Retired>0</Retired>
+<SessionID>28</SessionID>
+<SessionName>Reuse and Enrich - the Why and How of Power BI Dataflows</SessionName>
+<SessionAbstract>One of the issues with self-service BI is keeping track of the so-called &quot;single pane of truth&quot;. As soon as eager users start to create and share data, the issues of data quality will inevitably arise.
+Another issue is that some datasets need some poking and prodding before they are usable for analysis. 
+Power BI dataflows can solve both of these issues and do so much more. 
+They open new exciting ways of reusing and enriching data sets, and coupled with certified datasets the opportunities increase even more. 
+But what are Power BI dataflows? How are they used? When are they used? Perhaps most importantly - why are they used? 
+This session will cover  what Power BI dataflows are and how to create them, where they are positioned in the Microsoft BI landscape and show several use cases to help you get the most out of one of the most useful additions to Power BI yet!</SessionAbstract>
+<SessionLevel>200</SessionLevel>
+<Summary>Reusing by duplicating runs the risk of diverging data, and shared data that doesn&apos;t have adequate quality is useless. 
+Datasets that require a ton of work to be usable in analysis will never get used.
+Power BI dataflows can help solve both of these issues - and do much, much more.
+Datasets that require a ton of work to be usable in analysis will never get used.
+Power BI dataflows aim to solve both of these issues - and much, much more.</Summary>
+</Sessions>
+<Sessions>
+<Retired>0</Retired>
+<SessionID>29</SessionID>
+<SessionName>Gone With the Wind(?) - Three Tips for Secure Sharing With Power BI</SessionName>
+<SessionAbstract>Data that nobody ever sees will never change anything. With more and more companies striving towards becoming data-driven, being able to securely share data in a manageable, secure and usable way is key.     
+One of the key tenets of self-service BI is the ability not only to let the user do both data preparation and analysis, but also to facilitate sharing of data to others. Any sharing means  that data may end up in the wrong hands, something that can spell disaster for those involved.
+This session is an overview of the different ways to share and consume shared data with Power BI. We will cover among other things basic sharing, the how and why of workspaces, embedding and discuss the security implications of these options.</SessionAbstract>
+<SessionLevel>200</SessionLevel>
+<Elevator_x0020_pitch>Self-service BI is amazing. Empowered users are amazing. Data leaking all over the place is not amazing. Come learn how to securely share data with Power BI and avoid finding out firsthand just how not amazing lost data can be.</Elevator_x0020_pitch>
+</Sessions>
+<Sessions>
+<Retired>0</Retired>
+<SessionID>30</SessionID>
+<SessionName>The Untruthful Art - Five Ways of Misrepresenting Data</SessionName>
+<SessionAbstract> In this age of information it is imperative to be able to be able to clearly, simply and accurately explain and communicate sometimes complex data. 
+
+Right at the intersection of journalism and statistics lies visual communication - the art of using data, charts and maps to convey information. This has been called &quot;the truthful art&quot; as it is an extremely powerful tool that must be wielded with the utmost care. Just like any other tools, however, it can be used for sinister purposes. 
+
+This session is all about exploring ways that data can be misrepresented to further a goal - while still seem perfectly reasonable. It is intended as an eye opener for anyone interested in the how and why of data deception. 
+
+We will walk through five stories and explore where the trickery is hidden, discuss a more honest way of communicate the information as well as look at ways to spot potential foul play with data.</SessionAbstract>
+<SessionLevel>200</SessionLevel>
+<Summary>Data and statistics are excellent tools for conveying information - information that doesn&apos;t even have to be true. Come see ways of misrepresenting data for sinister purposes using Power BI!</Summary>
+<Goals>Insight into what makes visuals so dangerous, Learn what deception can look like, How to spot foul play in data visualization</Goals>
+</Sessions>
+<Sessions>
+<Retired>0</Retired>
+<SessionID>31</SessionID>
+<SessionName>Fort Knox for Your Data - Securing Power BI Using Microsoft 365</SessionName>
+<SessionAbstract>Data is the new gold, the currency of the modern world. Yet, we don’t protect as well as we should - and can do - using Microsoft 365. This session will give Power BI administrators the tools they need to distribute and secure Power BI using Intune Conditional Access, Application Deployment, Mobile Application Management and Azure AD PIM. The session will also include an introduction to how you can use Power BI to gain powerful insights in your Intune environment.</SessionAbstract>
+<SessionLevel>200</SessionLevel>
+</Sessions>
+<Sessions>
+<Retired>0</Retired>
+<SessionID>32</SessionID>
+<SessionName>Unnamed Matthew/Alex sword session</SessionName>
+<SessionLevel>0</SessionLevel>
+</Sessions>
+<Sessions>
+<Retired>0</Retired>
+<SessionID>33</SessionID>
+<SessionName>Improving Your Presentation Skills - Practical Examples From the Stage</SessionName>
+<SessionAbstract>There are many ways to deliver a presentation. But what is the best way?
+
+The answer is as simple as it is frustrating. There is no such thing as the best way - only the way that is best for you. How do you start and end your presentation with confidence? Where do you put your hands while talking? What can you do to ensure your attendees remember your key takeaways?
+
+In this session, I will share tips and techniques to get your point across as efficiently and clearly as possible. It&apos;s not rocket science - it&apos;s not even that difficult.
+
+All it takes is a little preparation and practice.</SessionAbstract>
+<SessionLevel>200</SessionLevel>
+<Goals>Learn about body language, Explore the need for structure, Learn how to craft a good ending</Goals>
+</Sessions>
+<Sessions>
+<Retired>0</Retired>
+<SessionID>34</SessionID>
+<SessionName>Flying Blind(?) - lessons learned from presenting online</SessionName>
+<SessionAbstract>If you had asked me in March of 2020 if it was possible to speak or conduct  training - with high quality - via the internet I would have said &quot;sure, it&apos;s doable, but it&apos;s different and it&apos;s going pale in comparison to an in-person delivery. I would avoid it.&quot; 
+
+Then the world went off the rails. 
+
+Suddenly everyone had to adapt to being in quarantine or lockdown and not going to any conferences or trainings for the foreseeable future. I was forced to figure out a way to conduct technical training using tools that I didn&apos;t believe in, by to people that I couldn&apos;t see - without it sucking. 
+I had to figure out how to position myself to be able to use my hands, how to seamlessly switch between PowerPoint and the Azure portal and how to gauge my students&apos; information retention - all in about a week. It turns out that there are a lot more hours in a week than the 40 most people are used to working.
+
+This session walks through what I&apos;ve learned from speaking and conducting training over the internet since then - both what works well and what ... Doesn&apos;t.</SessionAbstract>
+<SessionLevel>0</SessionLevel>
+<Goals>The challenges of speaking/training online, Required and recommended technology, Tips and recommendations for using online tools</Goals>
+</Sessions>
+<Sessions>
+<Retired>0</Retired>
+<SessionID>35</SessionID>
+<SessionName>Not my Problem(?) - Azure Networking 101 for Azure SQL Server DBAs</SessionName>
+<SessionAbstract>The unofficial scapegoats of the IT world has always been &quot;the network&quot; or &quot;the database&quot;. 
+The traditional way of doing things on-prem has unfortunately added to this divide. For example: either you&apos;re a networking specialist or a DBA, and very rarely will the same person do both jobs. 
+
+As an on-prem DBA, chances are that you never had to think twice about which network the database was in, what kind of endpoint was used for the traffic or how the firewall was configured. 
+In Azure, things can get rather complex pretty quickly - especially when working with the platform-as-a-service (PaaS) version of Azure SQL Server. That is why it is important to have a solid understanding of basic networking in general and how it relates to the platform as a service in particular. 
+
+This session will walk you through the basics of networking, explore the concept of virtual networks and firewalls, and explain the use of endpoints - all from the perspective of how they relate to Azure SQL Server. 
+We will be looking at both how the technical components work, and also why one would choose a specific design in favor of another.
+
+If you&apos;ve been reluctant to fiddle with the networking settings of Azure SQL Server, then this is the session for you!</SessionAbstract>
+<SessionLevel>200</SessionLevel>
+<Goals>Basics of networking in Azure, Explore the networking building blocks for SQL Server in Azure, Understand data movement in Azure</Goals>
+</Sessions>
+<Sessions>
+<Retired>0</Retired>
+<SessionID>36</SessionID>
+<SessionName>Cats, Candy and CXPACKET - an Introduction to Parallelism</SessionName>
+<SessionAbstract>Everybody has heard stories about CXPACKET. Some stories claim CXPACKET is a curse that will inevitably kill your performance. Other stories claim that CXPACKET is the only sure way to extreme query performance. 
+Some of the stories are true, many are not. 
+In this lightning talk we will look at what parallelism actually is, explain why cats can be problematic for a performant database, and explore how to control parallelism to your benefit.</SessionAbstract>
+<SessionLevel>0</SessionLevel>
+</Sessions>
+<Sessions>
+<Retired>0</Retired>
+<SessionID>37</SessionID>
+<SessionName>Average Fail</SessionName>
+<SessionAbstract>What is the easiest way of getting a number controlled for various factors? An average. Most people stop thinking about the consequences right about here, but the harsh reality is that in many cases, an average is a terrible idea - especially if you don&apos;t know the data you&apos;re working with in the first place! Consider what would happen if you start using averages to fill in missing data. or the potential for disasters with qualitative data expressed as numbers. I&apos;ll spend 15 minutes raking the concept of averages over the coals. Bring marshmallows.</SessionAbstract>
+<SessionLevel>0</SessionLevel>
+<Goals>Understanding the data is key
+Averages come with issues
+Consequences of average analysis of unsuitable data</Goals>
+</Sessions>
+<Sessions>
+<Retired>0</Retired>
+<SessionID>38</SessionID>
+<SessionName>The Audience Conductor - Using Senses and Emotions to Improve Your Presentations</SessionName>
+<SessionAbstract>Technical presentations - deep knowledge, good content and a slick slide deck should do it, right? What if I add in storytelling elements to tie the whole thing together? Those are indeed the ingredients needed for a good presentation, but there is something more. Something that very few technical presenters consider. Something ephemeral, something hard to grasp. That something is the glue that binds a great presentation together. I&apos;m talking about emotional investment, and in essence - how to conduct your audience like an orchestra.
+
+By choosing the story and how that story is delivered, we can influence the emotional state of our audience. By engaging multiple senses and attaching emotions to a story, we can make the entire presentation much more memorable. This session is a bit of an emotional roller coaster as I show you how to create both highs and lows by choosing what story I tell and how I tell it. Come spend an hour learning skills you didn&apos;t think were part of the technical presenter&apos;s toolbox - but turned out to be essential to make your point stick.</SessionAbstract>
+<SessionLevel>400</SessionLevel>
+<Goals>Improving storytelling skills
+Gaining insight into why different storytelling techniques work
+Explore the use of senses and emotions in technical storytelling</Goals>
+</Sessions>
+<Sessions>
+<Retired>0</Retired>
+<SessionID>39</SessionID>
+<SessionName>Sharks in the Pool - Azure Synapse Analytics Pools by Example</SessionName>
+<SessionAbstract>Azure Synapse Analytics has been around for quite a few years by now, but it is still somewhat shrouded in mystery. According to the marketing it is a limitless analytics service with unmatched time to insight. 
+That means it is the single analytics tool to solve all analytics challenges, then? 
+
+Unfortunately, it is not quite that simple. Azure Synapse Analytics is not one single entity, but a collection of tools for solving very different problems. Take the serverless SQL pool, for instance - it can&apos;t be that different from the dedicated SQL pool, can it? Sparkling pool? I know what a spork is, but Spark...? Oh, and what is ADX again? 
+
+While all seemingly similar, they really could not be more different. This session will walk you through what the different pools are used for, how they differ from each other in terms of both architecture, discuss when you may (or may not), want to use them, as well as give examples of real-world applications of the individual technologies. 
+
+Let us make sense of the analytics platform of the future together!</SessionAbstract>
+<SessionLevel>200</SessionLevel>
+<Goals>Understand pool differences
+Learn to choose the right tool for the right job
+Explore real-world usecases of Azure Synapse Analytics</Goals>
+</Sessions>
+<Sessions>
+<Retired>0</Retired>
+<SessionID>40</SessionID>
+<SessionName>Three Pools, Ten Minutes - Azure Synapse Analytics Pools in a Hurry</SessionName>
+<SessionAbstract>According to marketing, Azure Synapse Analytics is the analytics tool to solve all analytics challenges. also according to marketing, it is both straight forward to use and easy to implement - unfortunately this has proven not to quite be the case. Give me 10 minutes and I&apos;ll explain when to use which pool to solve what challenge. Then you can dig deeper on your own.</SessionAbstract>
+<SessionLevel>100</SessionLevel>
+</Sessions>
+<Sessions>
+<Retired>0</Retired>
+<SessionID>41</SessionID>
+<SessionName>Make Them See - Using Power BI and Powerpoint to Create Actionable Insights</SessionName>
+<SessionAbstract>Power BI is called the PowerPoint of data. Unfortunately that also applies to the majority of reports made with Power BI - just like people create terrible slide decks with PowerPoint, people create equally terrible reports with Power BI. 
+
+There is a difference between showing numbers on a report and conveying actionable insight. When an effort is made to thoroughly understand both the data displayed and the intended audience, when thought is put into colors and overall design, and when care is taken in considering the optimal visual for a specific piece of information, then the report is transformed from a set of visuals to potentially actionable insight.
+
+Combined with Powerpoint, the premier storytelling tool of choice, you have a truly exceptional fusion of powerful tools right at your fingertips. 
+
+ Stop drowning business users in the useless numbers they ask for, and instead give them the insights they actually need to enable action - all presented clearly and concisely using a tool they already know.
+
+This session will cover design best practices, look at why details matter, dive deep into visuals as well as discuss the importance of accessible design - all in order to create clear, concise and actionable insight that enable real change.</SessionAbstract>
+<SessionLevel>0</SessionLevel>
+</Sessions>
+<Sessions>
+<Retired>0</Retired>
+<SessionID>42</SessionID>
+<SessionName>In-depth Azure Networking for the Azure Data Professional - by Example</SessionName>
+<SessionAbstract>In the on-prem world, networking was one of those things data professionals were able to hand to someone else. It is complex, frustrating, somewhat akin to magic, and - most importantly - nothing that any self-respecting data professional would touch with a 10-foot stick. 
+
+Unfortunately, the world has changed. In the era of the cloud, that &quot;someone else&quot; has a funny way of turning into &quot;you&quot;, and many a DBA and data professionals find themselves scrambling to get to grips with how networking works in Azure. 
+
+This session builds on previously acquired skills such as virtual networks, peering and network security groups, and goes deeper on how to really set up private link for added security, how service endpoints can best be used, what Bastion might bring to the table and how to get the most out of networking with a SQL Server Managed Instance. 
+
+The session will look at key aspects of how Azure networking works from the perspective of the data professional, look at how the network traffic really flows, and discuss best practices for security and availability in both a cloud-based and hybrid world.
+
+The is not the session you want, but it is the session you need.</SessionAbstract>
+<SessionLevel>300</SessionLevel>
+</Sessions>
+<Sessions>
+<Retired>0</Retired>
+<SessionID>43</SessionID>
+<SessionName>Lipstick On a Pig - Remaking a Power BI Report in 20 Minutes</SessionName>
+<SessionAbstract>You&apos;ve been handed a report that could best be described as &quot;visually suboptimal&quot; or simply - &quot;terrible&quot;. 
+
+You would like nothing more than to spend the hours it deserves in a bid to make it much more clear, concise and useable, but the simple fact of the matter is that nobody wants to pay you for spending those hours. 
+
+But - sometimes closing your eyes, groaning inwardly, and passing the report up the chain just isn&apos;t an option either. Something needs to be done, but it needs to be done quickly in order to make the report at least useable while not costing a fortune. 
+
+This session will show you some quick things you can do to turn a really bad report into something decent - it won&apos;t be perfect, but it won&apos;t take very long either.</SessionAbstract>
+<SessionLevel>100</SessionLevel>
+<Goals>Understand who the report is for
+Gain an understanding of basic cognition as it relates to visuals
+Understand the importance of availability</Goals>
+</Sessions>
+<Sessions>
+<Retired>0</Retired>
+<SessionID>44</SessionID>
+<SessionName>Undoing the Pretzel - Five Tips for Improving Your Body Language</SessionName>
+<SessionAbstract>We&apos;ve all seen it - speakers leaning on the lectern, swaying like there was a stiff breeze, or standing in a way that seems anatomically impossible for a vertebrate. 
+According to the science, 55 percent of emotional content is conveyed through body language. That makes body language and nonverbal cues an integral part of any session - in many ways even more important than the slide deck! 
+
+A good, strong body language can mean the difference between making your point clear and not making it at all. As with all presentation skills, this is applicable to all aspects of everyday life - not only when teaching or speaking. It&apos;s the same on stage as it is in a meeting or at the supermarket. 
+
+Give me 10 minutes of your time, and I&apos;ll give you five tips to quickly improve your body language.</SessionAbstract>
+<SessionLevel>0</SessionLevel>
+<Goals>What to do with your body
+What to do with your hands
+How to use your body to enhance your message</Goals>
+</Sessions>
+<Sessions>
+<Retired>0</Retired>
+<SessionID>45</SessionID>
+<SessionName>Hands-on Lipstick on a Pig - Improving a Power BI Report Step by Step</SessionName>
+<SessionAbstract>You&apos;ve been handed a report that could best be described as &quot;visually suboptimal&quot; or simply - &quot;terrible&quot;. Showing it in its current state to the stakeholders would spell disaster, and you would likely take the blame. 
+
+You would like nothing more than to spend the hours it deserves, in a bid to make it much more clear, concise and useable - but the simple fact of the matter is that nobody wants to pay you for spending the hours that would require.
+But - sometimes closing your eyes, groaning inwardly, and passing the report up the chain simply isn&apos;t an option. Something needs to be done, but it must be done quickly so it won&apos;t cost a fortune.
+
+This is the background for this session on effective report design. With unlimited time and money, most everyone can improve a report. In reality, we seldom have neither unlimited money or time, so my goal is to show you where to spend the precious little time you do have.
+
+This session will walk through every step how to turn a really bad report into something decent, discuss how to prioritize content, and why accessibility is not only useful but vital for good report design.
+This session will not only show you what can be done but also explain why it not only may be done, but why it really should.</SessionAbstract>
+<SessionLevel>0</SessionLevel>
+<Goals>Learn how to prioritize report content
+Understand how to apply basic cognition as it relates to visuals
+Understand and apply the concept of accessibility</Goals>
+</Sessions>
+<Sessions>
+<Retired>0</Retired>
+<SessionID>46</SessionID>
+<SessionName>Making Data Matter - Combining Data, Visual Storytelling and Presentation Skills for Maximum Impact</SessionName>
+<SessionAbstract>A friend once explained her experience with a &quot;data driven company&quot; like this: &quot;we collect millions of points of data every day, we clean it, we analyse it, we make it actionable - and then we implement whatever happens to be the mood of the day&quot;. 
+
+Power BI is one of the most powerful tools for data professionals and business users alike. It makes it possible to create amazing reports providing deep insight into just about any data. The insights this tool unlocks can drive decisions at every level - but do they? 
+
+Why is it then, that in this age of &quot;data-driven decisionmaking&quot;, that so many decisions are still based on &quot;gut feeling&quot;? 
+One of the reasons is that we still like to think that data will drive decisions on its own. 
+
+The challenge is using Power BI to efficiently communicating said insight.
+
+Efficiently communicating data means not only being able to clearly and concisely visualizing it, but also being able to explain why the data matters to your audience - in a way that is engaging, interesting and relevant.
+
+This, in turn, require knowledge of how to write a compelling story that is engaging and relatable for your audience, as well as presentation skills to help bridge the gap between data and people.
+
+By making the data and the story matter to the audience we can align feelings with hard data, essentially influencencing decisions and improving business outcomes. 
+
+In this full-day workshop, you will learn the skills to take your ability to communicate using Power BI to a whole new level.
+We will start with an overview of the fundamentals of visual communication in order to make the foundation of our data storytelling as clear, concise and understandable as can be.
+
+We will then discuss how to craft a relevant and relatable story to build on top of our data. We will learn how, through a clear message with a clear structure, to apply classic storytelling techniques as suspense, surprise and conflict to a technical narrative.
+
+Finally we will explore how to improve your presentation skills to enable you to bridge the gap between the data and people to really drive your point home.
+
+Come join me to level up your Power BI communication skills!</SessionAbstract>
+<SessionLevel>0</SessionLevel>
+<Goals>Data visualization
+Crafting relevant data stories
+Communicating information</Goals>
+<Elevator_x0020_pitch>https://visme.co/blog/7-storytelling-techniques-used-by-the-most-inspiring-ted-presenters/
+https://www.masterclass.com/articles/how-to-tell-a-story-effectively#how-to-tell-a-story-effectively</Elevator_x0020_pitch>
+</Sessions>
+<Sessions>
+<Retired>0</Retired>
+<SessionID>47</SessionID>
+<SessionName>Presentation Skills Masterclass</SessionName>
+<SessionAbstract>Most people get along just fine with little or no training in presentation skills. In fact, most speakers - including some very well-known ones - just wing it on stage.
+
+That is NOT what this workshop is about. 
+
+What is the difference between a &quot;good&quot; and a &quot;great&quot; presentation? And how do you improve if you&apos;re not quite sure what you did the last time around? Presentation skills are obviously all about presenting, but perhaps surprisingly it is even more about learning to listen and observe, to be consistent and focus on details. 
+
+Presentation skills are exactly that - skills. As such they can be understood, quantified, learned, refined, and improved.
+
+THAT is what this workshop is about.
+
+We will look at the &quot;full stack&quot; of presenting, beginning with psychology, the neurochemistry of emotions, rhetoric and how to structure a presentation. We will then dive into the physical act of presenting, looking at gestures, body language and movement. Finally, we will deal with troubleshooting presentations and how to tweak details for maximum effect. 
+
+As the day progresses there will be several exercises and the attendees get to practice their presentation skills multiple times - all while getting continuous feedback and tips on how to improve. 
+
+After this workshop you will have more tools to up your presentation game, regardless of how you plan to apply your new skills. 
+
+Maybe you have been presenting for a while and want to take it to the next level, or simply want to get a deep dive in presentation skills - either way, this is the workshop for you. 
+The seats are limited, so first come, first serve.
+
+After this workshop you will never look at a presentation the same way again.</SessionAbstract>
+<SessionLevel>300</SessionLevel>
+<Summary>Let&apos;s go beyond the basics and dive deep into presentation skills.</Summary>
+<Goals>The need for consistency
+The need for control
+How to constantly improve</Goals>
+</Sessions>
+<Sessions>
+<Retired>0</Retired>
+<SessionID>48</SessionID>
+<SessionName>Podcasting explained - everything you need for starting your own podcast</SessionName>
+<SessionAbstract>Curious about starting a podcast? You should do it! It really doesn&apos;t require anything more than an idea and some kind of microphone. That&apos;s it. There have been so many amazing podcast ideas that never came to be because of getting stuck on technicalities like what microphone to buy, what audio interface to use or what settings would be optimal. These are all extremely important - there are few things more frustrating than a podcast with an eager host bursting with exciting content only to have terrible audio quality - but they are not what makes or breaks the podcast. The technical stuff is just tools, scaffolding for the content to stand on. Unless the content is good, people won&apos;t even bother to turn on the content in the first place. People come for content, but stay for the audio quality, so combining great content with good audio is a recipe for success.
+
+This session will go under the covers of Knee-Deep in Tech, a bi-weekly technology podcast that has been running for the last five years. We will look at the technology of a podcast and discuss microphones, audio interfaces and equipment, as well as discuss how to format an episode, how to work with multiple hosts or guests, and some tips and how to distribute your finished episodes. 
+
+Join this session to get what you need to get the final push and turn your idea into an actual podcast!</SessionAbstract>
+<SessionLevel>100</SessionLevel>
+<Goals>Hardware - what is nice to have, what is absolutely necessary
+Getting your story out there - how to distribute your podcast
+How to structure episodes and content</Goals>
+</Sessions>
+<Sessions>
+<Retired>0</Retired>
+<SessionID>49</SessionID>
+<SessionName>DevOpsing Data - What Software Development Can Teach Azure Data Architects</SessionName>
+<SessionAbstract>Azure is a cornucopia of components that power some of the world&apos;s most amazing solutions. Things like scalability, robust security and fast development are just about taken for granted. It even enables seamless DevOps through infrastructure as code, pipelines, and code repositories. From an infrastructure and software development perspective, it is a wonderful playground with endless opportunities, but from a data perspective it&apos;s more akin to a barren desert. Or is it? 
+
+Azure is well suited for DevOps, but few people consider how to do to data what DevOps does to software development. This session will discuss a fairly complex data platform architecture and explore how to &quot;DataOps&quot; it, both from a tooling perspective, as well as a process perspective. 
+
+We&apos;ll show you how to automate the heck out of your data platform and make it more reliable, easier to test, and faster to deploy - just like the cool kids have done for years with software development!</SessionAbstract>
+<SessionLevel>0</SessionLevel>
+</Sessions>
+<Sessions>
+<Retired>0</Retired>
+<SessionID>50</SessionID>
+<SessionName>Speaking Human - learn to ask better questions to solve the right problems</SessionName>
+<SessionAbstract>Asking questions is easy. Anyone can do it, and, in fact, it is done every day. Asking good questions is harder. It takes some thinking about the problem before the question comes to mind, but it can be done.
+Asking really good questions is very, very hard. It&apos;s so hard that the really good questions are rare. Why is that? It might be because we&apos;re asking the wrong questions.
+
+We think that the technical community tends to jump straight to trying to solve the problem as stated instead of considering if the problem identified is even the actual problem in the first place! By taking a step back and considering the bigger picture instead of focusing solely on the stated problem, we can not only find other solutions, but we might even find better questions to ask. In essence: look further. Ask better questions.
+
+As a journalist, Linda used to be all about open ended questions in order to let the subject frame the problem. As a solutions architect, Alexander was all about trying to avoid the detailed technical solutions to a people problem. Together we found better ways to find the answers that mattered. 
+We want to help you figure out how to ask better questions - and subsequently how to become a better problem solver. 
+
+We will discuss why words matter, when you should not always listen to what is said, and how your choice of questions will always give you the answers you deserve.</SessionAbstract>
+<SessionLevel>0</SessionLevel>
+</Sessions>
+<Sessions>
+<Retired>0</Retired>
+<SessionID>52</SessionID>
+<SessionName>A Bard&apos;s Tale - My Love Letter to Violin Plots</SessionName>
+<SessionAbstract>Violin plots are absolutely amazing at conveying a lot of information in a very tight package. But aren&apos;t anyone using them? 
+Simple: because most people don&apos;t know they exist, let alone how they work!
+
+They&apos;re not as cool as some other visuals, and they&apos;re not as easy to read with no training as some other visuals - but they&apos;re a heck of a lot more useful than a lot of other visuals!
+
+I&apos;ll show you what they are, how they work, how to read them and - most importantly - how to use them.</SessionAbstract>
+<SessionLevel>0</SessionLevel>
+<Goals>Learn what violin plots are
+How to read violin plots
+How to use violin plots in Power BI</Goals>
+</Sessions>
+<Sessions>
+<Retired>0</Retired>
+<SessionID>53</SessionID>
+<SessionName>Microsoft Fabric Data Engineering by Example</SessionName>
+<SessionAbstract>Data engineering is the art of not only moving data from point A to point B, but also cleaning, wrangling, massaging, and not seldom forcing it to fit whatever format and shape required - all while doing it as quickly and cheaply as possible. This has traditionally been done with SQL, and while SQL is an extremely powerful language for data engineering, a classic relational engine might not always be the number one choice for complex data engineering.
+
+This session will give an introduction to data engineering using Spark in Microsoft Azure. We will explore several data engineering challenges such as slowly changing dimensions and data quality management, and discuss options for solving them using Spark, as well as look at pro&apos;s, con&apos;s and cost considerations for each.
+
+In this session you will learn why Spark is an excellent tool for data engineering, how to leverage your existing SQL skillset, and why it might make sense to learn a bit of Python. While we&apos;re at it, we will look at ways to accomplish heroic feats of cleaning and transporting information with minimal effort by leveraging tools like the Microsoft Data Wrangler extension and GitHub Copilot.</SessionAbstract>
+<SessionLevel>100</SessionLevel>
+<Goals>Gain insight into Spark, see similarities and differences with SQL and how to leverage both existing skills (PySQL) and automation tooling (Copilot, Data Wrangling Tool).</Goals>
+</Sessions>
+<Sessions>
+<Retired>0</Retired>
+<SessionID>54</SessionID>
+<SessionName>Stand Fast  - How Governance Can Save You a Fortune</SessionName>
+<SessionAbstract>Why is it that cloud projects often end up way more expensive than they should? The answer might surprise you: a lack of governance.
+
+It is easy to get stuck on the technical aspects of a cloud project and hence try to find equally technical ways of saving money. There is no such thing as a free lunch, and seldom is that clearer than in an environment where you pay for every second of compute consumed. Making a query run faster, optimizing a pipeline, or storing a bit less in a data lake, can decrease your overall consumption costs, but there might be even bigger savings lurking just out of view. 
+
+The solution for saving the big bucks is spelled &quot;governance&quot;. Most people see governance as something tedious, boring and ultimately futile, as users will inevitably find a way around the governance limitations and romp all over the environment. But if we look at governance as a tool for enablement, a way to make work easier for the end user and the administrator alike, as an opportunity optimize spend - then the whole dynamic shifts.  Wouldn&apos;t it be amazing if we could combine useful guardrails, increased productivity AND optimized cloud spend? Let me show you how!
+
+This session will look at unexpected drivers of cost, discuss ways to surface (and mitigate) some of them, and try to convince you why governance is really the best way to save money in the long run. You might even be able to take some of the learnings from this session and apply it to your on-prem environment as well!</SessionAbstract>
+<SessionLevel>0</SessionLevel>
+<Goals>Explore drivers of cost
+A primer on governance
+Applying governance</Goals>
+</Sessions>
+<Sessions>
+<Retired>0</Retired>
+<SessionID>55</SessionID>
+<SessionName>Roche&apos;s Maxim of Data Transformation - By Example</SessionName>
+<SessionAbstract>Murphy&apos;s law states that: &quot;anything that can go wrong, will go wrong&quot;. O&apos;Toole&apos;s commentary on Murphy&apos;s law added that: &quot;Murphy was an optimist&quot;. Everyone knows what Murphy&apos;s law means at a deep, visceral level - we&apos;ve all seen it in action, and most often to detrimental effect. 
+
+In the field of business intelligence and data, few similar principles have gotten more widespread use than &quot;Roche&apos;s Maxim of Data Transformation&quot;, coined by Matthew Roche of the - former Power BI, now Fabric - CAT Team at Microsoft. It states that: &quot;data should be transformed as far upstream as possible, and as far downstream as necessary&quot;. Simple, powerful, and beautiful - but what does it really MEAN? 
+
+I the world of data, nothing is ever as simple, clear-cut and straight forward as we might like, turning witty sayings into potential nightmares when it comes time to turn them into practice. But with a proper understanding of the drivers behind Roche&apos;s Maxim, you can turn a witty saying into a razor-sharp sword that will cut through any data modelling challenges in your path.
+
+This session will give you multiple examples of Roche&apos;s Maxim in action, explore why something that sounds so simple might not be, and why an understanding of not only the technical challenges but the governance challenges (a.k.a the people challenges) are absolutely key for applying Roche&apos;s Maxim to maximum effect.</SessionAbstract>
+<SessionLevel>100</SessionLevel>
+<Goals>Discuss data engineering challenges
+Explore Roche&apos;s Maxim of Data Engineering
+Apply the maxim to improve data engineering outcomes</Goals>
+<Elevator_x0020_pitch>Gain an understanding of data engineering challenges
+Learn how to apply Roche&apos;s Maxim of Data Engineering
+Learn where to apply the maxim from both a technical and nontechnical perspective</Elevator_x0020_pitch>
+</Sessions>
+<Sessions>
+<Retired>0</Retired>
+<SessionID>56</SessionID>
+<SessionName>Seeing is Believing - Different Ways of Visualizing the Same Information</SessionName>
+<SessionAbstract>Some visuals bring out the most fiery of opinions in most people - like the pie chart. Most everyone would agree that it is generally a terrible idea to use a pie chart, even though it can be a very good alternative - in the right circumstances. 
+
+There are several &quot;safe&quot; visuals, like the bar chart or the line chart. They are most often clear and an excellent choice for visualizing just about any information. But are they the best choice in every situation?
+
+The answer is a resounding no, but why is that? This session will dive into different ways to visualize the same data and how choosing a different visual can vastly impact the information transmission. We will look at several ways to visualize the same dataset, all depending on what kind of action you want from your audience. 
+
+Come join me for a session that will expand your data visualization toolbox!</SessionAbstract>
+<SessionLevel>0</SessionLevel>
+</Sessions>
+<Sessions>
+<Retired>0</Retired>
+<SessionID>57</SessionID>
+<SessionName>Architecting Microsoft Fabric: Scenarios From the Field</SessionName>
+<SessionAbstract>Microsoft Fabric can provide just about everything needed for building a modern data platform: it has data integration, lakehouses, warehouses, streaming data, reporting, and data science - to mention just a few of the capabilities. Having all this power under one roof is extremely powerful, but it also exposes the biggest challenge of them all - creating a cohesive architecture. 
+
+The role of the Microsoft Fabric architect not only requires knowledge and understanding of all the bits and pieces of Microsoft Fabric, it also requires insight into where said bits and pieces connect to the rest of your cloud infrastructure and your business processes, AND requires the ability to explain to and convince others why your solution is the best choice.
+Having the best architecture from a technical standpoint means nothing if you can&apos;t get it to make sense to the business.
+
+This full-day workshop aims to give both new and more experienced architects an opportunity to learn patterns and concepts, as well as put their architecture design and explanation skills to the test. 
+
+The day consists of three scenarios, each one delving into a specific aspect of Microsoft Fabric: 
+
+Fabric and the enterprise data landscape
+Modern data platform
+Development practices
+
+For each of these scenarios, the attendees get an architecture specification and will have to use their skills, experience and and unique ability to find information and documentation to solve the challenge - together. Then each group will present their solution to another group that is acting the role of the stakeholders, and finally the solutions will be discussed more in depth by the presenters. 
+
+When you leave this workshop, you will have gained valuable skills in designing Microsoft Fabric environments, learned from peers, and honed your skills in dealing with stakeholders. 
+
+Come spend a fast-paced day on all things architecture with Microsoft Fabric - unlike any other architecture workshop you&apos;ve attended in the past!</SessionAbstract>
+<SessionLevel>0</SessionLevel>
+</Sessions>
+<Sessions>
+<Retired>0</Retired>
+<SessionID>58</SessionID>
+<SessionName>Dodging DAX - Data Modelling by Example</SessionName>
+<SessionAbstract>DAX is an exceptional language, enabling anyone able to extract insights out of almost any data. But DAX is considered difficult and complex, requiring the user to understand concepts like row, filter and evaluation context. 
+
+But here is the thing - while all those concepts are important, the underlying data model is the main driver of how complex the DAX code needs to be.
+
+In the world of data, most people know about data modelling, and they will nod enthusiastically when words like normal forms, dimensions and facts come up in a conversation. When pressed on modelling in more detail, they might say that &quot;the point of data modelling is to organize data in such a way as to allow businesses to extract maximum value from it&quot;. 
+Get your ducks in a row, got it - but what does it really mean?
+
+It is easy to find an explanation for what the normal forms are, how a dimension is structured, and what issues might arise with a poor data model. But what is a poor data model, and - more importantly - WHY is it a poor data model? Why should you even care?
+
+What if I told you that a proper data model will make your DAX code much, much easier to write and maintain? 
+That&apos;s why you should care. 
+
+This session will give you a solid grounding in relational data modelling from both the perspective of normalizing a transactional data model as well as creating a star schema for a dimensional data model. We will look at increasingly complex examples from real world scenarios, we will explore why it generally is a Very Bad Idea(tm) to create a Power BI report based on a transactional data model, and discuss why a star schema will make both a better model and help you dodge unnecessarily complex DAX for as long as possible.</SessionAbstract>
+<SessionLevel>0</SessionLevel>
+<Goals>Basic data modelling, clad in the guise of simplifying DAX.</Goals>
+<Elevator_x0020_pitch>Anyone in the data field - seriously, people are so bad at data modelling it&apos;s not even funny anymore. The DAX code I have seen that was written to overcome basic modelling mistakes would make even the Italians want to consider a career change to the railroad.</Elevator_x0020_pitch>
+</Sessions>
+<Sessions>
+<Retired>0</Retired>
+<SessionID>59</SessionID>
+<SessionName>See, Feel, Do - Five Tips for Presenting Data</SessionName>
+<SessionAbstract>Microsoft Fabric and Power BI are two of the most powerful tools for data analysis currently on the market. We have all the components we need to do a comprehensive analysis of just about any data, visualise it in a simple, effective way and explain to the business what needs to be done. 
+
+Then - crickets.
+
+Taking the step from data, analysis and visuals to action tends to be extremely challenging. We have all the information, but how do we turn information into actionble insights? 
+The solution is to make the data matter to our audience, and in order to do that, we need to make them see what is relevant to them, forge an emotional connection to the information and why it matters to them, and be able to present this information in a clear, concise way.
+
+This session will give you five tips to help you make data matter to your audience and ensure that the information turns into action.</SessionAbstract>
+<SessionLevel>0</SessionLevel>
+</Sessions>
+<Sessions>
+<Retired>0</Retired>
+<SessionID>60</SessionID>
+<SessionName>Fabric FinOps - Cost Optimization for Microsoft Fabric</SessionName>
+<SessionAbstract>A software-as-a-service offering such as Microsoft Fabric offers a fixed cost per month, making budgeting much easier. That should be the end of the conversation, but it&apos;s actually only the beginning - how do you make the most of the capacity units you get with the fixed price? How can you ensure that you are getting the most out of your monthly investment? The different Fabric workloads all have different ways of using capacity units - some are cost CUs per minute of runtime, some cost per query, some are straight forward to calculate, some are not.
+
+Take dataflows gen 2 an an example - by far the most expensive way of doing data integration compared to pipelines or copy jobs, but what does &quot;expensive&quot; mean in the grand scheme of things? Depending on your organization&apos;s previous experience and skill level, dataflows might instead end up being the cheapest option!
+There is much more to optimizing the bang for your buck with Fabric than only looking at the relative costs of capacity units, as it is easy to get lost in the technology instead of looking at the big picture.
+
+This session will look at capacity units as a concept, compare how the different workloads drive capacity unit usage, explore ways to optimize workload usage to decrease compute costs, and discuss other factors that impact the overall cost conversation around Fabric.</SessionAbstract>
+<SessionLevel>0</SessionLevel>
+<Goals>Partly to understand the nuances of cost not only being a technical matter, but also that there are several ways to skin a cat, as the saying goes. Fabric can do just about anything, and just like SQL it will probably run - but will it run efficiently?</Goals>
+</Sessions>
+<Sessions>
+<Retired>0</Retired>
+<SessionID>61</SessionID>
+<SessionName>From SQL to Spark and Back Again - Spark and Python for SQL Users</SessionName>
+<SessionAbstract>SQL and SQL Server have been the bedrock of analytics for decades. With the advent of the cloud in general, lakehouse architectures in particular, Spark and Python has had a meteoric rise in popularity due to its flexibility and capability of tackling the parallism problem in a way that has been the Achilles heel of classic SQL Server.
+
+Spark is one of the fundamental workloads in Microsoft Fabric and offers a (potentially) low cost/high performance solution on demand for complex workloads. But how does it differ from SQL Server? Can you just convert SQL code to Python and spin up your Spark cluster? Short answer: maybe, but you really shouldn&apos;t. Let me show you a better way!
+
+In this session, we will look at fundamental differences in how code is executed and how the underlying architectures differ, explore differences and similarities between Python and SQL, and dive into PySQL and when and why there might be a reason (or not!) to use PySQL over Python.
+
+You will walk away from this session with a good understanding of how Spark differs from SQL Server, what antipatterns might be an issue, and how to make the most of your shiny Spark solution!</SessionAbstract>
+<SessionLevel>0</SessionLevel>
+<Goals>Learn about the similarities and dissimilarities between SQL and Python, and while we&apos;re at it, look at where they complement each other and where you&apos;re better off with either.</Goals>
+</Sessions>
+<Sessions>
+<Retired>0</Retired>
+<SessionID>62</SessionID>
+<SessionName>Migrating to Microsoft Fabric - Notes From the Field</SessionName>
+<SessionAbstract>Microsoft Fabric is the future, no doubt about that. As a consequence, many of my clients are looking to Fabric to solve their future analytics needs. But - rarely do analytics projects begin from scratch; most often there is some kind of migration of an older technology stack involved.
+
+Sadly, this is often overlooked in the brave new world of the cloud in general, and Microsoft Fabric in particular. In fact, there is rarely a straight shot from any current platform to Microsoft Fabric, and most any migration will involve a smaller or larger amount of code conversion.
+
+After several migration projects from both on-prem and cloud based offerings to Microsoft Fabric, I have collected my experiences into a session that takes a long, hard look at the opportunities and challenges inherent in trying to migrate just about any existing analytics workload to Microsoft Fabric.
+
+This session will give you a better understanding of the road ahead, the challenges lurking under the surface, and some of the decisions you face - should you wish to embark on the same journey.</SessionAbstract>
+<SessionLevel>0</SessionLevel>
+</Sessions>
+<Sessions>
+<Retired>0</Retired>
+<SessionID>63</SessionID>
+<SessionName>Microsoft Fabric in Perspective - Interfacing Fabric With the World Beyond</SessionName>
+<SessionAbstract>Microsoft Fabric is a software-as-a-service platform, meaning that it is essentially a whole analytics platform in a box. But that box does not exist in vacuum, and even with a SaaS solution, there are still several components that need to be considered outside of Fabric. For example, components such as data sources, gateways and keyvaults all need to be part of an analytics architecture, as having a good understanding of networking and identity management - not to mention the security aspects often overlooked in a SaaS solution!
+
+This session will explore the world outside of Fabric from the perspective of an architect, and look at networking, identity management, interfacing with components outside of Fabric, and give you a good grasp of what else your solution need to take into account in order for Fabric to run in an optimal way.
+
+You will leave this session with a firm understanding of how Fabric relates to other Azure services, how to best connect to and use external services and components, and how to architect a secure, scalable solution - without breaking neither the bank nor best practice security guidelines!</SessionAbstract>
+<SessionLevel>0</SessionLevel>
+<Goals>Microsoft pitches Fabric as the end-all, self-contained everything. Sadly, that is not the case - there are some spectacular pitfalls to fall into unless you understand how and where Fabric interfaces with the rest of Azure.</Goals>
+</Sessions>
+<Sessions>
+<Retired>0</Retired>
+<SessionID>64</SessionID>
+<SessionName>No-Nonsense Business Data Modeling for Everyone</SessionName>
+<SessionAbstract>According to the marketing, Power BI and Fabric make it easier than ever to ingest, explore, and analyze data across an organization. With its intuitive drag-and-drop interface, often dubbed &quot;PowerPoint for Data,&quot; anyone can create stunning reports and answer complex business questions to propel their organization into data-driven bliss. Business Intelligence has never been more accessible—or so they say.
+
+Unfortunately, the reality often falls short of the marketing promise.
+
+Without a deep understanding of business processes and the ability to model them effectively, BI projects risk being inconsistent, difficult to use, and slow—or worse, delivering incorrect information. The adage &quot;garbage in, garbage out&quot; remains as relevant as ever. And in a world increasingly powered by AI, the fundamentals of business process modeling matter more than ever.
+
+This session cuts through the hype and gets back to the essentials. We’ll explore what a business process truly is, the critical questions needed to model it, and — most importantly — how to model it effectively. This might not be the session you want, but it’s absolutely the session you need.</SessionAbstract>
+<SessionLevel>0</SessionLevel>
+</Sessions>
+<Sessions>
+<Retired>0</Retired>
+<SessionID>65</SessionID>
+<SessionName>Turning insights into action: The art of data communication</SessionName>
+<SessionAbstract>Data is everywhere, but how do you turn insights into action? In this full-day PreCon, we will focus on both creating reports that matter, as well as explore how to use them to truly drive decisions. We will start by understanding your audience: who they are, what decisions they need to make, and how to design reports that not only resonate with them but also ensure they give your audience the information they need to make decisions. Next, we will look at how to create impactful reports, structure dashboards, use DAX for dynamic titles, and apply effective data visualization to help your audience understand the insights.
+
+We will then explore how to sell your insights through storytelling techniques and the psychology of communication. It&apos;s not just about the data; it&apos;s about how you present it to make it matter to your audience - to truly drive decisions. Good presentation and delivery skills are the difference between a report that looks nice - or a report that can change the world.
+
+Finally, we will cover how to make sure your reports continue to drive action over time, assisting users in interpreting and acting on data for lasting impact.</SessionAbstract>
+<SessionLevel>0</SessionLevel>
+</Sessions>
+<Sessions>
+<Retired>0</Retired>
+<SessionID>66</SessionID>
+<SessionName>Success Factors for Business Reporting</SessionName>
+<SessionAbstract>Most businesses today either have or want a data warehouse, and it is expected that the business will be able to benefit greatly from it as soon as it is in operation. It will deliver spectacular insights into all aspects of the business, enabling vast savings and improvements across the board.Does this promise sound familiar?
+
+This is exactly what a good data warehouse can provide. But why is it that so many data warehouse projects run wildly over budget, fall equally short of delivering the expected results—or simply, fail?
+
+The truth is, a data warehouse is only a tool—it doesn’t create value by itself. Far too often, clients begin the journey without a clear understanding of the problem they are trying to solve. Without that clarity, even the most technically perfect warehouse will miss the mark.
+
+In my experience, three factors are key to the success of a data warehouse project: process insight, the ability to adequately model those processes in a data model, and strong business intelligence governance.
+
+This session will give you insight into each of these factors, explore where the gaps between technology, processes, and people need to be bridged, and provide a number of critical questions your data warehouse project team MUST be able to answer.</SessionAbstract>
+<SessionLevel>0</SessionLevel>
+</Sessions>
+</dataroot>
