@@ -12,8 +12,8 @@ RUN npm ci
 # Copy source files
 COPY . .
 
-# Build the React frontend
-RUN npm run build
+# Build the React frontend (use npx to avoid permission issues)
+RUN npx tsc && npx vite build
 
 # Compile the server TypeScript
 RUN npx tsc server.ts --esModuleInterop --module commonjs --outDir ./compiled
