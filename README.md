@@ -70,6 +70,79 @@ npm run dev
 
 The app will be available at http://localhost:5173
 
+## Docker Deployment
+
+### Running with Docker Compose (Recommended)
+
+```bash
+# Build and start the container
+docker compose up -d
+
+# View logs
+docker compose logs -f
+
+# Stop the container
+docker compose down
+```
+
+The app will be available at http://localhost:3000
+
+### Building the Docker Image Manually
+
+```bash
+# Build the image
+docker build -t eventtracker .
+
+# Run with a named volume for data persistence
+docker run -d \
+  --name eventtracker \
+  -p 3000:3000 \
+  -v eventtracker-data:/data \
+  --restart unless-stopped \
+  eventtracker
+```
+
+### Migrating Existing Data to Docker
+
+If you have existing data in `data.json`, copy it into the Docker volume:
+
+```bash
+# Find the volume path
+docker volume inspect eventtracker-data
+
+# Copy your data (adjust the path from the inspect output)
+sudo cp data.json /var/lib/docker/volumes/eventtracker-data/_data/data.json
+```
+
+### Deploying to QNAP NAS
+
+1. **Install Container Station** from QNAP App Center if not already installed
+
+2. **Transfer the project** to your NAS (e.g., via SSH or file share)
+
+3. **Build and run via SSH**:
+   ```bash
+   ssh admin@your-nas-ip
+   cd /share/Container/eventtracker  # adjust path as needed
+   docker compose up -d
+   ```
+
+4. **Or use Container Station UI**:
+   - Open Container Station
+   - Go to "Create" > "Create Application"
+   - Paste the contents of `docker-compose.yml`
+   - Click "Create"
+
+5. **Access the app** at `http://your-nas-ip:3000`
+
+### Environment Variables
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `PORT` | 3000 | Server port |
+| `DATA_FILE` | /data/data.json | Path to data file |
+| `NODE_ENV` | production | Environment mode |
+
 ## Project Structure
 
 ```

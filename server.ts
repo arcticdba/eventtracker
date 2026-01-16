@@ -1,14 +1,20 @@
 import express from 'express'
 import cors from 'cors'
+import path from 'path'
 import { readFileSync, writeFileSync, existsSync } from 'fs'
 import { v4 as uuidv4 } from 'uuid'
 
 const app = express()
-const PORT = 3001
-const DATA_FILE = './data.json'
+const PORT = process.env.PORT || 3001
+const DATA_FILE = process.env.DATA_FILE || './data.json'
 
 app.use(cors())
 app.use(express.json())
+
+// Serve static files from dist in production
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, 'dist')))
+}
 
 interface TravelBooking {
   id: string
@@ -327,6 +333,13 @@ app.post('/api/import/sessionize', async (req, res) => {
     res.status(500).json({ error: 'Failed to parse Sessionize page' })
   }
 })
+
+// SPA fallback - serve index.html for any non-API routes in production
+if (process.env.NODE_ENV === 'production') {
+  app.get('*', (_req, res) => {
+    res.sendFile(path.join(__dirname, 'dist', 'index.html'))
+  })
+}
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`)
