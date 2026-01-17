@@ -176,12 +176,12 @@ export default function App() {
         {activeTab === 'statistics' ? (
           <Statistics events={events} submissions={submissions} />
         ) : (
-          <div className={`grid gap-6 ${activeTab === 'events' && !showEventForm ? 'grid-cols-1 lg:grid-cols-2' : 'grid-cols-1'}`}>
+          <div className={`grid gap-6 ${activeTab === 'events' && !showEventForm ? 'grid-cols-1 lg:grid-cols-2' : 'grid-cols-1'}`} style={{ height: 'calc(100vh - 140px)' }}>
             {/* Left Panel */}
-            <div className="bg-white rounded-lg shadow p-4">
+            <div className="bg-white rounded-lg shadow p-4 flex flex-col overflow-hidden">
               {activeTab === 'events' ? (
                 <>
-                  <div className="flex justify-between items-center mb-4">
+                  <div className="flex justify-between items-center mb-4 flex-shrink-0">
                     <h2 className="text-lg font-semibold">Events</h2>
                     <div className="flex gap-2">
                       <button
@@ -198,28 +198,30 @@ export default function App() {
                       </button>
                     </div>
                   </div>
-                  {showEventForm ? (
-                    <EventForm
-                      event={editingEvent || undefined}
-                      initialData={importedEventData || undefined}
-                      onSave={handleSaveEvent}
-                      onCancel={() => { setShowEventForm(false); setEditingEvent(null); setImportedEventData(null) }}
-                    />
-                  ) : (
-                    <EventList
-                      events={events}
-                      submissions={submissions}
-                      onEdit={e => { setEditingEvent(e); setShowEventForm(true) }}
-                      onDelete={handleDeleteEvent}
-                      onSelect={setSelectedEvent}
-                      onDecline={handleDeclineEvent}
-                      selectedEventId={selectedEvent?.id}
-                    />
-                  )}
+                  <div className="flex-1 overflow-y-auto">
+                    {showEventForm ? (
+                      <EventForm
+                        event={editingEvent || undefined}
+                        initialData={importedEventData || undefined}
+                        onSave={handleSaveEvent}
+                        onCancel={() => { setShowEventForm(false); setEditingEvent(null); setImportedEventData(null) }}
+                      />
+                    ) : (
+                      <EventList
+                        events={events}
+                        submissions={submissions}
+                        onEdit={e => { setEditingEvent(e); setShowEventForm(true) }}
+                        onDelete={handleDeleteEvent}
+                        onSelect={setSelectedEvent}
+                        onDecline={handleDeclineEvent}
+                        selectedEventId={selectedEvent?.id}
+                      />
+                    )}
+                  </div>
                 </>
               ) : (
                 <>
-                  <div className="flex justify-between items-center mb-4">
+                  <div className="flex justify-between items-center mb-4 flex-shrink-0">
                     <h2 className="text-lg font-semibold">Sessions</h2>
                     <button
                       onClick={() => { setShowSessionForm(true); setEditingSession(null) }}
@@ -228,29 +230,31 @@ export default function App() {
                       + New Session
                     </button>
                   </div>
-                  {showSessionForm ? (
-                    <SessionForm
-                      session={editingSession || undefined}
-                      onSave={handleSaveSession}
-                      onCancel={() => { setShowSessionForm(false); setEditingSession(null) }}
-                    />
-                  ) : (
-                    <SessionList
-                      sessions={sessions}
-                      events={events}
-                      submissions={submissions}
-                      onEdit={s => { setEditingSession(s); setShowSessionForm(true) }}
-                      onDelete={handleDeleteSession}
-                    />
-                  )}
+                  <div className="flex-1 overflow-y-auto">
+                    {showSessionForm ? (
+                      <SessionForm
+                        session={editingSession || undefined}
+                        onSave={handleSaveSession}
+                        onCancel={() => { setShowSessionForm(false); setEditingSession(null) }}
+                      />
+                    ) : (
+                      <SessionList
+                        sessions={sessions}
+                        events={events}
+                        submissions={submissions}
+                        onEdit={s => { setEditingSession(s); setShowSessionForm(true) }}
+                        onDelete={handleDeleteSession}
+                      />
+                    )}
+                  </div>
                 </>
               )}
             </div>
 
             {/* Right Panel - Submissions for selected event (only show on events tab when not editing) */}
             {activeTab === 'events' && !showEventForm && (
-              <div className="bg-white rounded-lg shadow p-4">
-                <div className="flex justify-between items-center mb-4">
+              <div className="bg-white rounded-lg shadow p-4 flex flex-col overflow-hidden">
+                <div className="flex justify-between items-center mb-4 flex-shrink-0">
                   <h2 className="text-lg font-semibold">
                     {selectedEvent
                       ? `Submissions for ${selectedEvent.name}`
@@ -265,28 +269,30 @@ export default function App() {
                     </button>
                   )}
                 </div>
-                {selectedEvent ? (
-                  showSessionPicker ? (
-                    <SessionPicker
-                      sessions={sessions}
-                      submissions={submissions}
-                      eventId={selectedEvent.id}
-                      onAdd={handleAddSessionsToEvent}
-                      onClose={() => setShowSessionPicker(false)}
-                    />
+                <div className="flex-1 overflow-y-auto">
+                  {selectedEvent ? (
+                    showSessionPicker ? (
+                      <SessionPicker
+                        sessions={sessions}
+                        submissions={submissions}
+                        eventId={selectedEvent.id}
+                        onAdd={handleAddSessionsToEvent}
+                        onClose={() => setShowSessionPicker(false)}
+                      />
+                    ) : (
+                      <SubmissionList
+                        submissions={eventSubmissions}
+                        sessions={sessions}
+                        onUpdateState={handleUpdateSubmissionState}
+                        onDelete={handleDeleteSubmission}
+                      />
+                    )
                   ) : (
-                    <SubmissionList
-                      submissions={eventSubmissions}
-                      sessions={sessions}
-                      onUpdateState={handleUpdateSubmissionState}
-                      onDelete={handleDeleteSubmission}
-                    />
-                  )
-                ) : (
-                  <p className="text-gray-500 text-sm">
-                    Click on an event in the Events tab to see and manage its submissions.
-                  </p>
-                )}
+                    <p className="text-gray-500 text-sm">
+                      Click on an event in the Events tab to see and manage its submissions.
+                    </p>
+                  )}
+                </div>
               </div>
             )}
           </div>
