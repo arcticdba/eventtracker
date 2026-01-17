@@ -129,16 +129,16 @@ export default function App() {
     : []
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <header className="bg-white shadow">
+    <div className="h-screen flex flex-col bg-gray-100 overflow-hidden">
+      <header className="bg-white shadow flex-shrink-0">
         <div className="max-w-6xl mx-auto px-4 py-4">
           <h1 className="text-2xl font-bold text-gray-900">Speaking Event Tracker</h1>
         </div>
       </header>
 
-      <main className="max-w-6xl mx-auto px-4 py-6">
+      <main className="flex-1 flex flex-col max-w-6xl w-full mx-auto px-4 py-4 overflow-hidden">
         {/* Tabs */}
-        <div className="flex items-center gap-4 mb-6">
+        <div className="flex items-center gap-4 mb-4 flex-shrink-0">
           <div className="flex gap-2">
             <button
               onClick={() => setActiveTab('events')}
@@ -174,9 +174,11 @@ export default function App() {
         </div>
 
         {activeTab === 'statistics' ? (
-          <Statistics events={events} submissions={submissions} />
+          <div className="flex-1 overflow-y-auto">
+            <Statistics events={events} submissions={submissions} />
+          </div>
         ) : (
-          <div className={`grid gap-6 ${activeTab === 'events' && !showEventForm ? 'grid-cols-1 lg:grid-cols-2' : 'grid-cols-1'}`} style={{ height: 'calc(100vh - 140px)' }}>
+          <div className={`flex-1 grid gap-4 ${activeTab === 'events' && !showEventForm ? 'grid-cols-1 lg:grid-cols-2' : 'grid-cols-1'} overflow-hidden`}>
             {/* Left Panel */}
             <div className="bg-white rounded-lg shadow p-4 flex flex-col overflow-hidden">
               {activeTab === 'events' ? (
