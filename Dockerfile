@@ -12,11 +12,11 @@ RUN npm ci
 # Copy source files
 COPY . .
 
-# Build the React frontend (use npx to avoid permission issues)
-RUN npx tsc && npx vite build
+# Build the React frontend (run via node to avoid permission issues on QNAP)
+RUN node node_modules/typescript/bin/tsc && node node_modules/vite/bin/vite.js build
 
 # Compile the server TypeScript
-RUN npx tsc server.ts --esModuleInterop --module commonjs --outDir ./compiled
+RUN node node_modules/typescript/bin/tsc server.ts --esModuleInterop --module commonjs --target ES2020 --outDir ./compiled
 
 # Production stage
 FROM node:20-alpine
