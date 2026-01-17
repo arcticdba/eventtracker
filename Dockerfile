@@ -15,8 +15,9 @@ COPY . .
 # Build the React frontend (run via node to avoid permission issues on QNAP)
 RUN node node_modules/typescript/bin/tsc && node node_modules/vite/bin/vite.js build
 
-# Compile the server TypeScript
-RUN node node_modules/typescript/bin/tsc server.ts --esModuleInterop --module commonjs --target ES2020 --outDir ./compiled
+# Compile the server TypeScript and rename to .cjs for CommonJS compatibility
+RUN node node_modules/typescript/bin/tsc server.ts --esModuleInterop --module commonjs --target ES2020 --outDir ./compiled \
+    && mv ./compiled/server.js ./compiled/server.cjs
 
 # Production stage
 FROM node:20-alpine
@@ -33,7 +34,7 @@ RUN npm ci --omit=dev
 COPY --from=builder /app/dist ./dist
 
 # Copy compiled server
-COPY --from=builder /app/compiled/server.js ./
+COPY --from=builder /app/compiled/server.cjs ./
 
 # Create data directory
 RUN mkdir -p /data
@@ -47,4 +48,4 @@ ENV DATA_FILE=/data/data.json
 EXPOSE 3000
 
 # Start the server
-CMD ["node", "server.js"]
+CMD ["node", "server.cjs"]
