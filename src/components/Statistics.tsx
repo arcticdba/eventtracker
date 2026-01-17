@@ -54,6 +54,12 @@ function getYear(dateStr: string): number {
   return new Date(dateStr).getFullYear()
 }
 
+function getMonth(dateStr: string): number {
+  return new Date(dateStr).getMonth()
+}
+
+const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+
 export function Statistics({ events, submissions }: Props) {
   const [selectedYear, setSelectedYear] = useState<number | null>(null)
 
@@ -146,6 +152,22 @@ export function Statistics({ events, submissions }: Props) {
   // Remote vs in-person
   const remoteEvents = eventsWithSelected.filter(e => e.remote).length
   const inPersonEvents = totalEventsWithSelected - remoteEvents
+
+  // Events by month (for heat map)
+  const eventsByMonth: Record<number, { count: number; events: { name: string; date: string }[] }> = {}
+  for (let i = 0; i < 12; i++) {
+    eventsByMonth[i] = { count: 0, events: [] }
+  }
+  eventsWithSelected.forEach(e => {
+    const month = getMonth(e.dateStart)
+    eventsByMonth[month].count++
+    eventsByMonth[month].events.push({ name: e.name, date: e.dateStart })
+  })
+  // Sort events within each month by date descending
+  Object.values(eventsByMonth).forEach(data => {
+    data.events.sort((a, b) => b.date.localeCompare(a.date))
+  })
+  const maxByMonth = Math.max(...Object.values(eventsByMonth).map(d => d.count), 1)
 
   const maxByYear = Math.max(...Object.values(eventsByYear), 1)
   const maxByRegion = Math.max(...Object.values(eventsByRegion), 1)
@@ -304,6 +326,45 @@ export function Statistics({ events, submissions }: Props) {
               <div className="bg-purple-500" style={{ width: `${(remoteEvents / totalEventsWithSelected) * 100}%` }}></div>
             </div>
           )}
+        </div>
+      </div>
+
+      {/* Monthly Heat Map */}
+      <div className="bg-white rounded-lg shadow p-4">
+        <h3 className="text-lg font-semibold mb-4">Events by Month</h3>
+        <div className="flex justify-between items-end gap-2 px-2">
+          {monthNames.map((month, index) => {
+            const data = eventsByMonth[index]
+            const minSize = 24
+            const maxSize = 64
+            const size = data.count > 0
+              ? minSize + ((data.count / maxByMonth) * (maxSize - minSize))
+              : minSize
+            const opacity = data.count > 0
+              ? 0.3 + ((data.count / maxByMonth) * 0.7)
+              : 0.1
+
+            return (
+              <div key={month} className="flex flex-col items-center gap-2">
+                <div
+                  className="flex items-center justify-center rounded-full bg-teal-500 text-white font-medium cursor-default transition-transform hover:scale-110"
+                  style={{
+                    width: size,
+                    height: size,
+                    opacity,
+                    fontSize: size > 40 ? '14px' : '12px'
+                  }}
+                  title={data.count > 0
+                    ? `${data.count} event${data.count !== 1 ? 's' : ''}:\n${data.events.map(e => `${e.name} (${e.date})`).join('\n')}`
+                    : 'No events'
+                  }
+                >
+                  {data.count > 0 && data.count}
+                </div>
+                <span className="text-xs text-gray-500">{month}</span>
+              </div>
+            )
+          })}
         </div>
       </div>
 
