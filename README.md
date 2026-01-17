@@ -72,7 +72,7 @@ The app will be available at http://localhost:5173
 
 ## Docker Deployment
 
-### Running with Docker Compose (Recommended)
+### Running Locally with Docker Compose
 
 ```bash
 # Build and start the container
@@ -87,59 +87,75 @@ docker compose down
 
 The app will be available at http://localhost:3000
 
-### Building the Docker Image Manually
+### Deploying to QNAP NAS with Portainer
+
+Building on the NAS can have permission issues, so it's easier to build on your local machine and transfer the image.
+
+#### 1. Build the Image (on Mac)
 
 ```bash
-# Build the image
-docker build -t eventtracker .
+# For Apple Silicon Macs, specify the platform for x86_64 NAS
+docker build --platform linux/amd64 -t eventtracker .
 
-# Run with a named volume for data persistence
-docker run -d \
-  --name eventtracker \
-  -p 3000:3000 \
-  -v eventtracker-data:/data \
-  --restart unless-stopped \
-  eventtracker
+# Save the image to a file
+docker save eventtracker -o eventtracker.tar
 ```
 
-### Migrating Existing Data to Docker
+#### 2. Transfer to NAS
 
-If you have existing data in `data.json`, copy it into the Docker volume:
-
+Copy `eventtracker.tar` to your NAS via file share, scp, or any preferred method:
 ```bash
-# Find the volume path
-docker volume inspect eventtracker-data
-
-# Copy your data (adjust the path from the inspect output)
-sudo cp data.json /var/lib/docker/volumes/eventtracker-data/_data/data.json
+scp eventtracker.tar admin@your-nas-ip:/share/YourFolder/
 ```
 
-### Deploying to QNAP NAS
+#### 3. Load the Image on NAS
 
-1. **Install Container Station** from QNAP App Center if not already installed
+SSH into your NAS and load the image:
+```bash
+ssh admin@your-nas-ip
+docker load -i /share/YourFolder/eventtracker.tar
+```
 
-2. **Transfer the project** to your NAS (e.g., via SSH or file share)
+#### 4. Prepare Data Directory
 
-3. **Build and run via SSH**:
-   ```bash
-   ssh admin@your-nas-ip
-   cd /share/Container/eventtracker  # adjust path as needed
-   docker compose up -d
-   ```
+Create a folder for persistent data and copy your existing data:
+```bash
+mkdir -p /share/YourFolder/eventtracker/data
+cp /path/to/data.json /share/YourFolder/eventtracker/data/
+```
 
-4. **Or use Container Station UI**:
-   - Open Container Station
-   - Go to "Create" > "Create Application"
-   - Paste the contents of `docker-compose.yml`
-   - Click "Create"
+#### 5. Create Container in Portainer
 
-5. **Access the app** at `http://your-nas-ip:3000`
+1. Open Portainer and go to **Containers** → **Add container**
+
+2. Configure the container:
+   - **Name:** `eventtracker`
+   - **Image:** `eventtracker:latest`
+
+3. **Port mapping:**
+   - Host: `3333` → Container: `3000`
+
+4. **Volumes:**
+   - Click **map additional volume**
+   - Container: `/data`
+   - Select **Bind**
+   - Host: `/share/YourFolder/eventtracker/data`
+
+5. **Restart policy:** `Unless stopped`
+
+6. Click **Deploy the container**
+
+#### 6. Access the App
+
+Open `http://your-nas-ip:3333` in your browser.
+
+Your data persists in `/share/YourFolder/eventtracker/data/data.json` and survives container rebuilds.
 
 ### Environment Variables
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `PORT` | 3000 | Server port |
+| `PORT` | 3000 | Server port (inside container) |
 | `DATA_FILE` | /data/data.json | Path to data file |
 | `NODE_ENV` | production | Environment mode |
 
