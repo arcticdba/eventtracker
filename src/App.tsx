@@ -71,6 +71,22 @@ export default function App() {
     }
   }
 
+  async function handleToggleEventRemote(id: string) {
+    const event = events.find(e => e.id === id)
+    if (event) {
+      const updated = await api.updateEvent(id, { remote: !event.remote })
+      setEvents(events.map(e => e.id === id ? updated : e))
+    }
+  }
+
+  async function handleToggleEventMvpSubmission(id: string) {
+    const event = events.find(e => e.id === id)
+    if (event) {
+      const updated = await api.updateEvent(id, { mvpSubmission: !event.mvpSubmission })
+      setEvents(events.map(e => e.id === id ? updated : e))
+    }
+  }
+
   // Session handlers
   async function handleSaveSession(data: Omit<Session, 'id'>) {
     if (editingSession) {
@@ -88,6 +104,14 @@ export default function App() {
     if (confirm('Delete this session?')) {
       await api.deleteSession(id)
       setSessions(sessions.filter(s => s.id !== id))
+    }
+  }
+
+  async function handleToggleSessionRetired(id: string) {
+    const session = sessions.find(s => s.id === id)
+    if (session) {
+      const updated = await api.updateSession(id, { retired: !session.retired })
+      setSessions(sessions.map(s => s.id === id ? updated : s))
     }
   }
 
@@ -249,6 +273,8 @@ export default function App() {
                         onDelete={handleDeleteEvent}
                         onSelect={setSelectedEvent}
                         onDecline={handleDeclineEvent}
+                        onToggleRemote={handleToggleEventRemote}
+                        onToggleMvpSubmission={handleToggleEventMvpSubmission}
                         selectedEventId={selectedEvent?.id}
                         filters={eventFilters}
                         onFiltersChange={setEventFilters}
@@ -283,6 +309,7 @@ export default function App() {
                         submissions={submissions}
                         onEdit={s => { setEditingSession(s); setShowSessionForm(true) }}
                         onDelete={handleDeleteSession}
+                        onToggleRetired={handleToggleSessionRetired}
                         showActive={sessionShowActive}
                         onShowActiveChange={setSessionShowActive}
                         showRetired={sessionShowRetired}

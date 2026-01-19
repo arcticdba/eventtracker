@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import * as ContextMenu from '@radix-ui/react-context-menu'
 import { Session, Event, Submission, SubmissionState } from '../types'
 
 interface Props {
@@ -7,6 +8,7 @@ interface Props {
   submissions: Submission[]
   onEdit: (session: Session) => void
   onDelete: (id: string) => void
+  onToggleRetired: (sessionId: string) => void
   showActive: boolean
   onShowActiveChange: (showActive: boolean) => void
   showRetired: boolean
@@ -28,7 +30,7 @@ const levelColors: Record<string, string> = {
   '500': 'bg-red-100 text-red-700'
 }
 
-export function SessionList({ sessions, events, submissions, onEdit, onDelete, showActive, onShowActiveChange, showRetired, onShowRetiredChange }: Props) {
+export function SessionList({ sessions, events, submissions, onEdit, onDelete, onToggleRetired, showActive, onShowActiveChange, showRetired, onShowRetiredChange }: Props) {
   const [expandedSessions, setExpandedSessions] = useState<Set<string>>(new Set())
 
   const toggleExpanded = (sessionId: string) => {
@@ -80,11 +82,12 @@ export function SessionList({ sessions, events, submissions, onEdit, onDelete, s
         <p className="text-gray-500 text-sm">No sessions match this filter.</p>
       ) : (
         filteredSessions.map(session => (
-          <div
-            key={session.id}
-            onDoubleClick={() => onEdit(session)}
-            className={`p-3 border rounded-lg cursor-pointer ${session.retired ? 'opacity-60' : ''}`}
-          >
+          <ContextMenu.Root key={session.id}>
+            <ContextMenu.Trigger asChild>
+              <div
+                onDoubleClick={() => onEdit(session)}
+                className={`p-3 border rounded-lg cursor-pointer ${session.retired ? 'opacity-60' : ''}`}
+              >
             <div className="flex justify-between items-start">
               <div className="flex-1">
                 <div className="flex items-center gap-2">
@@ -194,7 +197,25 @@ export function SessionList({ sessions, events, submissions, onEdit, onDelete, s
                 })()}
               </div>
             </div>
-          </div>
+              </div>
+            </ContextMenu.Trigger>
+            <ContextMenu.Portal>
+              <ContextMenu.Content className="min-w-[140px] bg-white rounded-md shadow-lg border p-1 z-50">
+                <ContextMenu.CheckboxItem
+                  className="flex items-center px-2 py-1.5 text-sm rounded hover:bg-gray-100 cursor-pointer outline-none"
+                  checked={session.retired}
+                  onCheckedChange={() => onToggleRetired(session.id)}
+                >
+                  <ContextMenu.ItemIndicator className="w-4 mr-2">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </ContextMenu.ItemIndicator>
+                  <span className={session.retired ? '' : 'ml-6'}>Retired</span>
+                </ContextMenu.CheckboxItem>
+              </ContextMenu.Content>
+            </ContextMenu.Portal>
+          </ContextMenu.Root>
         ))
       )}
     </div>

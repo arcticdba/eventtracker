@@ -1,3 +1,4 @@
+import * as ContextMenu from '@radix-ui/react-context-menu'
 import { Event, Submission, EventState } from '../types'
 import { computeEventState } from '../utils/computeEventState'
 
@@ -8,6 +9,8 @@ interface Props {
   onDelete: (id: string) => void
   onSelect: (event: Event) => void
   onDecline: (eventId: string) => void
+  onToggleRemote: (eventId: string) => void
+  onToggleMvpSubmission: (eventId: string) => void
   selectedEventId?: string
   filters: Set<EventState>
   onFiltersChange: (filters: Set<EventState>) => void
@@ -124,7 +127,7 @@ function formatLocation(country: string, city: string, remote: boolean): string 
   return parts.join(', ') || 'No location'
 }
 
-export function EventList({ events, submissions, onEdit, onDelete, onSelect, onDecline, selectedEventId, filters, onFiltersChange, futureOnly, onFutureOnlyChange }: Props) {
+export function EventList({ events, submissions, onEdit, onDelete, onSelect, onDecline, onToggleRemote, onToggleMvpSubmission, selectedEventId, filters, onFiltersChange, futureOnly, onFutureOnlyChange }: Props) {
   const toggleFilter = (state: EventState) => {
     const newFilters = new Set(filters)
     if (newFilters.has(state)) {
@@ -207,16 +210,17 @@ export function EventList({ events, submissions, onEdit, onDelete, onSelect, onD
           const eventInPast = daysUntilEvent !== null && daysUntilEvent < 0
 
           return (
-            <div
-              key={event.id}
-              onClick={() => onSelect(event)}
-              onDoubleClick={() => onEdit(event)}
-              className={`p-3 border rounded-lg cursor-pointer transition ${
-                !event.mvpSubmission && state === 'selected'
-                  ? 'bg-green-50 border-green-400 border-2'
-                  : stateBackgrounds[state]
-              } ${isSelected ? 'ring-2 ring-blue-500' : ''}`}
-            >
+            <ContextMenu.Root key={event.id}>
+              <ContextMenu.Trigger asChild>
+                <div
+                  onClick={() => onSelect(event)}
+                  onDoubleClick={() => onEdit(event)}
+                  className={`p-3 border rounded-lg cursor-pointer transition ${
+                    !event.mvpSubmission && state === 'selected'
+                      ? 'bg-green-50 border-green-400 border-2'
+                      : stateBackgrounds[state]
+                  } ${isSelected ? 'ring-2 ring-blue-500' : ''}`}
+                >
               <div className="flex justify-between items-start">
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
@@ -321,7 +325,37 @@ export function EventList({ events, submissions, onEdit, onDelete, onSelect, onD
                   </button>
                 </div>
               </div>
-            </div>
+              </div>
+              </ContextMenu.Trigger>
+              <ContextMenu.Portal>
+                <ContextMenu.Content className="min-w-[160px] bg-white rounded-md shadow-lg border p-1 z-50">
+                  <ContextMenu.CheckboxItem
+                    className="flex items-center px-2 py-1.5 text-sm rounded hover:bg-gray-100 cursor-pointer outline-none"
+                    checked={event.remote}
+                    onCheckedChange={() => onToggleRemote(event.id)}
+                  >
+                    <ContextMenu.ItemIndicator className="w-4 mr-2">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </ContextMenu.ItemIndicator>
+                    <span className={event.remote ? '' : 'ml-6'}>Remote event</span>
+                  </ContextMenu.CheckboxItem>
+                  <ContextMenu.CheckboxItem
+                    className="flex items-center px-2 py-1.5 text-sm rounded hover:bg-gray-100 cursor-pointer outline-none"
+                    checked={event.mvpSubmission}
+                    onCheckedChange={() => onToggleMvpSubmission(event.id)}
+                  >
+                    <ContextMenu.ItemIndicator className="w-4 mr-2">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </ContextMenu.ItemIndicator>
+                    <span className={event.mvpSubmission ? '' : 'ml-6'}>MVP submission</span>
+                  </ContextMenu.CheckboxItem>
+                </ContextMenu.Content>
+              </ContextMenu.Portal>
+            </ContextMenu.Root>
           )
         })
       )}
