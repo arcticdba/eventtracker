@@ -211,7 +211,7 @@ export default function App() {
             <Statistics events={events} submissions={submissions} />
           </div>
         ) : (
-          <div className={`flex-1 grid gap-4 ${activeTab === 'events' && !showEventForm ? 'grid-cols-1 lg:grid-cols-[2fr_3fr]' : 'grid-cols-1'} overflow-hidden`}>
+          <div className={`flex-1 grid gap-4 ${activeTab === 'events' && !showEventForm ? 'grid-cols-1 lg:grid-cols-2' : 'grid-cols-1'} overflow-hidden`}>
             {/* Left Panel */}
             <div className="bg-white rounded-lg shadow p-4 flex flex-col overflow-hidden">
               {activeTab === 'events' ? (
