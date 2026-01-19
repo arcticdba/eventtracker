@@ -151,6 +151,12 @@ Open `http://your-nas-ip:3333` in your browser.
 
 Your data persists in `/share/YourFolder/eventtracker/data/data.json` and survives container rebuilds.
 
+### 7. To Update the Container
+
+Build the Docker image locally, copy the eventtracker.tar to the NAS, and load the tar through Docker as per steps 1 and 2.
+
+In Portainer, simply recreate the container to have updates show.
+
 ### Environment Variables
 
 | Variable | Default | Description |
