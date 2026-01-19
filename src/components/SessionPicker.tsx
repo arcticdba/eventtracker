@@ -174,12 +174,12 @@ export function SessionPicker({ sessions, submissions, eventId, onAdd, onClose }
 
                 {isSelected && (
                   <div className="ml-8 mt-2 space-y-2">
-                    <div className="flex items-center gap-2">
+                    <div className="space-y-1">
                       <label className="text-xs text-gray-600">Submit as:</label>
                       <select
                         value={selections.get(session.id) || session.name}
                         onChange={e => updateNameChoice(session.id, e.target.value)}
-                        className="text-sm rounded border-gray-300 py-1 px-2"
+                        className="block w-full text-sm rounded border-gray-300 py-1 px-2"
                       >
                         {allNames.map(name => {
                           const sessionNewNames = newNames.get(session.id) || []
@@ -197,35 +197,37 @@ export function SessionPicker({ sessions, submissions, eventId, onAdd, onClose }
                           onClick={() => toggleNewNameInput(session.id)}
                           className="text-xs text-blue-600 hover:text-blue-800"
                         >
-                          + New name
+                          + Add new name
                         </button>
                       )}
                     </div>
                     {showingNewNameInput.has(session.id) && (
-                      <div className="flex items-center gap-2">
+                      <div className="space-y-1">
                         <input
                           type="text"
                           value={newNameInputs.get(session.id) || ''}
                           onChange={e => updateNewNameInput(session.id, e.target.value)}
                           onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addNewName(session.id) } }}
                           placeholder="Enter new name..."
-                          className="flex-1 text-sm rounded border-gray-300 py-1 px-2 border"
+                          className="block w-full text-sm rounded border-gray-300 py-1 px-2 border"
                           autoFocus
                         />
-                        <button
-                          type="button"
-                          onClick={() => addNewName(session.id)}
-                          className="px-2 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700"
-                        >
-                          Add
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => toggleNewNameInput(session.id)}
-                          className="px-2 py-1 bg-gray-300 text-gray-700 text-xs rounded hover:bg-gray-400"
-                        >
-                          Cancel
-                        </button>
+                        <div className="flex gap-2">
+                          <button
+                            type="button"
+                            onClick={() => addNewName(session.id)}
+                            className="px-2 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700"
+                          >
+                            Add
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => toggleNewNameInput(session.id)}
+                            className="px-2 py-1 bg-gray-300 text-gray-700 text-xs rounded hover:bg-gray-400"
+                          >
+                            Cancel
+                          </button>
+                        </div>
                       </div>
                     )}
                   </div>
