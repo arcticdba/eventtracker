@@ -37,14 +37,14 @@ export function SubmissionList({ submissions, sessions, onUpdateState, onDelete 
                   )}
                 </div>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex flex-col items-end gap-1">
                 <StateSelector
                   value={submission.state}
                   onChange={state => onUpdateState(submission.id, state)}
                 />
                 <button
                   onClick={() => onDelete(submission.id)}
-                  className="p-1 text-gray-400 hover:text-red-600 text-sm"
+                  className="text-gray-400 hover:text-red-600 text-xs"
                 >
                   Remove
                 </button>
