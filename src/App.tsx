@@ -92,11 +92,27 @@ export default function App() {
   }
 
   // Submission handlers
-  async function handleAddSessionsToEvent(selections: { sessionId: string; nameUsed: string }[]) {
+  async function handleAddSessionsToEvent(selections: { sessionId: string; nameUsed: string; newAlternateName?: string }[]) {
     if (!selectedEvent) return
 
     const newSubmissions: Submission[] = []
-    for (const { sessionId, nameUsed } of selections) {
+    const updatedSessions: Session[] = []
+
+    for (const { sessionId, nameUsed, newAlternateName } of selections) {
+      // If a new alternate name was created, save it to the session
+      if (newAlternateName) {
+        const session = sessions.find(s => s.id === sessionId)
+        if (session) {
+          const existingNames = session.alternateNames || []
+          if (!existingNames.includes(newAlternateName)) {
+            const updated = await api.updateSession(sessionId, {
+              alternateNames: [...existingNames, newAlternateName]
+            })
+            updatedSessions.push(updated)
+          }
+        }
+      }
+
       const exists = submissions.some(
         s => s.sessionId === sessionId && s.eventId === selectedEvent.id
       )
@@ -105,6 +121,15 @@ export default function App() {
         newSubmissions.push(created)
       }
     }
+
+    // Update sessions state with any new alternate names
+    if (updatedSessions.length > 0) {
+      setSessions(sessions.map(s => {
+        const updated = updatedSessions.find(u => u.id === s.id)
+        return updated || s
+      }))
+    }
+
     setSubmissions([...submissions, ...newSubmissions])
   }
 

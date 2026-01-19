@@ -4,6 +4,7 @@ import { Session, Submission } from '../types'
 interface SessionSelection {
   sessionId: string
   nameUsed: string
+  newAlternateName?: string  // If set, this name should be added to the session's alternateNames
 }
 
 interface Props {
@@ -25,6 +26,12 @@ const levelColors: Record<string, string> = {
 export function SessionPicker({ sessions, submissions, eventId, onAdd, onClose }: Props) {
   // Map of sessionId -> nameUsed (if selected)
   const [selections, setSelections] = useState<Map<string, string>>(new Map())
+  // Map of sessionId -> newly created alternate names (not yet saved to session)
+  const [newNames, setNewNames] = useState<Map<string, string[]>>(new Map())
+  // Map of sessionId -> input value for new name being typed
+  const [newNameInputs, setNewNameInputs] = useState<Map<string, string>>(new Map())
+  // Set of sessionIds currently showing the "add new name" input
+  const [showingNewNameInput, setShowingNewNameInput] = useState<Set<string>>(new Set())
 
   // Filter out sessions already submitted to this event and retired sessions, sort alphabetically
   const availableSessions = sessions
@@ -51,10 +58,63 @@ export function SessionPicker({ sessions, submissions, eventId, onAdd, onClose }
     setSelections(newSelections)
   }
 
+  const toggleNewNameInput = (sessionId: string) => {
+    const newShowing = new Set(showingNewNameInput)
+    if (newShowing.has(sessionId)) {
+      newShowing.delete(sessionId)
+      // Clear the input when hiding
+      const newInputs = new Map(newNameInputs)
+      newInputs.delete(sessionId)
+      setNewNameInputs(newInputs)
+    } else {
+      newShowing.add(sessionId)
+    }
+    setShowingNewNameInput(newShowing)
+  }
+
+  const updateNewNameInput = (sessionId: string, value: string) => {
+    const newInputs = new Map(newNameInputs)
+    newInputs.set(sessionId, value)
+    setNewNameInputs(newInputs)
+  }
+
+  const addNewName = (sessionId: string) => {
+    const inputValue = newNameInputs.get(sessionId)?.trim()
+    if (!inputValue) return
+
+    // Add to new names for this session
+    const sessionNewNames = newNames.get(sessionId) || []
+    if (!sessionNewNames.includes(inputValue)) {
+      const updatedNewNames = new Map(newNames)
+      updatedNewNames.set(sessionId, [...sessionNewNames, inputValue])
+      setNewNames(updatedNewNames)
+    }
+
+    // Select this new name
+    updateNameChoice(sessionId, inputValue)
+
+    // Clear input and hide
+    const newInputs = new Map(newNameInputs)
+    newInputs.delete(sessionId)
+    setNewNameInputs(newInputs)
+
+    const newShowing = new Set(showingNewNameInput)
+    newShowing.delete(sessionId)
+    setShowingNewNameInput(newShowing)
+  }
+
   const handleAdd = () => {
     if (selections.size > 0) {
       const result: SessionSelection[] = Array.from(selections.entries()).map(
-        ([sessionId, nameUsed]) => ({ sessionId, nameUsed })
+        ([sessionId, nameUsed]) => {
+          const sessionNewNames = newNames.get(sessionId) || []
+          const isNewName = sessionNewNames.includes(nameUsed)
+          return {
+            sessionId,
+            nameUsed,
+            newAlternateName: isNewName ? nameUsed : undefined
+          }
+        }
       )
       onAdd(result)
     }
@@ -62,7 +122,9 @@ export function SessionPicker({ sessions, submissions, eventId, onAdd, onClose }
   }
 
   const getAllNames = (session: Session): string[] => {
-    return [session.name, ...(session.alternateNames || [])]
+    const existingNames = [session.name, ...(session.alternateNames || [])]
+    const sessionNewNames = newNames.get(session.id) || []
+    return [...existingNames, ...sessionNewNames]
   }
 
   return (
@@ -110,18 +172,62 @@ export function SessionPicker({ sessions, submissions, eventId, onAdd, onClose }
                   </div>
                 </label>
 
-                {isSelected && hasAlternateNames && (
-                  <div className="ml-8 mt-2">
-                    <label className="text-xs text-gray-600">Submit as:</label>
-                    <select
-                      value={selections.get(session.id) || session.name}
-                      onChange={e => updateNameChoice(session.id, e.target.value)}
-                      className="ml-2 text-sm rounded border-gray-300 py-1 px-2"
-                    >
-                      {allNames.map(name => (
-                        <option key={name} value={name}>{name}</option>
-                      ))}
-                    </select>
+                {isSelected && (
+                  <div className="ml-8 mt-2 space-y-2">
+                    <div className="flex items-center gap-2">
+                      <label className="text-xs text-gray-600">Submit as:</label>
+                      <select
+                        value={selections.get(session.id) || session.name}
+                        onChange={e => updateNameChoice(session.id, e.target.value)}
+                        className="text-sm rounded border-gray-300 py-1 px-2"
+                      >
+                        {allNames.map(name => {
+                          const sessionNewNames = newNames.get(session.id) || []
+                          const isNew = sessionNewNames.includes(name)
+                          return (
+                            <option key={name} value={name}>
+                              {name}{isNew ? ' (new)' : ''}
+                            </option>
+                          )
+                        })}
+                      </select>
+                      {!showingNewNameInput.has(session.id) && (
+                        <button
+                          type="button"
+                          onClick={() => toggleNewNameInput(session.id)}
+                          className="text-xs text-blue-600 hover:text-blue-800"
+                        >
+                          + New name
+                        </button>
+                      )}
+                    </div>
+                    {showingNewNameInput.has(session.id) && (
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="text"
+                          value={newNameInputs.get(session.id) || ''}
+                          onChange={e => updateNewNameInput(session.id, e.target.value)}
+                          onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addNewName(session.id) } }}
+                          placeholder="Enter new name..."
+                          className="flex-1 text-sm rounded border-gray-300 py-1 px-2 border"
+                          autoFocus
+                        />
+                        <button
+                          type="button"
+                          onClick={() => addNewName(session.id)}
+                          className="px-2 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700"
+                        >
+                          Add
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => toggleNewNameInput(session.id)}
+                          className="px-2 py-1 bg-gray-300 text-gray-700 text-xs rounded hover:bg-gray-400"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>

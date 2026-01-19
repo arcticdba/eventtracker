@@ -1597,7 +1597,7 @@
       "city": "",
       "dateStart": "2021-01-23",
       "dateEnd": "2021-01-23",
-      "remote": false,
+      "remote": true,
       "callForContentUrl": "",
       "callForContentLastDate": "",
       "loginTool": "",
