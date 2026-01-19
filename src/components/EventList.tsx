@@ -226,11 +226,6 @@ export function EventList({ events, submissions, onEdit, onDelete, onSelect, onD
                         Remote
                       </span>
                     )}
-                    {!event.mvpSubmission && state === 'selected' && (
-                      <span className="px-1.5 py-0.5 text-xs rounded bg-red-600 text-white font-medium max-w-[7rem]">
-                        MVP submission needed
-                      </span>
-                    )}
                   </div>
                   <p className="text-sm text-gray-500">
                     {formatLocation(event.country, event.city, false)}
@@ -292,6 +287,13 @@ export function EventList({ events, submissions, onEdit, onDelete, onSelect, onD
                       </svg>
                     </span>
                   </div>
+                  {!event.mvpSubmission && state === 'selected' && (
+                    <div className="mt-1">
+                      <span className="px-1.5 py-0.5 text-xs rounded bg-red-600 text-white font-medium">
+                        MVP submission needed
+                      </span>
+                    </div>
+                  )}
                 </div>
                 <div className="flex flex-col items-end gap-1 text-xs">
                   {submissionCount > 0 && state !== 'declined' && state !== 'rejected' && (
