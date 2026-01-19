@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Event, Session, Submission, SubmissionState } from './types'
+import { Event, Session, Submission, SubmissionState, EventState } from './types'
 import * as api from './api'
 import { EventList } from './components/EventList'
 import { EventForm } from './components/EventForm'
@@ -25,6 +25,14 @@ export default function App() {
   const [showSessionPicker, setShowSessionPicker] = useState(false)
   const [showImportModal, setShowImportModal] = useState(false)
   const [importedEventData, setImportedEventData] = useState<Omit<Event, 'id'> | null>(null)
+
+  // Persistent filter state for EventList
+  const [eventFilters, setEventFilters] = useState<Set<EventState>>(new Set())
+  const [eventFutureOnly, setEventFutureOnly] = useState(true)
+
+  // Persistent filter state for SessionList
+  const [sessionShowActive, setSessionShowActive] = useState(true)
+  const [sessionShowRetired, setSessionShowRetired] = useState(false)
 
   useEffect(() => {
     loadData()
@@ -217,6 +225,10 @@ export default function App() {
                         onSelect={setSelectedEvent}
                         onDecline={handleDeclineEvent}
                         selectedEventId={selectedEvent?.id}
+                        filters={eventFilters}
+                        onFiltersChange={setEventFilters}
+                        futureOnly={eventFutureOnly}
+                        onFutureOnlyChange={setEventFutureOnly}
                       />
                     )}
                   </div>
@@ -246,6 +258,10 @@ export default function App() {
                         submissions={submissions}
                         onEdit={s => { setEditingSession(s); setShowSessionForm(true) }}
                         onDelete={handleDeleteSession}
+                        showActive={sessionShowActive}
+                        onShowActiveChange={setSessionShowActive}
+                        showRetired={sessionShowRetired}
+                        onShowRetiredChange={setSessionShowRetired}
                       />
                     )}
                   </div>

@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { Event, Submission, EventState } from '../types'
 import { computeEventState } from '../utils/computeEventState'
 
@@ -10,6 +9,10 @@ interface Props {
   onSelect: (event: Event) => void
   onDecline: (eventId: string) => void
   selectedEventId?: string
+  filters: Set<EventState>
+  onFiltersChange: (filters: Set<EventState>) => void
+  futureOnly: boolean
+  onFutureOnlyChange: (futureOnly: boolean) => void
 }
 
 const allStates: EventState[] = ['pending', 'selected', 'rejected', 'declined', 'none']
@@ -121,10 +124,7 @@ function formatLocation(country: string, city: string, remote: boolean): string 
   return parts.join(', ') || 'No location'
 }
 
-export function EventList({ events, submissions, onEdit, onDelete, onSelect, onDecline, selectedEventId }: Props) {
-  const [filters, setFilters] = useState<Set<EventState>>(new Set())
-  const [futureOnly, setFutureOnly] = useState(true)
-
+export function EventList({ events, submissions, onEdit, onDelete, onSelect, onDecline, selectedEventId, filters, onFiltersChange, futureOnly, onFutureOnlyChange }: Props) {
   const toggleFilter = (state: EventState) => {
     const newFilters = new Set(filters)
     if (newFilters.has(state)) {
@@ -132,7 +132,7 @@ export function EventList({ events, submissions, onEdit, onDelete, onSelect, onD
     } else {
       newFilters.add(state)
     }
-    setFilters(newFilters)
+    onFiltersChange(newFilters)
   }
 
   const today = new Date()
@@ -168,7 +168,7 @@ export function EventList({ events, submissions, onEdit, onDelete, onSelect, onD
           <input
             type="checkbox"
             checked={futureOnly}
-            onChange={() => setFutureOnly(!futureOnly)}
+            onChange={() => onFutureOnlyChange(!futureOnly)}
             className="rounded border-gray-300"
           />
           <span>Future only</span>
@@ -211,9 +211,11 @@ export function EventList({ events, submissions, onEdit, onDelete, onSelect, onD
               key={event.id}
               onClick={() => onSelect(event)}
               onDoubleClick={() => onEdit(event)}
-              className={`p-3 border rounded-lg cursor-pointer transition ${stateBackgrounds[state]} ${
-                isSelected ? 'ring-2 ring-blue-500' : ''
-              } ${!event.mvpSubmission && state === 'selected' ? 'border-dashed border-2 border-gray-400' : ''}`}
+              className={`p-3 border rounded-lg cursor-pointer transition ${
+                !event.mvpSubmission && state === 'selected'
+                  ? 'bg-amber-100 border-amber-400 border-2'
+                  : stateBackgrounds[state]
+              } ${isSelected ? 'ring-2 ring-blue-500' : ''}`}
             >
               <div className="flex justify-between items-start">
                 <div className="flex-1">
@@ -222,6 +224,11 @@ export function EventList({ events, submissions, onEdit, onDelete, onSelect, onD
                     {event.remote && (
                       <span className="px-1.5 py-0.5 text-xs rounded bg-purple-100 text-purple-700">
                         Remote
+                      </span>
+                    )}
+                    {!event.mvpSubmission && state === 'selected' && (
+                      <span className="px-1.5 py-0.5 text-xs rounded bg-amber-500 text-white font-medium">
+                        MVP needed
                       </span>
                     )}
                     <span

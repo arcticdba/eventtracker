@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Session } from '../types'
 
 interface Props {
@@ -17,6 +17,17 @@ export function SessionForm({ session, onSave, onCancel }: Props) {
   const [abstract, setAbstract] = useState(session?.abstract || '')
   const [goals, setGoals] = useState(session?.goals || '')
   const [retired, setRetired] = useState(session?.retired || false)
+
+  // Handle Escape key to cancel
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onCancel()
+      }
+    }
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [onCancel])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()

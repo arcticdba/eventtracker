@@ -7,6 +7,10 @@ interface Props {
   submissions: Submission[]
   onEdit: (session: Session) => void
   onDelete: (id: string) => void
+  showActive: boolean
+  onShowActiveChange: (showActive: boolean) => void
+  showRetired: boolean
+  onShowRetiredChange: (showRetired: boolean) => void
 }
 
 const stateColors: Record<SubmissionState, string> = {
@@ -24,9 +28,7 @@ const levelColors: Record<string, string> = {
   '500': 'bg-red-100 text-red-700'
 }
 
-export function SessionList({ sessions, events, submissions, onEdit, onDelete }: Props) {
-  const [showActive, setShowActive] = useState(true)
-  const [showRetired, setShowRetired] = useState(false)
+export function SessionList({ sessions, events, submissions, onEdit, onDelete, showActive, onShowActiveChange, showRetired, onShowRetiredChange }: Props) {
   const [expandedSessions, setExpandedSessions] = useState<Set<string>>(new Set())
 
   const toggleExpanded = (sessionId: string) => {
@@ -53,7 +55,7 @@ export function SessionList({ sessions, events, submissions, onEdit, onDelete }:
           <input
             type="checkbox"
             checked={showActive}
-            onChange={e => setShowActive(e.target.checked)}
+            onChange={e => onShowActiveChange(e.target.checked)}
             className="rounded border-gray-300"
           />
           <span>Active</span>
@@ -62,7 +64,7 @@ export function SessionList({ sessions, events, submissions, onEdit, onDelete }:
           <input
             type="checkbox"
             checked={showRetired}
-            onChange={e => setShowRetired(e.target.checked)}
+            onChange={e => onShowRetiredChange(e.target.checked)}
             className="rounded border-gray-300"
           />
           <span>Retired</span>

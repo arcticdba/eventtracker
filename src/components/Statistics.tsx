@@ -112,14 +112,16 @@ export function Statistics({ events, submissions }: Props) {
   })
 
   // Events by country (with event details for tooltip)
+  // Remote events are always counted as "Online" regardless of country field
   const eventsByCountry: Record<string, { count: number; events: { name: string; date: string }[] }> = {}
   eventsWithSelected.forEach(e => {
-    if (e.country) {
-      if (!eventsByCountry[e.country]) {
-        eventsByCountry[e.country] = { count: 0, events: [] }
+    const country = e.remote ? 'Online' : e.country
+    if (country) {
+      if (!eventsByCountry[country]) {
+        eventsByCountry[country] = { count: 0, events: [] }
       }
-      eventsByCountry[e.country].count++
-      eventsByCountry[e.country].events.push({ name: e.name, date: e.dateStart })
+      eventsByCountry[country].count++
+      eventsByCountry[country].events.push({ name: e.name, date: e.dateStart })
     }
   })
   // Sort events within each country by date descending

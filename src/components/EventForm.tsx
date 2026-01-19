@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Event, TravelBooking, HotelBooking, TravelType } from '../types'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -42,6 +42,17 @@ export function EventForm({ event, initialData, onSave, onCancel }: Props) {
   const [showAddHotel, setShowAddHotel] = useState(false)
   const [newHotelName, setNewHotelName] = useState('')
   const [newHotelRef, setNewHotelRef] = useState('')
+
+  // Handle Escape key to cancel
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onCancel()
+      }
+    }
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [onCancel])
 
   const addTravel = () => {
     if (!newTravelRef.trim()) return
