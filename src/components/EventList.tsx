@@ -162,7 +162,7 @@ export function EventList({ events, submissions, onEdit, onDelete, onSelect, onD
     })
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-3 px-0.5">
       <div className="flex flex-wrap items-center gap-3">
         <label className="flex items-center gap-1 text-sm">
           <input
