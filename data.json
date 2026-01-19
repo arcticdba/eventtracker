@@ -286,21 +286,6 @@
       "mvpSubmission": true
     },
     {
-      "id": "c33d8ad0-7e33-4dcb-a476-0397d0981cea",
-      "name": "IT Proud",
-      "country": "Belgium",
-      "city": "Antwerp",
-      "dateStart": "2018-03-14",
-      "dateEnd": "2018-03-14",
-      "remote": false,
-      "callForContentUrl": "",
-      "callForContentLastDate": "",
-      "loginTool": "",
-      "travel": [],
-      "hotels": [],
-      "mvpSubmission": true
-    },
-    {
       "id": "d3419be6-ea0d-4f3c-83db-9001954fad44",
       "name": "TechDays Finland",
       "country": "Finland",
@@ -905,8 +890,8 @@
       "name": "SQL Saturday #851",
       "country": "Sweden",
       "city": "Stockholm",
-      "dateStart": "2019-04-04",
-      "dateEnd": "2019-04-04",
+      "dateStart": "2019-05-04",
+      "dateEnd": "2019-05-04",
       "remote": false,
       "callForContentUrl": "",
       "callForContentLastDate": "",
@@ -1037,7 +1022,7 @@
     },
     {
       "id": "776849fd-e2e2-42aa-9845-e5098bdde11a",
-      "name": "DATA:Scotland",
+      "name": "DATA:Scotland 2019",
       "country": "United Kingdom",
       "city": "Glasgow",
       "dateStart": "2019-09-13",
@@ -1112,7 +1097,7 @@
     },
     {
       "id": "3533142a-b3bd-42f1-92a1-cdfe48842347",
-      "name": "DataMinds Connect",
+      "name": "DataMinds Connect 2019",
       "country": "Belgium",
       "city": "Mechelen",
       "dateStart": "2019-10-07",
@@ -1533,8 +1518,8 @@
     {
       "id": "df320a6c-31e5-4c53-b379-0ccbb29e4409",
       "name": "SQL Saturday #1019 Singapore",
-      "country": "Singapore",
-      "city": "Singapore",
+      "country": "Online",
+      "city": "Online",
       "dateStart": "2020-11-28",
       "dateEnd": "2020-11-28",
       "remote": true,
@@ -1957,7 +1942,7 @@
       "city": "Cologne",
       "dateStart": "2021-06-26",
       "dateEnd": "2021-06-26",
-      "remote": false,
+      "remote": true,
       "callForContentUrl": "",
       "callForContentLastDate": "",
       "loginTool": "",
@@ -2446,21 +2431,6 @@
       "mvpSubmission": true
     },
     {
-      "id": "5895ca91-4bc6-4823-9b8b-02c4222902ee",
-      "name": "SQLBits Training day 2023",
-      "country": "United Kingdom",
-      "city": "Newport",
-      "dateStart": "2023-03-13",
-      "dateEnd": "2023-03-15",
-      "remote": false,
-      "callForContentUrl": "",
-      "callForContentLastDate": "",
-      "loginTool": "",
-      "travel": [],
-      "hotels": [],
-      "mvpSubmission": true
-    },
-    {
       "id": "d49b8b4c-9e56-4cda-8bb7-2405f37489de",
       "name": "SQLBits 2023",
       "country": "United Kingdom",
@@ -2672,7 +2642,7 @@
     },
     {
       "id": "265a4156-f134-4898-9aa9-70384f8783ab",
-      "name": "Fabric February",
+      "name": "Fabric February 2024",
       "country": "Norway",
       "city": "Oslo",
       "dateStart": "2024-02-08",
@@ -3095,7 +3065,7 @@
     },
     {
       "id": "b507099b-f927-4767-9429-386aa767cc74",
-      "name": "Power BI Deep Dive",
+      "name": "Power BI Deep Dive 2026",
       "country": "Denmark",
       "city": "Copenhagen",
       "dateStart": "2026-06-09",
@@ -3529,36 +3499,6 @@
       "mvpSubmission": true
     },
     {
-      "id": "aabe89cd-f133-4b51-a53d-cef97eb3da7f",
-      "name": "Power BI Usergroup Stockholm 2018",
-      "country": "Sweden",
-      "city": "Stockholm",
-      "dateStart": "2018-11-15",
-      "dateEnd": "2018-11-15",
-      "remote": false,
-      "callForContentUrl": "",
-      "callForContentLastDate": "",
-      "loginTool": "",
-      "travel": [],
-      "hotels": [],
-      "mvpSubmission": true
-    },
-    {
-      "id": "db9b2586-7ffd-4e1f-84fb-5373631f8297",
-      "name": "Sao Paulo SQL Server User Group",
-      "country": "Online",
-      "city": "",
-      "dateStart": "2018-06-19",
-      "dateEnd": "2018-06-19",
-      "remote": true,
-      "callForContentUrl": "",
-      "callForContentLastDate": "",
-      "loginTool": "",
-      "travel": [],
-      "hotels": [],
-      "mvpSubmission": true
-    },
-    {
       "id": "40f27d93-ea19-4289-9876-990a2d0f0e98",
       "name": "ITProud",
       "country": "Belgium",
@@ -3602,6 +3542,66 @@
       "travel": [],
       "hotels": [],
       "mvpSubmission": true
+    },
+    {
+      "id": "212f850d-789c-4491-9022-464ae2b191ab",
+      "name": "Data Saturday Stockholm 2023",
+      "country": "Sweden",
+      "city": "Stockholm",
+      "dateStart": "2023-05-13",
+      "dateEnd": "2023-05-13",
+      "remote": false,
+      "callForContentUrl": "",
+      "callForContentLastDate": "",
+      "loginTool": "",
+      "travel": [],
+      "hotels": [],
+      "mvpSubmission": true
+    },
+    {
+      "id": "c2832b4d-3e71-4064-939a-f02b4f2e2e10",
+      "name": "DataMinds Connect 2021",
+      "country": "Belgium",
+      "city": "Mechelen",
+      "dateStart": "2021-10-11",
+      "dateEnd": "2021-10-12",
+      "remote": false,
+      "callForContentUrl": "",
+      "callForContentLastDate": "",
+      "loginTool": "",
+      "travel": [],
+      "hotels": [],
+      "mvpSubmission": true
+    },
+    {
+      "id": "0c3e8b1b-793f-4c44-a147-864e3d92ce9c",
+      "name": "Big Data and AI Summit Europe 2026",
+      "country": "Lithuania",
+      "city": "Vilnius",
+      "dateStart": "2026-11-24",
+      "dateEnd": "2026-11-27",
+      "remote": false,
+      "callForContentUrl": "https://airtable.com/appsUlpNtLMccgwFZ/pagviP3ooRV63PCWO/form",
+      "callForContentLastDate": "",
+      "loginTool": "Airtable",
+      "travel": [],
+      "hotels": [],
+      "mvpSubmission": false
+    },
+    {
+      "id": "28b62346-82af-41f0-a40d-5b827cd909e2",
+      "name": "Big Data LDN",
+      "country": "London",
+      "city": "United Kingdom",
+      "dateStart": "2026-09-23",
+      "dateEnd": "2026-09-24",
+      "remote": false,
+      "callForContentUrl": "",
+      "callForContentLastDate": "",
+      "loginTool": "",
+      "travel": [],
+      "hotels": [],
+      "mvpSubmission": false
     }
   ],
   "sessions": [
@@ -3613,7 +3613,8 @@
       "summary": "",
       "goals": "Gain a better understanding of the consequences of leaving things at the default setting, \r\nLearn to identify and avoid common developer mistakes, \r\nGain a better understanding of how SQL Server process queries",
       "elevatorPitch": "Have you had performance tank despite the code working fine in another environment? Maybe heard that some SQL is bad but not why?\r\nThis session will start with a walkthrough of some of the basic settings in SQL Server and how they affect you as a developer. It follows with key tips on what settings to change, why some code will wreak havoc on your performance and how isolation levels matter (and why NOLOCK can be an exceptionally bad idea!) This session will provide you with the tools to think outside the box and incorporate database engine knowledge into your developer prowess!",
-      "retired": true
+      "retired": true,
+      "alternateNames": []
     },
     {
       "id": "736c350a-3d3d-42f6-8d83-e4558648dcbf",
@@ -3633,7 +3634,8 @@
       "summary": "",
       "goals": "Get an overview of available database options in Azure, Gain insight into how to best leverage the options in Azure, Learn how cloud databases differ from classic on-prem implementations",
       "elevatorPitch": "The cloud offers many exciting opportunities, especially for data-heavy applications. But trying to keep up with developments in the cloud is like drinking from a fire hose - this session aims to provide a quick run-down of the SQL Server offerings in the Microsoft Azure cloud.",
-      "retired": true
+      "retired": true,
+      "alternateNames": []
     },
     {
       "id": "f65bc7cc-a2a8-41ab-9c1b-07965951d86d",
@@ -3729,11 +3731,12 @@
       "id": "b9bb41f6-2665-49e2-b281-a20052359107",
       "name": "The Untruthful Art - Five Ways of Misrepresenting Data",
       "level": "200",
-      "abstract": "In this age of information it is imperative to be able to be able to clearly, simply and accurately explain and communicate sometimes complex data. \r\n\r\nRight at the intersection of journalism and statistics lies visual communication - the art of using data, charts and maps to convey information. This has been called \"the truthful art\" as it is an extremely powerful tool that must be wielded with the utmost care. Just like any other tools, however, it can be used for sinister purposes. \r\n\r\nThis session is all about exploring ways that data can be misrepresented to further a goal - while still seem perfectly reasonable. It is intended as an eye opener for anyone interested in the how and why of data deception. \r\n\r\nWe will walk through five stories and explore where the trickery is hidden, discuss a more honest way of communicate the information as well as look at ways to spot potential foul play with data.",
+      "abstract": " Information is all around us, and it is imperative to be able to clearly, simply, and accurately explain and communicate sometimes complex and nuanced data. \n\nRight at the intersection of journalism and statistics lies visual communication - the art of using data, charts, and maps to convey information. This has been called \"the truthful art\" as it is an extremely powerful tool that must be wielded with the utmost care. \n\nJust like any other tool, however, it can be used for sinister purposes. This session is all about exploring ways that data can be misrepresented to further a goal - while still seeming perfectly reasonable. \n\nIt is intended as an eye-opener for anyone interested in the how and why of data deception. We will explore five perspectives and uncover where the trickery is hidden, discuss a more honest way of communicating the information, as well as look at ways to spot potential foul play with data.",
       "summary": "Data and statistics are excellent tools for conveying information - information that doesn't even have to be true. Come see ways of misrepresenting data for sinister purposes using Power BI!",
       "goals": "Insight into what makes visuals so dangerous, Learn what deception can look like, How to spot foul play in data visualization",
       "elevatorPitch": "",
-      "retired": false
+      "retired": false,
+      "alternateNames": []
     },
     {
       "id": "3951435d-d352-4bb6-bfaa-8de38af3f389",
@@ -3783,7 +3786,8 @@
       "summary": "",
       "goals": "Basics of networking in Azure, Explore the networking building blocks for SQL Server in Azure, Understand data movement in Azure",
       "elevatorPitch": "",
-      "retired": false
+      "retired": true,
+      "alternateNames": []
     },
     {
       "id": "ab9dccfd-7aab-492d-aa9e-39bb1ef4b974",
@@ -3793,17 +3797,19 @@
       "summary": "",
       "goals": "",
       "elevatorPitch": "",
-      "retired": false
+      "retired": true,
+      "alternateNames": []
     },
     {
       "id": "08bb282f-2434-47fe-a09a-3e32f898e815",
       "name": "Average Fail",
-      "level": "0",
+      "level": "200",
       "abstract": "What is the easiest way of getting a number controlled for various factors? An average. Most people stop thinking about the consequences right about here, but the harsh reality is that in many cases, an average is a terrible idea - especially if you don't know the data you're working with in the first place! Consider what would happen if you start using averages to fill in missing data. or the potential for disasters with qualitative data expressed as numbers. I'll spend 15 minutes raking the concept of averages over the coals. Bring marshmallows.",
       "summary": "",
       "goals": "Understanding the data is key\r\nAverages come with issues\r\nConsequences of average analysis of unsuitable data",
       "elevatorPitch": "",
-      "retired": false
+      "retired": false,
+      "alternateNames": []
     },
     {
       "id": "2ccd8185-f7fc-4a66-b0b5-b21d934b1e99",
@@ -3868,32 +3874,35 @@
     {
       "id": "228ada93-1d2d-4f43-9e27-41b5da459d82",
       "name": "Undoing the Pretzel - Five Tips for Improving Your Body Language",
-      "level": "0",
+      "level": "100",
       "abstract": "We've all seen it - speakers leaning on the lectern, swaying like there was a stiff breeze, or standing in a way that seems anatomically impossible for a vertebrate. \r\nAccording to the science, 55 percent of emotional content is conveyed through body language. That makes body language and nonverbal cues an integral part of any session - in many ways even more important than the slide deck! \r\n\r\nA good, strong body language can mean the difference between making your point clear and not making it at all. As with all presentation skills, this is applicable to all aspects of everyday life - not only when teaching or speaking. It's the same on stage as it is in a meeting or at the supermarket. \r\n\r\nGive me 10 minutes of your time, and I'll give you five tips to quickly improve your body language.",
       "summary": "",
       "goals": "What to do with your body\r\nWhat to do with your hands\r\nHow to use your body to enhance your message",
       "elevatorPitch": "",
-      "retired": false
+      "retired": false,
+      "alternateNames": []
     },
     {
       "id": "2dee38c6-3637-4981-8e17-20a16079bfe0",
       "name": "Hands-on Lipstick on a Pig - Improving a Power BI Report Step by Step",
-      "level": "0",
+      "level": "200",
       "abstract": "You've been handed a report that could best be described as \"visually suboptimal\" or simply - \"terrible\". Showing it in its current state to the stakeholders would spell disaster, and you would likely take the blame. \r\n\r\nYou would like nothing more than to spend the hours it deserves, in a bid to make it much more clear, concise and useable - but the simple fact of the matter is that nobody wants to pay you for spending the hours that would require.\r\nBut - sometimes closing your eyes, groaning inwardly, and passing the report up the chain simply isn't an option. Something needs to be done, but it must be done quickly so it won't cost a fortune.\r\n\r\nThis is the background for this session on effective report design. With unlimited time and money, most everyone can improve a report. In reality, we seldom have neither unlimited money or time, so my goal is to show you where to spend the precious little time you do have.\r\n\r\nThis session will walk through every step how to turn a really bad report into something decent, discuss how to prioritize content, and why accessibility is not only useful but vital for good report design.\r\nThis session will not only show you what can be done but also explain why it not only may be done, but why it really should.",
       "summary": "",
       "goals": "Learn how to prioritize report content\r\nUnderstand how to apply basic cognition as it relates to visuals\r\nUnderstand and apply the concept of accessibility",
       "elevatorPitch": "",
-      "retired": false
+      "retired": false,
+      "alternateNames": []
     },
     {
       "id": "f8b363d2-e5f7-4863-bb54-67404a9547b7",
       "name": "Making Data Matter - Combining Data, Visual Storytelling and Presentation Skills for Maximum Impact",
-      "level": "0",
+      "level": "200",
       "abstract": "A friend once explained her experience with a \"data driven company\" like this: \"we collect millions of points of data every day, we clean it, we analyse it, we make it actionable - and then we implement whatever happens to be the mood of the day\". \r\n\r\nPower BI is one of the most powerful tools for data professionals and business users alike. It makes it possible to create amazing reports providing deep insight into just about any data. The insights this tool unlocks can drive decisions at every level - but do they? \r\n\r\nWhy is it then, that in this age of \"data-driven decisionmaking\", that so many decisions are still based on \"gut feeling\"? \r\nOne of the reasons is that we still like to think that data will drive decisions on its own. \r\n\r\nThe challenge is using Power BI to efficiently communicating said insight.\r\n\r\nEfficiently communicating data means not only being able to clearly and concisely visualizing it, but also being able to explain why the data matters to your audience - in a way that is engaging, interesting and relevant.\r\n\r\nThis, in turn, require knowledge of how to write a compelling story that is engaging and relatable for your audience, as well as presentation skills to help bridge the gap between data and people.\r\n\r\nBy making the data and the story matter to the audience we can align feelings with hard data, essentially influencencing decisions and improving business outcomes. \r\n\r\nIn this full-day workshop, you will learn the skills to take your ability to communicate using Power BI to a whole new level.\r\nWe will start with an overview of the fundamentals of visual communication in order to make the foundation of our data storytelling as clear, concise and understandable as can be.\r\n\r\nWe will then discuss how to craft a relevant and relatable story to build on top of our data. We will learn how, through a clear message with a clear structure, to apply classic storytelling techniques as suspense, surprise and conflict to a technical narrative.\r\n\r\nFinally we will explore how to improve your presentation skills to enable you to bridge the gap between the data and people to really drive your point home.\r\n\r\nCome join me to level up your Power BI communication skills!",
       "summary": "",
       "goals": "Data visualization\r\nCrafting relevant data stories\r\nCommunicating information",
       "elevatorPitch": "https://visme.co/blog/7-storytelling-techniques-used-by-the-most-inspiring-ted-presenters/\r\nhttps://www.masterclass.com/articles/how-to-tell-a-story-effectively#how-to-tell-a-story-effectively",
-      "retired": false
+      "retired": false,
+      "alternateNames": []
     },
     {
       "id": "abd6a9c2-c3b0-4263-9a59-067cc95fbb3d",
@@ -3933,17 +3942,19 @@
       "summary": "",
       "goals": "",
       "elevatorPitch": "",
-      "retired": true
+      "retired": true,
+      "alternateNames": []
     },
     {
       "id": "3ac5ae99-0fcf-42e7-b42b-8871db3d383a",
       "name": "A Bard's Tale - My Love Letter to Violin Plots",
-      "level": "0",
+      "level": "200",
       "abstract": "Violin plots are absolutely amazing at conveying a lot of information in a very tight package. But aren't anyone using them? \r\nSimple: because most people don't know they exist, let alone how they work!\r\n\r\nThey're not as cool as some other visuals, and they're not as easy to read with no training as some other visuals - but they're a heck of a lot more useful than a lot of other visuals!\r\n\r\nI'll show you what they are, how they work, how to read them and - most importantly - how to use them.",
       "summary": "",
       "goals": "Learn what violin plots are\r\nHow to read violin plots\r\nHow to use violin plots in Power BI",
       "elevatorPitch": "",
-      "retired": false
+      "retired": false,
+      "alternateNames": []
     },
     {
       "id": "fcb31245-0562-4768-8862-9b7a835ea8ff",
@@ -3958,12 +3969,13 @@
     {
       "id": "92a78d4d-c505-434a-b6c7-852aa2ef4736",
       "name": "Stand Fast  - How Governance Can Save You a Fortune",
-      "level": "0",
+      "level": "200",
       "abstract": "Why is it that cloud projects often end up way more expensive than they should? The answer might surprise you: a lack of governance.\r\n\r\nIt is easy to get stuck on the technical aspects of a cloud project and hence try to find equally technical ways of saving money. There is no such thing as a free lunch, and seldom is that clearer than in an environment where you pay for every second of compute consumed. Making a query run faster, optimizing a pipeline, or storing a bit less in a data lake, can decrease your overall consumption costs, but there might be even bigger savings lurking just out of view. \r\n\r\nThe solution for saving the big bucks is spelled \"governance\". Most people see governance as something tedious, boring and ultimately futile, as users will inevitably find a way around the governance limitations and romp all over the environment. But if we look at governance as a tool for enablement, a way to make work easier for the end user and the administrator alike, as an opportunity optimize spend - then the whole dynamic shifts.  Wouldn't it be amazing if we could combine useful guardrails, increased productivity AND optimized cloud spend? Let me show you how!\r\n\r\nThis session will look at unexpected drivers of cost, discuss ways to surface (and mitigate) some of them, and try to convince you why governance is really the best way to save money in the long run. You might even be able to take some of the learnings from this session and apply it to your on-prem environment as well!",
       "summary": "",
       "goals": "Explore drivers of cost\r\nA primer on governance\r\nApplying governance",
       "elevatorPitch": "",
-      "retired": false
+      "retired": false,
+      "alternateNames": []
     },
     {
       "id": "c19f45f8-43f6-4546-afa4-f6c8097913a7",
@@ -3998,12 +4010,13 @@
     {
       "id": "edf09854-774e-4e5f-a642-bd35ec818126",
       "name": "Dodging DAX - Data Modelling by Example",
-      "level": "0",
+      "level": "200",
       "abstract": "DAX is an exceptional language, enabling anyone able to extract insights out of almost any data. But DAX is considered difficult and complex, requiring the user to understand concepts like row, filter and evaluation context. \r\n\r\nBut here is the thing - while all those concepts are important, the underlying data model is the main driver of how complex the DAX code needs to be.\r\n\r\nIn the world of data, most people know about data modelling, and they will nod enthusiastically when words like normal forms, dimensions and facts come up in a conversation. When pressed on modelling in more detail, they might say that \"the point of data modelling is to organize data in such a way as to allow businesses to extract maximum value from it\". \r\nGet your ducks in a row, got it - but what does it really mean?\r\n\r\nIt is easy to find an explanation for what the normal forms are, how a dimension is structured, and what issues might arise with a poor data model. But what is a poor data model, and - more importantly - WHY is it a poor data model? Why should you even care?\r\n\r\nWhat if I told you that a proper data model will make your DAX code much, much easier to write and maintain? \r\nThat's why you should care. \r\n\r\nThis session will give you a solid grounding in relational data modelling from both the perspective of normalizing a transactional data model as well as creating a star schema for a dimensional data model. We will look at increasingly complex examples from real world scenarios, we will explore why it generally is a Very Bad Idea(tm) to create a Power BI report based on a transactional data model, and discuss why a star schema will make both a better model and help you dodge unnecessarily complex DAX for as long as possible.",
       "summary": "",
       "goals": "Basic data modelling, clad in the guise of simplifying DAX.",
       "elevatorPitch": "Anyone in the data field - seriously, people are so bad at data modelling it's not even funny anymore. The DAX code I have seen that was written to overcome basic modelling mistakes would make even the Italians want to consider a career change to the railroad.",
-      "retired": false
+      "retired": false,
+      "alternateNames": []
     },
     {
       "id": "9f574817-5c39-4172-a8d0-eaf346538339",
@@ -4028,12 +4041,13 @@
     {
       "id": "9a1387e0-b46b-49fa-94f5-a2b8f6b902e1",
       "name": "From SQL to Spark and Back Again - Spark and Python for SQL Users",
-      "level": "0",
+      "level": "200",
       "abstract": "SQL and SQL Server have been the bedrock of analytics for decades. With the advent of the cloud in general, lakehouse architectures in particular, Spark and Python has had a meteoric rise in popularity due to its flexibility and capability of tackling the parallism problem in a way that has been the Achilles heel of classic SQL Server.\r\n\r\nSpark is one of the fundamental workloads in Microsoft Fabric and offers a (potentially) low cost/high performance solution on demand for complex workloads. But how does it differ from SQL Server? Can you just convert SQL code to Python and spin up your Spark cluster? Short answer: maybe, but you really shouldn't. Let me show you a better way!\r\n\r\nIn this session, we will look at fundamental differences in how code is executed and how the underlying architectures differ, explore differences and similarities between Python and SQL, and dive into PySQL and when and why there might be a reason (or not!) to use PySQL over Python.\r\n\r\nYou will walk away from this session with a good understanding of how Spark differs from SQL Server, what antipatterns might be an issue, and how to make the most of your shiny Spark solution!",
       "summary": "",
       "goals": "Learn about the similarities and dissimilarities between SQL and Python, and while we're at it, look at where they complement each other and where you're better off with either.",
       "elevatorPitch": "",
-      "retired": false
+      "retired": false,
+      "alternateNames": []
     },
     {
       "id": "f521d61f-e05e-425d-af33-ddfb72da669a",
@@ -4048,22 +4062,24 @@
     {
       "id": "e3a7db99-2789-4fe1-a3f7-be5810ba6405",
       "name": "Microsoft Fabric in Perspective - Interfacing Fabric With the World Beyond",
-      "level": "0",
+      "level": "200",
       "abstract": "Microsoft Fabric is a software-as-a-service platform, meaning that it is essentially a whole analytics platform in a box. But that box does not exist in vacuum, and even with a SaaS solution, there are still several components that need to be considered outside of Fabric. For example, components such as data sources, gateways and keyvaults all need to be part of an analytics architecture, as having a good understanding of networking and identity management - not to mention the security aspects often overlooked in a SaaS solution!\r\n\r\nThis session will explore the world outside of Fabric from the perspective of an architect, and look at networking, identity management, interfacing with components outside of Fabric, and give you a good grasp of what else your solution need to take into account in order for Fabric to run in an optimal way.\r\n\r\nYou will leave this session with a firm understanding of how Fabric relates to other Azure services, how to best connect to and use external services and components, and how to architect a secure, scalable solution - without breaking neither the bank nor best practice security guidelines!",
       "summary": "",
       "goals": "Microsoft pitches Fabric as the end-all, self-contained everything. Sadly, that is not the case - there are some spectacular pitfalls to fall into unless you understand how and where Fabric interfaces with the rest of Azure.",
       "elevatorPitch": "",
-      "retired": false
+      "retired": false,
+      "alternateNames": []
     },
     {
       "id": "d28cb26f-9d60-4f8a-9046-0730eb8c6191",
       "name": "No-Nonsense Business Data Modeling for Everyone",
-      "level": "0",
+      "level": "200",
       "abstract": "According to the marketing, Power BI and Fabric make it easier than ever to ingest, explore, and analyze data across an organization. With its intuitive drag-and-drop interface, often dubbed \"PowerPoint for Data,\" anyone can create stunning reports and answer complex business questions to propel their organization into data-driven bliss. Business Intelligence has never been more accessible—or so they say.\r\n\r\nUnfortunately, the reality often falls short of the marketing promise.\r\n\r\nWithout a deep understanding of business processes and the ability to model them effectively, BI projects risk being inconsistent, difficult to use, and slow—or worse, delivering incorrect information. The adage \"garbage in, garbage out\" remains as relevant as ever. And in a world increasingly powered by AI, the fundamentals of business process modeling matter more than ever.\r\n\r\nThis session cuts through the hype and gets back to the essentials. We’ll explore what a business process truly is, the critical questions needed to model it, and — most importantly — how to model it effectively. This might not be the session you want, but it’s absolutely the session you need.",
       "summary": "",
       "goals": "",
       "elevatorPitch": "",
-      "retired": false
+      "retired": false,
+      "alternateNames": []
     },
     {
       "id": "bf4de97c-9af6-4a35-b369-6e0a9c160055",
@@ -4079,12 +4095,13 @@
     {
       "id": "faf10179-9b4a-4a26-a375-72f1ab247200",
       "name": "Success Factors for Business Reporting",
-      "level": "0",
+      "level": "100",
       "abstract": "Most businesses today either have or want a data warehouse, and it is expected that the business will be able to benefit greatly from it as soon as it is in operation. It will deliver spectacular insights into all aspects of the business, enabling vast savings and improvements across the board.\u000bDoes this promise sound familiar?\r\n\r\nThis is exactly what a good data warehouse can provide. But why is it that so many data warehouse projects run wildly over budget, fall equally short of delivering the expected results—or simply, fail?\r\n\r\nThe truth is, a data warehouse is only a tool—it doesn’t create value by itself. Far too often, clients begin the journey without a clear understanding of the problem they are trying to solve. Without that clarity, even the most technically perfect warehouse will miss the mark.\r\n\r\nIn my experience, three factors are key to the success of a data warehouse project: process insight, the ability to adequately model those processes in a data model, and strong business intelligence governance.\r\n\r\nThis session will give you insight into each of these factors, explore where the gaps between technology, processes, and people need to be bridged, and provide a number of critical questions your data warehouse project team MUST be able to answer.",
       "summary": "",
       "goals": "",
       "elevatorPitch": "",
-      "retired": false
+      "retired": false,
+      "alternateNames": []
     },
     {
       "id": "324910ea-0c01-4f09-9907-fc94cb5faaec",
@@ -4118,6 +4135,85 @@
       "alternateNames": [
         "Knee-Deep in Tech Live @ SQLBits 2026"
       ]
+    },
+    {
+      "id": "b4cf225b-9688-485e-bf55-cb4a6994a48f",
+      "name": "Spell of Transmutation",
+      "alternateNames": [],
+      "level": "100",
+      "abstract": "",
+      "summary": "",
+      "goals": "",
+      "elevatorPitch": "",
+      "retired": true
+    },
+    {
+      "id": "8eded292-4c82-4088-96ce-5969865896c3",
+      "name": "Unicorn Safari: alleviating consolidation pains with SQL Server 2016",
+      "alternateNames": [],
+      "level": "100",
+      "abstract": "",
+      "summary": "",
+      "goals": "",
+      "elevatorPitch": "",
+      "retired": true
+    },
+    {
+      "id": "c4840d19-4ee8-4687-a792-55fc59a9783e",
+      "name": "Abuse your SQL Server for fun and profit",
+      "alternateNames": [],
+      "level": "100",
+      "abstract": "",
+      "summary": "",
+      "goals": "",
+      "elevatorPitch": "",
+      "retired": true
+    },
+    {
+      "id": "77b1b2a3-5118-44cb-b948-4885c19fcc1e",
+      "name": "Speak Your Hands",
+      "alternateNames": [],
+      "level": "100",
+      "abstract": "",
+      "summary": "",
+      "goals": "",
+      "elevatorPitch": "",
+      "retired": true
+    },
+    {
+      "id": "29f84c57-b0cf-450f-868e-a9c86e383de5",
+      "name": "Headless Chicken",
+      "alternateNames": [],
+      "level": "100",
+      "abstract": "",
+      "summary": "",
+      "goals": "",
+      "elevatorPitch": "",
+      "retired": true
+    },
+    {
+      "id": "9d7fad39-f7ed-4e39-a0b3-08a64b8d19fa",
+      "name": "Tilting at windmills - self-service BI from an infrastructure perspective",
+      "alternateNames": [
+        "Arguing with myself - self-service BI from an infrastructure perspective"
+      ],
+      "level": "100",
+      "abstract": "",
+      "summary": "",
+      "goals": "",
+      "elevatorPitch": "",
+      "retired": true
+    },
+    {
+      "id": "ed7d1b15-6160-4445-b750-55a0dd2dc8d6",
+      "name": "Improving Your Presentation Skills – Practical Examples by Two Very Different Speakers ",
+      "alternateNames": [],
+      "level": "100",
+      "abstract": "",
+      "summary": "",
+      "goals": "",
+      "elevatorPitch": "",
+      "retired": true
     }
   ],
   "submissions": [
@@ -4239,7 +4335,7 @@
       "id": "196bd493-f836-4b47-9939-d2620503b87b",
       "sessionId": "2ad95f20-0fed-424c-b83d-a0f41c6850cc",
       "eventId": "4841fd47-e758-42ed-9f42-eeafc0d507d2",
-      "state": "rejected"
+      "state": "selected"
     },
     {
       "id": "0cd8ef9b-8c3a-44de-be59-71112cac79d8",
@@ -4462,12 +4558,6 @@
       "sessionId": "49702390-6731-4329-821f-13ce8dd18c39",
       "eventId": "1c5277e2-d961-4587-bdaa-1853aa5e408e",
       "state": "rejected"
-    },
-    {
-      "id": "01c059ba-226b-420b-a93d-fcd532bb1fec",
-      "sessionId": "2ad95f20-0fed-424c-b83d-a0f41c6850cc",
-      "eventId": "8edf0ac7-fd78-49b0-a335-039d7c33ce68",
-      "state": "selected"
     },
     {
       "id": "0c0c464f-76a1-44ef-bf69-8d90290063aa",
@@ -5133,7 +5223,7 @@
       "id": "14bedf16-da08-4784-9546-7fdfaae78d95",
       "sessionId": "3b771143-7eaf-4918-a0fa-c7f8c730bf80",
       "eventId": "6fce5513-76d9-48ce-b108-98a4b4a4304e",
-      "state": "declined"
+      "state": "rejected"
     },
     {
       "id": "2945799a-d6bc-4dda-8c90-6b56797ac1ef",
@@ -5463,7 +5553,7 @@
       "id": "5dd12cc9-b2f7-4081-bb7b-dd1529113f1c",
       "sessionId": "ebdd0763-52a9-430a-8bd5-c2aa91dc02e1",
       "eventId": "51397942-1f75-4a58-a37e-c3584b0225af",
-      "state": "declined"
+      "state": "rejected"
     },
     {
       "id": "843766f0-78aa-4955-89a3-63032e29c852",
@@ -7032,21 +7122,9 @@
       "state": "rejected"
     },
     {
-      "id": "6524d765-6bf5-4741-9bd1-155089c9c8a0",
-      "sessionId": "f8b363d2-e5f7-4863-bb54-67404a9547b7",
-      "eventId": "5895ca91-4bc6-4823-9b8b-02c4222902ee",
-      "state": "rejected"
-    },
-    {
       "id": "58f3bfb6-d2e8-4967-a027-e28136d4c217",
       "sessionId": "f8b363d2-e5f7-4863-bb54-67404a9547b7",
       "eventId": "22ae3b63-fd37-4ce5-b495-5a7920fc665c",
-      "state": "selected"
-    },
-    {
-      "id": "2e3fbeb4-ac0a-48e1-8458-48ff8b93b906",
-      "sessionId": "abd6a9c2-c3b0-4263-9a59-067cc95fbb3d",
-      "eventId": "5895ca91-4bc6-4823-9b8b-02c4222902ee",
       "state": "selected"
     },
     {
@@ -7431,7 +7509,7 @@
       "id": "ee209899-7d07-4ba6-b219-eceee004c86a",
       "sessionId": "abd6a9c2-c3b0-4263-9a59-067cc95fbb3d",
       "eventId": "d49b8b4c-9e56-4cda-8bb7-2405f37489de",
-      "state": "rejected"
+      "state": "selected"
     },
     {
       "id": "3b11dedc-ad32-46c8-ab32-629f787157e0",
@@ -7473,19 +7551,19 @@
       "id": "010d90ad-8a97-4ba8-9c0a-1b86c6f87368",
       "sessionId": "c19f45f8-43f6-4546-afa4-f6c8097913a7",
       "eventId": "265a4156-f134-4898-9aa9-70384f8783ab",
-      "state": "rejected"
+      "state": "declined"
     },
     {
       "id": "38657a15-9c4d-421c-8851-c4bbbd660783",
       "sessionId": "e684f106-2196-4b63-baa9-5d80d03defd1",
       "eventId": "265a4156-f134-4898-9aa9-70384f8783ab",
-      "state": "selected"
+      "state": "declined"
     },
     {
       "id": "a0075e11-9173-4f7b-bd70-45c583044383",
       "sessionId": "08bb282f-2434-47fe-a09a-3e32f898e815",
       "eventId": "265a4156-f134-4898-9aa9-70384f8783ab",
-      "state": "rejected"
+      "state": "declined"
     },
     {
       "id": "859f99e2-b26a-4e83-a86a-6f671edc4fdb",
@@ -7791,25 +7869,25 @@
       "id": "c3def336-eabe-48e5-80bc-d8c719bfe804",
       "sessionId": "edf09854-774e-4e5f-a642-bd35ec818126",
       "eventId": "265a4156-f134-4898-9aa9-70384f8783ab",
-      "state": "rejected"
+      "state": "declined"
     },
     {
       "id": "0661cd1e-c3e8-489b-af7e-93d04ab7a391",
       "sessionId": "f1242822-03f5-4354-9d3e-aa1a7561bc95",
       "eventId": "265a4156-f134-4898-9aa9-70384f8783ab",
-      "state": "rejected"
+      "state": "declined"
     },
     {
       "id": "93b1a6e0-d10f-43b5-aa54-b98c81b7f763",
       "sessionId": "2dee38c6-3637-4981-8e17-20a16079bfe0",
       "eventId": "265a4156-f134-4898-9aa9-70384f8783ab",
-      "state": "rejected"
+      "state": "declined"
     },
     {
       "id": "a9309204-803e-48cd-878b-9d8cfc8eee0d",
       "sessionId": "9f574817-5c39-4172-a8d0-eaf346538339",
       "eventId": "265a4156-f134-4898-9aa9-70384f8783ab",
-      "state": "rejected"
+      "state": "declined"
     },
     {
       "id": "aea472bc-c4d9-47e3-be6a-f9906f1c19c9",
@@ -8403,13 +8481,6 @@
       "nameUsed": ""
     },
     {
-      "id": "57d56432-f297-4fef-aee7-f84ede8d3288",
-      "sessionId": "2ad95f20-0fed-424c-b83d-a0f41c6850cc",
-      "eventId": "db9b2586-7ffd-4e1f-84fb-5373631f8297",
-      "state": "selected",
-      "nameUsed": ""
-    },
-    {
       "id": "97962666-4ec1-4cdb-b00a-d0062afa8381",
       "sessionId": "49702390-6731-4329-821f-13ce8dd18c39",
       "eventId": "40f27d93-ea19-4289-9876-990a2d0f0e98",
@@ -8422,6 +8493,181 @@
       "eventId": "0374421e-b5af-4319-a135-faa7896f88d0",
       "state": "selected",
       "nameUsed": ""
+    },
+    {
+      "id": "469efcd9-9af5-45ab-b5eb-1860a258cbe2",
+      "sessionId": "b4cf225b-9688-485e-bf55-cb4a6994a48f",
+      "eventId": "c825ada5-c85b-4895-bab0-4b7d47152654",
+      "state": "selected",
+      "nameUsed": "Spell of Transmutation"
+    },
+    {
+      "id": "59c3b9c3-c93f-4cb6-8d4d-b38a8a6b9ab5",
+      "sessionId": "3ac5ae99-0fcf-42e7-b42b-8871db3d383a",
+      "eventId": "212f850d-789c-4491-9022-464ae2b191ab",
+      "state": "selected",
+      "nameUsed": "A Bard's Tale - My Love Letter to Violin Plots"
+    },
+    {
+      "id": "21316af0-44a7-484b-a72b-65b3ce8f37d4",
+      "sessionId": "5652d956-0c0f-4bdc-814a-fbde03a7bd2c",
+      "eventId": "212f850d-789c-4491-9022-464ae2b191ab",
+      "state": "selected",
+      "nameUsed": "Speaking Human - learn to ask better questions to solve the right problems"
+    },
+    {
+      "id": "7d3739bb-46ec-45b9-8221-c6c82eca3b1e",
+      "sessionId": "b4cf225b-9688-485e-bf55-cb4a6994a48f",
+      "eventId": "4a27e43e-a76d-436e-b6f7-f950e2226f47",
+      "state": "selected",
+      "nameUsed": "Spell of Transmutation"
+    },
+    {
+      "id": "f2491010-54f9-4b88-80b7-b4ab7dd19d5a",
+      "sessionId": "b4cf225b-9688-485e-bf55-cb4a6994a48f",
+      "eventId": "8548195b-33c8-4ebc-81b8-022fee8a3414",
+      "state": "selected",
+      "nameUsed": "Spell of Transmutation"
+    },
+    {
+      "id": "449daf7b-ee10-4a97-845e-e536aee54317",
+      "sessionId": "8eded292-4c82-4088-96ce-5969865896c3",
+      "eventId": "62ea13c4-6923-4da8-b6ef-3a57f40ca2d2",
+      "state": "selected",
+      "nameUsed": "Unicorn Safari: alleviating consolidation pains with SQL Server 2016"
+    },
+    {
+      "id": "7d537d40-779a-4851-8246-1a02ad57185e",
+      "sessionId": "49702390-6731-4329-821f-13ce8dd18c39",
+      "eventId": "fde97129-bc2f-4d9a-9005-faa5fa9bc6bf",
+      "state": "selected",
+      "nameUsed": "The Cloud  Awakens - Azure SQL Server for the On-premises DBA"
+    },
+    {
+      "id": "5cc9925e-5145-4b07-bdb7-f1faa49c90cc",
+      "sessionId": "c4840d19-4ee8-4687-a792-55fc59a9783e",
+      "eventId": "8fedd742-a02a-46b4-98df-97faacd3fd3b",
+      "state": "selected",
+      "nameUsed": "Abuse your SQL Server for fun and profit"
+    },
+    {
+      "id": "7ca0e50c-e922-4f07-acb1-db5a2944d16d",
+      "sessionId": "c4840d19-4ee8-4687-a792-55fc59a9783e",
+      "eventId": "0acf6e81-9773-4d5e-aad8-9da3b10d54bf",
+      "state": "selected",
+      "nameUsed": "Abuse your SQL Server for fun and profit"
+    },
+    {
+      "id": "a4f46470-1692-4a00-8ce7-d5d19077562c",
+      "sessionId": "77b1b2a3-5118-44cb-b948-4885c19fcc1e",
+      "eventId": "30be41f4-a7e8-4447-9274-e5d52dd218e8",
+      "state": "selected",
+      "nameUsed": "Speak Your Hands"
+    },
+    {
+      "id": "7af750ab-84db-4a7b-8737-3029417851e6",
+      "sessionId": "49702390-6731-4329-821f-13ce8dd18c39",
+      "eventId": "d7cb1895-70ec-4886-8794-e79148eec4d2",
+      "state": "selected",
+      "nameUsed": "The Cloud  Awakens - Azure SQL Server for the On-premises DBA"
+    },
+    {
+      "id": "b5b32391-5bd6-4273-b374-93178354e49a",
+      "sessionId": "49702390-6731-4329-821f-13ce8dd18c39",
+      "eventId": "8edf0ac7-fd78-49b0-a335-039d7c33ce68",
+      "state": "selected",
+      "nameUsed": "The Cloud  Awakens - Azure SQL Server for the On-premises DBA"
+    },
+    {
+      "id": "104bc9f1-2d80-48c3-ae28-153701c253c6",
+      "sessionId": "77b1b2a3-5118-44cb-b948-4885c19fcc1e",
+      "eventId": "d10d9f73-21b3-4da2-ac49-1f864d644aae",
+      "state": "selected",
+      "nameUsed": "Speak Your Hands"
+    },
+    {
+      "id": "833cbdd9-11a8-4bc1-a2c3-913809ffe293",
+      "sessionId": "49702390-6731-4329-821f-13ce8dd18c39",
+      "eventId": "754b088f-e8b6-4dbe-812c-9e0e5e88eb90",
+      "state": "selected",
+      "nameUsed": "The Cloud  Awakens - Azure SQL Server for the On-premises DBA"
+    },
+    {
+      "id": "e4a36d5e-90d7-4099-bccb-0c2f089c0fb9",
+      "sessionId": "29f84c57-b0cf-450f-868e-a9c86e383de5",
+      "eventId": "53a57bec-2da7-4b73-8c3b-35a900ab7800",
+      "state": "selected",
+      "nameUsed": "Headless Chicken"
+    },
+    {
+      "id": "a6321a6a-5a4c-4461-984c-90435a339cc8",
+      "sessionId": "9d7fad39-f7ed-4e39-a0b3-08a64b8d19fa",
+      "eventId": "a5f06a52-9119-4530-986b-077146e13a6c",
+      "state": "selected",
+      "nameUsed": "Tilting at windmills – self-service BI from an infrastructure perspective"
+    },
+    {
+      "id": "6791ab88-5a69-4c73-b1db-e3c1d34419f6",
+      "sessionId": "49702390-6731-4329-821f-13ce8dd18c39",
+      "eventId": "329dbcfb-b6b1-44ff-b4f1-657b1cfe40e5",
+      "state": "rejected",
+      "nameUsed": "The Cloud  Awakens - Azure SQL Server for the On-premises DBA"
+    },
+    {
+      "id": "a214a847-c2ee-4437-ae80-264d2ff35441",
+      "sessionId": "9d7fad39-f7ed-4e39-a0b3-08a64b8d19fa",
+      "eventId": "a10d7ed5-7d15-4865-b159-38ea87ba5dcf",
+      "state": "selected",
+      "nameUsed": "Arguing with myself - self-service BI from an infrastructure perspective"
+    },
+    {
+      "id": "8f0d2000-ee16-4b09-81a2-5d5b046480e2",
+      "sessionId": "9d7fad39-f7ed-4e39-a0b3-08a64b8d19fa",
+      "eventId": "a8ade6b3-0de7-4c5e-bd54-8c3b95650dd0",
+      "state": "selected",
+      "nameUsed": "Arguing with myself - self-service BI from an infrastructure perspective"
+    },
+    {
+      "id": "95cdda61-7f0d-4391-8330-5a42ea4f5e6c",
+      "sessionId": "9d7fad39-f7ed-4e39-a0b3-08a64b8d19fa",
+      "eventId": "50482132-e59c-4d8c-aa11-10cd94752a56",
+      "state": "selected",
+      "nameUsed": "Arguing with myself - self-service BI from an infrastructure perspective"
+    },
+    {
+      "id": "e8f4db30-218c-4f36-acc8-23f3ffd1dd30",
+      "sessionId": "9d7fad39-f7ed-4e39-a0b3-08a64b8d19fa",
+      "eventId": "776849fd-e2e2-42aa-9845-e5098bdde11a",
+      "state": "selected",
+      "nameUsed": "Arguing with myself - self-service BI from an infrastructure perspective"
+    },
+    {
+      "id": "99fb5b27-6561-4c37-8526-038c5cba0679",
+      "sessionId": "ed7d1b15-6160-4445-b750-55a0dd2dc8d6",
+      "eventId": "776849fd-e2e2-42aa-9845-e5098bdde11a",
+      "state": "selected",
+      "nameUsed": "Improving Your Presentation Skills – Practical Examples by Two Very Different Speakers "
+    },
+    {
+      "id": "4ff233db-dbae-4a21-a3d9-5607b4218723",
+      "sessionId": "1cd1d4ca-a62e-4ba7-b677-e80fedd79e56",
+      "eventId": "d923fad0-f4bc-4787-a5cd-0ce2daa3ebbb",
+      "state": "submitted",
+      "nameUsed": "AI Makes You Faster(?) - What LLMs Actually Are and Why It Matters"
+    },
+    {
+      "id": "23aa0b29-c454-46b1-80a2-210ecd47865c",
+      "sessionId": "b9bb41f6-2665-49e2-b281-a20052359107",
+      "eventId": "d923fad0-f4bc-4787-a5cd-0ce2daa3ebbb",
+      "state": "submitted",
+      "nameUsed": "The Untruthful Art - Five Ways of Misrepresenting Data"
+    },
+    {
+      "id": "18bd5fd3-0efa-4526-9aba-24b93248f99f",
+      "sessionId": "2ccd8185-f7fc-4a66-b0b5-b21d934b1e99",
+      "eventId": "c2832b4d-3e71-4064-939a-f02b4f2e2e10",
+      "state": "selected",
+      "nameUsed": "The Audience Conductor - Using Senses and Emotions to Improve Your Presentations"
     }
   ]
 }

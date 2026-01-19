@@ -213,7 +213,7 @@ export function EventList({ events, submissions, onEdit, onDelete, onSelect, onD
               onDoubleClick={() => onEdit(event)}
               className={`p-3 border rounded-lg cursor-pointer transition ${
                 !event.mvpSubmission && state === 'selected'
-                  ? 'bg-amber-100 border-amber-400 border-2'
+                  ? 'bg-green-50 border-green-400 border-2'
                   : stateBackgrounds[state]
               } ${isSelected ? 'ring-2 ring-blue-500' : ''}`}
             >
@@ -227,7 +227,7 @@ export function EventList({ events, submissions, onEdit, onDelete, onSelect, onD
                       </span>
                     )}
                     {!event.mvpSubmission && state === 'selected' && (
-                      <span className="px-1.5 py-0.5 text-xs rounded bg-amber-500 text-white font-medium">
+                      <span className="px-1.5 py-0.5 text-xs rounded bg-green-600 text-white font-medium">
                         MVP needed
                       </span>
                     )}

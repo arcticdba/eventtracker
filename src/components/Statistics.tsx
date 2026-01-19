@@ -129,13 +129,21 @@ export function Statistics({ events, submissions }: Props) {
     data.events.sort((a, b) => b.date.localeCompare(a.date))
   })
   const topCountries = Object.entries(eventsByCountry)
-    .sort((a, b) => b[1].count - a[1].count)
+    .sort((a, b) => {
+      // Sort "Online" last
+      if (a[0] === 'Online') return 1
+      if (b[0] === 'Online') return -1
+      return b[1].count - a[1].count
+    })
     .slice(0, 10)
 
   // Cities with events (excluding remote)
   const citiesWithEvents = eventsWithSelected
     .filter(e => e.city && !e.remote)
     .map(e => ({ city: e.city, country: e.country, name: e.name, date: e.dateStart }))
+
+  // Countries visited (excluding remote)
+  const countriesVisited = [...new Set(eventsWithSelected.filter(e => !e.remote && e.country).map(e => e.country))].sort()
 
   // Overall stats
   const totalEventsWithSelected = eventsWithSelected.length
@@ -263,7 +271,12 @@ export function Statistics({ events, submissions }: Props) {
           {Object.keys(eventsByRegion).length > 0 ? (
             <div className="space-y-2">
               {Object.entries(eventsByRegion)
-                .sort((a, b) => b[1] - a[1])
+                .sort((a, b) => {
+                  // Sort "Remote" last
+                  if (a[0] === 'Remote') return 1
+                  if (b[0] === 'Remote') return -1
+                  return b[1] - a[1]
+                })
                 .map(([region, count]) => (
                   <div key={region} className="flex items-center gap-2">
                     <span className="w-28 text-sm text-gray-600 truncate">{region}</span>
@@ -387,6 +400,22 @@ export function Statistics({ events, submissions }: Props) {
           </div>
         ) : (
           <p className="text-gray-400 text-sm">No selected events yet</p>
+        )}
+      </div>
+
+      {/* Countries Visited */}
+      <div className="bg-white rounded-lg shadow p-4">
+        <h3 className="text-lg font-semibold mb-4">Countries Visited ({uniqueCountries})</h3>
+        {countriesVisited.length > 0 ? (
+          <div className="flex flex-wrap gap-2">
+            {countriesVisited.map(country => (
+              <span key={country} className="px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-sm">
+                {country}
+              </span>
+            ))}
+          </div>
+        ) : (
+          <p className="text-gray-400 text-sm">No countries visited yet</p>
         )}
       </div>
 
