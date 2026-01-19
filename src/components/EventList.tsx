@@ -228,7 +228,7 @@ export function EventList({ events, submissions, onEdit, onDelete, onSelect, onD
                     )}
                     {!event.mvpSubmission && state === 'selected' && (
                       <span className="px-1.5 py-0.5 text-xs rounded bg-green-600 text-white font-medium">
-                        MVP needed
+                        MVP submission needed
                       </span>
                     )}
                     <span
