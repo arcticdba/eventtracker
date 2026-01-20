@@ -43,6 +43,24 @@ export function EventForm({ event, initialData, onSave, onCancel }: Props) {
   const [newHotelName, setNewHotelName] = useState('')
   const [newHotelRef, setNewHotelRef] = useState('')
 
+  // Update form when initialData changes (e.g., after import while form is open)
+  useEffect(() => {
+    if (initialData && !event) {
+      setName(initialData.name || '')
+      setCountry(initialData.country || '')
+      setCity(initialData.city || '')
+      setDateStart(initialData.dateStart || '')
+      setDateEnd(initialData.dateEnd || '')
+      setRemote(initialData.remote || false)
+      setCallForContentUrl(initialData.callForContentUrl || '')
+      setCallForContentLastDate(initialData.callForContentLastDate || '')
+      setLoginTool(initialData.loginTool || '')
+      setTravel(initialData.travel || [])
+      setHotels(initialData.hotels || [])
+      setMvpSubmission(initialData.mvpSubmission || false)
+    }
+  }, [initialData, event])
+
   // Handle Escape key to cancel
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -107,6 +125,7 @@ export function EventForm({ event, initialData, onSave, onCancel }: Props) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 p-4 bg-gray-50 rounded-lg">
+      <h3 className="text-sm font-semibold text-gray-800">Event Details</h3>
       <div>
         <label className="block text-sm font-medium text-gray-700">Name</label>
         <input
@@ -117,7 +136,7 @@ export function EventForm({ event, initialData, onSave, onCancel }: Props) {
           required
         />
       </div>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-3 gap-4">
         <div>
           <label className="block text-sm font-medium text-gray-700">Country</label>
           <input
@@ -136,27 +155,17 @@ export function EventForm({ event, initialData, onSave, onCancel }: Props) {
             className="mt-1 block w-full rounded border-gray-300 shadow-sm px-3 py-2 border"
           />
         </div>
-      </div>
-      <div className="flex items-center gap-4">
-        <div className="flex items-center gap-2">
-          <input
-            type="checkbox"
-            id="remote"
-            checked={remote}
-            onChange={e => setRemote(e.target.checked)}
-            className="rounded border-gray-300"
-          />
-          <label htmlFor="remote" className="text-sm text-gray-700">Remote event</label>
-        </div>
-        <div className="flex items-center gap-2">
-          <input
-            type="checkbox"
-            id="mvpSubmission"
-            checked={mvpSubmission}
-            onChange={e => setMvpSubmission(e.target.checked)}
-            className="rounded border-gray-300"
-          />
-          <label htmlFor="mvpSubmission" className="text-sm text-gray-700">MVP Submission</label>
+        <div className="flex items-end pb-2">
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              id="remote"
+              checked={remote}
+              onChange={e => setRemote(e.target.checked)}
+              className="rounded border-gray-300"
+            />
+            <label htmlFor="remote" className="text-sm text-gray-700">Remote event</label>
+          </div>
         </div>
       </div>
       <div className="grid grid-cols-2 gap-4">
@@ -212,8 +221,21 @@ export function EventForm({ event, initialData, onSave, onCancel }: Props) {
         />
       </div>
 
-      {/* Travel Bookings */}
       <div className="border-t pt-4">
+        <h3 className="text-sm font-semibold text-gray-800 mb-3">Event Logistics</h3>
+        <div className="flex items-center gap-2 mb-4">
+          <input
+            type="checkbox"
+            id="mvpSubmission"
+            checked={mvpSubmission}
+            onChange={e => setMvpSubmission(e.target.checked)}
+            className="rounded border-gray-300"
+          />
+          <label htmlFor="mvpSubmission" className="text-sm text-gray-700">MVP Submission</label>
+        </div>
+
+        {/* Travel Bookings */}
+        <div className="mb-4">
         <div className="flex justify-between items-center mb-2">
           <label className="block text-sm font-medium text-gray-700">Travel</label>
           {!showAddTravel && (
@@ -293,10 +315,10 @@ export function EventForm({ event, initialData, onSave, onCancel }: Props) {
         {travel.length === 0 && !showAddTravel && (
           <p className="text-sm text-gray-400">No travel booked</p>
         )}
-      </div>
+        </div>
 
-      {/* Hotel Bookings */}
-      <div className="border-t pt-4">
+        {/* Hotel Bookings */}
+        <div>
         <div className="flex justify-between items-center mb-2">
           <label className="block text-sm font-medium text-gray-700">Hotels</label>
           {!showAddHotel && (
@@ -378,6 +400,7 @@ export function EventForm({ event, initialData, onSave, onCancel }: Props) {
         {hotels.length === 0 && !showAddHotel && (
           <p className="text-sm text-gray-400">No hotel booked</p>
         )}
+        </div>
       </div>
 
       <div className="flex gap-2 border-t pt-4">

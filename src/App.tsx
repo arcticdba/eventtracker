@@ -9,6 +9,7 @@ import { SubmissionList } from './components/SubmissionList'
 import { SessionPicker } from './components/SessionPicker'
 import { ImportFromSessionize } from './components/ImportFromSessionize'
 import { Statistics } from './components/Statistics'
+import { MonthlyEventsBar } from './components/MonthlyEventsBar'
 
 type Tab = 'events' | 'sessions' | 'statistics'
 
@@ -33,6 +34,9 @@ export default function App() {
   // Persistent filter state for SessionList
   const [sessionShowActive, setSessionShowActive] = useState(true)
   const [sessionShowRetired, setSessionShowRetired] = useState(false)
+
+  // Month filter from the timeline bar
+  const [selectedMonth, setSelectedMonth] = useState<number | null>(null)
 
   useEffect(() => {
     loadData()
@@ -185,6 +189,15 @@ export default function App() {
     ? submissions.filter(s => s.eventId === selectedEvent.id)
     : []
 
+  // Filter events by selected month
+  const currentYear = new Date().getFullYear()
+  const filteredEvents = selectedMonth !== null
+    ? events.filter(event => {
+        const date = new Date(event.dateStart)
+        return date.getFullYear() === currentYear && date.getMonth() === selectedMonth
+      })
+    : events
+
   return (
     <div className="h-screen flex flex-col bg-gray-100 overflow-hidden">
       <header className="bg-white shadow flex-shrink-0">
@@ -230,6 +243,15 @@ export default function App() {
           </div>
         </div>
 
+        {activeTab === 'events' && (
+          <MonthlyEventsBar
+            events={events}
+            submissions={submissions}
+            selectedMonth={selectedMonth}
+            onMonthSelect={setSelectedMonth}
+          />
+        )}
+
         {activeTab === 'statistics' ? (
           <div className="flex-1 overflow-y-auto">
             <Statistics events={events} submissions={submissions} />
@@ -241,7 +263,22 @@ export default function App() {
               {activeTab === 'events' ? (
                 <>
                   <div className="flex justify-between items-center mb-4 flex-shrink-0">
-                    <h2 className="text-lg font-semibold">Events</h2>
+                    <div className="flex items-center gap-2">
+                      <h2 className="text-lg font-semibold">Events</h2>
+                      {selectedMonth !== null && (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-blue-100 text-blue-700 text-sm rounded-full">
+                          {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][selectedMonth]} {currentYear}
+                          <button
+                            onClick={() => setSelectedMonth(null)}
+                            className="hover:bg-blue-200 rounded-full p-0.5"
+                          >
+                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                          </button>
+                        </span>
+                      )}
+                    </div>
                     <div className="flex gap-2">
                       <button
                         onClick={() => setShowImportModal(true)}
@@ -267,7 +304,7 @@ export default function App() {
                       />
                     ) : (
                       <EventList
-                        events={events}
+                        events={filteredEvents}
                         submissions={submissions}
                         onEdit={e => { setEditingEvent(e); setShowEventForm(true) }}
                         onDelete={handleDeleteEvent}
