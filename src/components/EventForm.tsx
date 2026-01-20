@@ -7,6 +7,7 @@ interface Props {
   initialData?: Omit<Event, 'id'>
   onSave: (data: Omit<Event, 'id'>) => void
   onCancel: () => void
+  showMvpFeatures?: boolean
 }
 
 const travelTypeLabels: Record<TravelType, string> = {
@@ -17,7 +18,7 @@ const travelTypeLabels: Record<TravelType, string> = {
   other: 'Other'
 }
 
-export function EventForm({ event, initialData, onSave, onCancel }: Props) {
+export function EventForm({ event, initialData, onSave, onCancel, showMvpFeatures = true }: Props) {
   // Use event first (for editing), then initialData (for import), then empty
   const source = event || initialData
   const [name, setName] = useState(source?.name || '')
@@ -31,7 +32,9 @@ export function EventForm({ event, initialData, onSave, onCancel }: Props) {
   const [loginTool, setLoginTool] = useState(source?.loginTool || '')
   const [travel, setTravel] = useState<TravelBooking[]>(source?.travel || [])
   const [hotels, setHotels] = useState<HotelBooking[]>(source?.hotels || [])
-  const [mvpSubmission, setMvpSubmission] = useState(source?.mvpSubmission || false)
+  // Default mvpSubmission to true when MVP features are hidden, so events created
+  // during that time won't suddenly need MVP submission when re-enabled
+  const [mvpSubmission, setMvpSubmission] = useState(source?.mvpSubmission ?? !showMvpFeatures)
 
   // Add travel form state
   const [showAddTravel, setShowAddTravel] = useState(false)
@@ -57,9 +60,9 @@ export function EventForm({ event, initialData, onSave, onCancel }: Props) {
       setLoginTool(initialData.loginTool || '')
       setTravel(initialData.travel || [])
       setHotels(initialData.hotels || [])
-      setMvpSubmission(initialData.mvpSubmission || false)
+      setMvpSubmission(initialData.mvpSubmission ?? !showMvpFeatures)
     }
-  }, [initialData, event])
+  }, [initialData, event, showMvpFeatures])
 
   // Handle Escape key to cancel
   useEffect(() => {
@@ -223,16 +226,18 @@ export function EventForm({ event, initialData, onSave, onCancel }: Props) {
 
       <div className="border-t pt-4">
         <h3 className="text-sm font-semibold text-gray-800 mb-3">Event Logistics</h3>
-        <div className="flex items-center gap-2 mb-4">
-          <input
-            type="checkbox"
-            id="mvpSubmission"
-            checked={mvpSubmission}
-            onChange={e => setMvpSubmission(e.target.checked)}
-            className="rounded border-gray-300"
-          />
-          <label htmlFor="mvpSubmission" className="text-sm text-gray-700">MVP Submission</label>
-        </div>
+        {showMvpFeatures && (
+          <div className="flex items-center gap-2 mb-4">
+            <input
+              type="checkbox"
+              id="mvpSubmission"
+              checked={mvpSubmission}
+              onChange={e => setMvpSubmission(e.target.checked)}
+              className="rounded border-gray-300"
+            />
+            <label htmlFor="mvpSubmission" className="text-sm text-gray-700">MVP Submission</label>
+          </div>
+        )}
 
         {/* Travel Bookings */}
         <div className="mb-4">

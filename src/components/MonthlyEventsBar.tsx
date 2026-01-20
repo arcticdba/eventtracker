@@ -66,7 +66,7 @@ export function MonthlyEventsBar({ events, submissions, selectedMonth, onMonthSe
   return (
     <div className="bg-white rounded-lg shadow px-4 py-3 mb-4 flex-shrink-0">
       <div className="flex items-center gap-2 mb-2">
-        <h3 className="text-sm font-medium text-gray-700">Events {currentYear}</h3>
+        <h3 className="text-sm font-medium text-gray-700">Monthly View {currentYear}</h3>
         <span className="text-xs text-gray-500">
           ({events.filter(e => new Date(e.dateStart).getFullYear() === currentYear).length} total)
         </span>

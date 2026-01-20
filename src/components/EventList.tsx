@@ -16,6 +16,7 @@ interface Props {
   onFiltersChange: (filters: Set<EventState>) => void
   futureOnly: boolean
   onFutureOnlyChange: (futureOnly: boolean) => void
+  showMvpFeatures?: boolean
 }
 
 const allStates: EventState[] = ['pending', 'selected', 'rejected', 'declined', 'none']
@@ -127,7 +128,7 @@ function formatLocation(country: string, city: string, remote: boolean): string 
   return parts.join(', ') || 'No location'
 }
 
-export function EventList({ events, submissions, onEdit, onDelete, onSelect, onDecline, onToggleRemote, onToggleMvpSubmission, selectedEventId, filters, onFiltersChange, futureOnly, onFutureOnlyChange }: Props) {
+export function EventList({ events, submissions, onEdit, onDelete, onSelect, onDecline, onToggleRemote, onToggleMvpSubmission, selectedEventId, filters, onFiltersChange, futureOnly, onFutureOnlyChange, showMvpFeatures = true }: Props) {
   const toggleFilter = (state: EventState) => {
     const newFilters = new Set(filters)
     if (newFilters.has(state)) {
@@ -145,8 +146,8 @@ export function EventList({ events, submissions, onEdit, onDelete, onSelect, onD
     .filter(event => {
       const eventState = computeEventState(event.id, submissions)
 
-      // Always show selected events without MVP submission
-      const showDueToMvp = !event.mvpSubmission && eventState === 'selected'
+      // Always show selected events without MVP submission (only when MVP features enabled)
+      const showDueToMvp = showMvpFeatures && !event.mvpSubmission && eventState === 'selected'
 
       // Filter by future/past (but always include non-MVP selected events)
       if (futureOnly && !showDueToMvp) {
@@ -216,7 +217,7 @@ export function EventList({ events, submissions, onEdit, onDelete, onSelect, onD
                   onClick={() => onSelect(event)}
                   onDoubleClick={() => onEdit(event)}
                   className={`p-3 border rounded-lg cursor-pointer transition ${
-                    !event.mvpSubmission && state === 'selected'
+                    showMvpFeatures && !event.mvpSubmission && state === 'selected'
                       ? 'bg-green-50 border-green-400 border-2'
                       : stateBackgrounds[state]
                   } ${isSelected ? 'ring-2 ring-blue-500' : ''}`}
@@ -291,7 +292,7 @@ export function EventList({ events, submissions, onEdit, onDelete, onSelect, onD
                       </svg>
                     </span>
                   </div>
-                  {!event.mvpSubmission && state === 'selected' && (
+                  {showMvpFeatures && !event.mvpSubmission && state === 'selected' && (
                     <div className="mt-1">
                       <span className="px-1.5 py-0.5 text-xs rounded bg-red-600 text-white font-medium">
                         MVP submission needed
@@ -341,18 +342,20 @@ export function EventList({ events, submissions, onEdit, onDelete, onSelect, onD
                     </ContextMenu.ItemIndicator>
                     <span className={event.remote ? '' : 'ml-6'}>Remote event</span>
                   </ContextMenu.CheckboxItem>
-                  <ContextMenu.CheckboxItem
-                    className="flex items-center px-2 py-1.5 text-sm rounded hover:bg-gray-100 cursor-pointer outline-none"
-                    checked={event.mvpSubmission}
-                    onCheckedChange={() => onToggleMvpSubmission(event.id)}
-                  >
-                    <ContextMenu.ItemIndicator className="w-4 mr-2">
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                    </ContextMenu.ItemIndicator>
-                    <span className={event.mvpSubmission ? '' : 'ml-6'}>MVP submission</span>
-                  </ContextMenu.CheckboxItem>
+                  {showMvpFeatures && (
+                    <ContextMenu.CheckboxItem
+                      className="flex items-center px-2 py-1.5 text-sm rounded hover:bg-gray-100 cursor-pointer outline-none"
+                      checked={event.mvpSubmission}
+                      onCheckedChange={() => onToggleMvpSubmission(event.id)}
+                    >
+                      <ContextMenu.ItemIndicator className="w-4 mr-2">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                      </ContextMenu.ItemIndicator>
+                      <span className={event.mvpSubmission ? '' : 'ml-6'}>MVP submission</span>
+                    </ContextMenu.CheckboxItem>
+                  )}
                 </ContextMenu.Content>
               </ContextMenu.Portal>
             </ContextMenu.Root>

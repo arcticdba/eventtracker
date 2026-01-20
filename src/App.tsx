@@ -10,6 +10,8 @@ import { SessionPicker } from './components/SessionPicker'
 import { ImportFromSessionize } from './components/ImportFromSessionize'
 import { Statistics } from './components/Statistics'
 import { MonthlyEventsBar } from './components/MonthlyEventsBar'
+import { WeeklyEventsBar } from './components/WeeklyEventsBar'
+import { Settings, UISettings } from './components/Settings'
 
 type Tab = 'events' | 'sessions' | 'statistics'
 
@@ -37,6 +39,14 @@ export default function App() {
 
   // Month filter from the timeline bar
   const [selectedMonth, setSelectedMonth] = useState<number | null>(null)
+
+  // Settings
+  const [showSettings, setShowSettings] = useState(false)
+  const [uiSettings, setUISettings] = useState<UISettings>({
+    showMonthView: true,
+    showWeekView: true,
+    showMvpFeatures: true
+  })
 
   useEffect(() => {
     loadData()
@@ -201,8 +211,18 @@ export default function App() {
   return (
     <div className="h-screen flex flex-col bg-gray-100 overflow-hidden">
       <header className="bg-white shadow flex-shrink-0">
-        <div className="max-w-6xl mx-auto px-4 py-4">
+        <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
           <h1 className="text-2xl font-bold text-gray-900">Speaking Event Tracker</h1>
+          <button
+            onClick={() => setShowSettings(true)}
+            className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg"
+            title="Settings"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+          </button>
         </div>
       </header>
 
@@ -244,12 +264,22 @@ export default function App() {
         </div>
 
         {activeTab === 'events' && (
-          <MonthlyEventsBar
-            events={events}
-            submissions={submissions}
-            selectedMonth={selectedMonth}
-            onMonthSelect={setSelectedMonth}
-          />
+          <>
+            {uiSettings.showMonthView && (
+              <MonthlyEventsBar
+                events={events}
+                submissions={submissions}
+                selectedMonth={selectedMonth}
+                onMonthSelect={setSelectedMonth}
+              />
+            )}
+            {uiSettings.showWeekView && (
+              <WeeklyEventsBar
+                events={events}
+                submissions={submissions}
+              />
+            )}
+          </>
         )}
 
         {activeTab === 'statistics' ? (
@@ -301,6 +331,7 @@ export default function App() {
                         initialData={importedEventData || undefined}
                         onSave={handleSaveEvent}
                         onCancel={() => { setShowEventForm(false); setEditingEvent(null); setImportedEventData(null) }}
+                        showMvpFeatures={uiSettings.showMvpFeatures}
                       />
                     ) : (
                       <EventList
@@ -317,6 +348,7 @@ export default function App() {
                         onFiltersChange={setEventFilters}
                         futureOnly={eventFutureOnly}
                         onFutureOnlyChange={setEventFutureOnly}
+                        showMvpFeatures={uiSettings.showMvpFeatures}
                       />
                     )}
                   </div>
@@ -415,6 +447,14 @@ export default function App() {
             setEditingEvent(null)
           }}
           onCancel={() => setShowImportModal(false)}
+        />
+      )}
+
+      {showSettings && (
+        <Settings
+          settings={uiSettings}
+          onSettingsChange={setUISettings}
+          onClose={() => setShowSettings(false)}
         />
       )}
     </div>
