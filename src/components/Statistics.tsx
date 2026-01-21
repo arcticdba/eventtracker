@@ -13,7 +13,7 @@ const countryToRegion: Record<string, string> = {
   'Germany': 'Europe', 'France': 'Europe', 'Spain': 'Europe', 'Italy': 'Europe', 'Netherlands': 'Europe',
   'The Netherlands': 'Europe', 'Belgium': 'Europe', 'Sweden': 'Europe', 'Norway': 'Europe', 'Denmark': 'Europe',
   'Finland': 'Europe', 'Poland': 'Europe', 'Austria': 'Europe', 'Switzerland': 'Europe', 'Ireland': 'Europe',
-  'Portugal': 'Europe', 'Czech Republic': 'Europe', 'Czechia': 'Europe', 'Hungary': 'Europe', 'Romania': 'Europe',
+  'Portugal': 'Europe', 'Czechia': 'Europe', 'Hungary': 'Europe', 'Romania': 'Europe',
   'Greece': 'Europe', 'Croatia': 'Europe', 'Slovenia': 'Europe', 'Slovakia': 'Europe', 'Bulgaria': 'Europe',
   'Serbia': 'Europe', 'Ukraine': 'Europe', 'Lithuania': 'Europe', 'Latvia': 'Europe', 'Estonia': 'Europe',
   'Iceland': 'Europe', 'Malta': 'Europe',

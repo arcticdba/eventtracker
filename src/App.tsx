@@ -33,6 +33,7 @@ export default function App() {
   // Persistent filter state for EventList
   const [eventFilters, setEventFilters] = useState<Set<EventState>>(new Set())
   const [eventFutureOnly, setEventFutureOnly] = useState(true)
+  const [eventMvpCompletedOnly, setEventMvpCompletedOnly] = useState(false)
 
   // Persistent filter state for SessionList
   const [sessionShowActive, setSessionShowActive] = useState(true)
@@ -40,6 +41,9 @@ export default function App() {
 
   // Month filter from the timeline bar
   const [selectedMonth, setSelectedMonth] = useState<number | null>(null)
+
+  // Event list counts for header display
+  const [eventListCounts, setEventListCounts] = useState<{ filtered: number; total: number }>({ filtered: 0, total: 0 })
 
   // Settings
   const [showSettings, setShowSettings] = useState(false)
@@ -307,6 +311,9 @@ export default function App() {
                   <div className="flex justify-between items-center mb-4 flex-shrink-0">
                     <div className="flex items-center gap-2">
                       <h2 className="text-lg font-semibold">Events</h2>
+                      <span className="text-xs text-gray-400">
+                        ({eventListCounts.filtered} of {eventListCounts.total})
+                      </span>
                       {selectedMonth !== null && (
                         <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-blue-100 text-blue-700 text-sm rounded-full">
                           {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][selectedMonth]} {currentYear}
@@ -361,6 +368,9 @@ export default function App() {
                         futureOnly={eventFutureOnly}
                         onFutureOnlyChange={setEventFutureOnly}
                         showMvpFeatures={uiSettings.showMvpFeatures}
+                        mvpCompletedOnly={eventMvpCompletedOnly}
+                        onMvpCompletedOnlyChange={setEventMvpCompletedOnly}
+                        onFilteredCountChange={(filtered, total) => setEventListCounts({ filtered, total })}
                       />
                     )}
                   </div>

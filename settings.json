@@ -1,5 +1,5 @@
 {
-  "showMonthView": true,
+  "showMonthView": false,
   "showWeekView": true,
   "showMvpFeatures": true
 }

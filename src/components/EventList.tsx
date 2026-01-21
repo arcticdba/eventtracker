@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import * as ContextMenu from '@radix-ui/react-context-menu'
 import { Event, Submission, EventState } from '../types'
 import { computeEventState } from '../utils/computeEventState'
@@ -17,6 +18,9 @@ interface Props {
   futureOnly: boolean
   onFutureOnlyChange: (futureOnly: boolean) => void
   showMvpFeatures?: boolean
+  mvpCompletedOnly: boolean
+  onMvpCompletedOnlyChange: (value: boolean) => void
+  onFilteredCountChange?: (filtered: number, total: number) => void
 }
 
 const allStates: EventState[] = ['pending', 'selected', 'rejected', 'declined', 'none']
@@ -128,7 +132,7 @@ function formatLocation(country: string, city: string, remote: boolean): string 
   return parts.join(', ') || 'No location'
 }
 
-export function EventList({ events, submissions, onEdit, onDelete, onSelect, onDecline, onToggleRemote, onToggleMvpSubmission, selectedEventId, filters, onFiltersChange, futureOnly, onFutureOnlyChange, showMvpFeatures = true }: Props) {
+export function EventList({ events, submissions, onEdit, onDelete, onSelect, onDecline, onToggleRemote, onToggleMvpSubmission, selectedEventId, filters, onFiltersChange, futureOnly, onFutureOnlyChange, showMvpFeatures = true, mvpCompletedOnly, onMvpCompletedOnlyChange, onFilteredCountChange }: Props) {
   const toggleFilter = (state: EventState) => {
     const newFilters = new Set(filters)
     if (newFilters.has(state)) {
@@ -156,6 +160,14 @@ export function EventList({ events, submissions, onEdit, onDelete, onSelect, onD
         if (endDate < today) return false
       }
 
+      // Filter by MVP submission pending (only when MVP features enabled)
+      // Only show selected events that don't have MVP submission completed
+      if (showMvpFeatures && mvpCompletedOnly) {
+        if (eventState !== 'selected' || event.mvpSubmission) {
+          return false
+        }
+      }
+
       // Filter by state
       if (filters.size === 0) return true
       return filters.has(eventState)
@@ -165,42 +177,71 @@ export function EventList({ events, submissions, onEdit, onDelete, onSelect, onD
       return (b.dateStart || '').localeCompare(a.dateStart || '')
     })
 
+  useEffect(() => {
+    onFilteredCountChange?.(filteredEvents.length, events.length)
+  }, [filteredEvents.length, events.length, onFilteredCountChange])
+
   return (
-    <div className="space-y-3 px-0.5">
-      <div className="flex flex-wrap items-center gap-3">
-        <label className="flex items-center gap-1 text-sm">
-          <input
-            type="checkbox"
-            checked={futureOnly}
-            onChange={() => onFutureOnlyChange(!futureOnly)}
-            className="rounded border-gray-300"
-          />
-          <span>Future only</span>
-        </label>
-        <span className="text-gray-300">|</span>
-        <label className="text-sm text-gray-600">Status:</label>
-        {allStates.map(state => (
-          <label key={state} className="flex items-center gap-1 text-sm">
+    <div className="flex flex-col h-full px-0.5">
+      <div className="pb-3 flex-shrink-0 bg-white space-y-2">
+        <div className="flex items-center gap-3">
+          <label className="flex items-center gap-1 text-sm">
             <input
               type="checkbox"
-              checked={filters.has(state)}
-              onChange={() => toggleFilter(state)}
+              checked={futureOnly}
+              onChange={() => onFutureOnlyChange(!futureOnly)}
               className="rounded border-gray-300"
             />
-            <span>{stateLabels[state]}</span>
+            <span>Future only</span>
           </label>
-        ))}
-        <span className="text-xs text-gray-400">
-          ({filteredEvents.length} of {events.length})
-        </span>
+          <span className="text-gray-300">|</span>
+          <label className="flex items-center gap-1 text-sm">
+            <input
+              type="checkbox"
+              checked={filters.has('none')}
+              onChange={() => toggleFilter('none')}
+              className="rounded border-gray-300"
+            />
+            <span>{stateLabels['none']}</span>
+          </label>
+          {showMvpFeatures && (
+            <>
+              <span className="text-gray-300">|</span>
+              <label className="flex items-center gap-1 text-sm">
+                <input
+                  type="checkbox"
+                  checked={mvpCompletedOnly}
+                  onChange={() => onMvpCompletedOnlyChange(!mvpCompletedOnly)}
+                  className="rounded border-gray-300"
+                />
+                <span>MVP submission pending</span>
+              </label>
+            </>
+          )}
+        </div>
+        <div className="flex items-center gap-3">
+          <label className="text-sm text-gray-600">Status:</label>
+          {allStates.filter(s => s !== 'none').map(state => (
+            <label key={state} className="flex items-center gap-1 text-sm">
+              <input
+                type="checkbox"
+                checked={filters.has(state)}
+                onChange={() => toggleFilter(state)}
+                className="rounded border-gray-300"
+              />
+              <span>{stateLabels[state]}</span>
+            </label>
+          ))}
+        </div>
       </div>
 
-      {events.length === 0 ? (
-        <p className="text-gray-500 text-sm">No events yet. Create one to get started.</p>
-      ) : filteredEvents.length === 0 ? (
-        <p className="text-gray-500 text-sm">No events match this filter.</p>
-      ) : (
-        filteredEvents.map(event => {
+      <div className="flex-1 overflow-y-auto space-y-3">
+        {events.length === 0 ? (
+          <p className="text-gray-500 text-sm">No events yet. Create one to get started.</p>
+        ) : filteredEvents.length === 0 ? (
+          <p className="text-gray-500 text-sm">No events match this filter.</p>
+        ) : (
+          filteredEvents.map(event => {
           const state = computeEventState(event.id, submissions)
           const eventSubmissions = submissions.filter(s => s.eventId === event.id)
           const submissionCount = eventSubmissions.length
@@ -295,7 +336,7 @@ export function EventList({ events, submissions, onEdit, onDelete, onSelect, onD
                   {showMvpFeatures && !event.mvpSubmission && state === 'selected' && (
                     <div className="mt-1">
                       <span className="px-1.5 py-0.5 text-xs rounded bg-red-600 text-white font-medium">
-                        MVP submission needed
+                        MVP submission pending
                       </span>
                     </div>
                   )}
@@ -353,7 +394,7 @@ export function EventList({ events, submissions, onEdit, onDelete, onSelect, onD
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                         </svg>
                       </ContextMenu.ItemIndicator>
-                      <span className={event.mvpSubmission ? '' : 'ml-6'}>MVP submission</span>
+                      <span className={event.mvpSubmission ? '' : 'ml-6'}>MVP submission completed</span>
                     </ContextMenu.CheckboxItem>
                   )}
                 </ContextMenu.Content>
@@ -361,7 +402,8 @@ export function EventList({ events, submissions, onEdit, onDelete, onSelect, onD
             </ContextMenu.Root>
           )
         })
-      )}
+        )}
+      </div>
     </div>
   )
 }

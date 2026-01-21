@@ -43,6 +43,7 @@ RUN mkdir -p /data
 ENV NODE_ENV=production
 ENV PORT=3000
 ENV DATA_FILE=/data/data.json
+ENV SETTINGS_FILE=/data/settings.json
 
 # Expose port
 EXPOSE 3000

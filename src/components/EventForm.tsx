@@ -235,7 +235,7 @@ export function EventForm({ event, initialData, onSave, onCancel, showMvpFeature
               onChange={e => setMvpSubmission(e.target.checked)}
               className="rounded border-gray-300"
             />
-            <label htmlFor="mvpSubmission" className="text-sm text-gray-700">MVP Submission</label>
+            <label htmlFor="mvpSubmission" className="text-sm text-gray-700">MVP submission completed</label>
           </div>
         )}
 
