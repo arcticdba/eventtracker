@@ -1,8 +1,4 @@
-interface UISettings {
-  showMonthView: boolean
-  showWeekView: boolean
-  showMvpFeatures: boolean
-}
+import { UISettings } from '../api'
 
 interface SettingsProps {
   settings: UISettings
@@ -74,5 +70,3 @@ export function Settings({ settings, onSettingsChange, onClose }: SettingsProps)
     </div>
   )
 }
-
-export type { UISettings }

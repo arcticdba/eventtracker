@@ -11,7 +11,8 @@ import { ImportFromSessionize } from './components/ImportFromSessionize'
 import { Statistics } from './components/Statistics'
 import { MonthlyEventsBar } from './components/MonthlyEventsBar'
 import { WeeklyEventsBar } from './components/WeeklyEventsBar'
-import { Settings, UISettings } from './components/Settings'
+import { Settings } from './components/Settings'
+import { UISettings } from './api'
 
 type Tab = 'events' | 'sessions' | 'statistics'
 
@@ -50,7 +51,18 @@ export default function App() {
 
   useEffect(() => {
     loadData()
+    loadSettings()
   }, [])
+
+  async function loadSettings() {
+    const settings = await api.fetchSettings()
+    setUISettings(settings)
+  }
+
+  async function handleSettingsChange(settings: UISettings) {
+    setUISettings(settings)
+    await api.saveSettings(settings)
+  }
 
   async function loadData() {
     const [eventsData, sessionsData, submissionsData] = await Promise.all([
@@ -453,7 +465,7 @@ export default function App() {
       {showSettings && (
         <Settings
           settings={uiSettings}
-          onSettingsChange={setUISettings}
+          onSettingsChange={handleSettingsChange}
           onClose={() => setShowSettings(false)}
         />
       )}

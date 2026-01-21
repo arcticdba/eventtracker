@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from 'uuid'
 const app = express()
 const PORT = process.env.PORT || 3001
 const DATA_FILE = process.env.DATA_FILE || './data.json'
+const SETTINGS_FILE = process.env.SETTINGS_FILE || './settings.json'
 
 app.use(cors())
 app.use(express.json())
@@ -70,6 +71,12 @@ interface Data {
   submissions: Submission[]
 }
 
+interface Settings {
+  showMonthView: boolean
+  showWeekView: boolean
+  showMvpFeatures: boolean
+}
+
 function loadData(): Data {
   if (!existsSync(DATA_FILE)) {
     return { events: [], sessions: [], submissions: [] }
@@ -89,6 +96,43 @@ function loadData(): Data {
 function saveData(data: Data): void {
   writeFileSync(DATA_FILE, JSON.stringify(data, null, 2))
 }
+
+const defaultSettings: Settings = {
+  showMonthView: true,
+  showWeekView: true,
+  showMvpFeatures: true
+}
+
+function loadSettings(): Settings {
+  if (!existsSync(SETTINGS_FILE)) {
+    return defaultSettings
+  }
+  try {
+    const raw = readFileSync(SETTINGS_FILE, 'utf-8')
+    return { ...defaultSettings, ...JSON.parse(raw) }
+  } catch {
+    return defaultSettings
+  }
+}
+
+function saveSettings(settings: Settings): void {
+  writeFileSync(SETTINGS_FILE, JSON.stringify(settings, null, 2))
+}
+
+// Settings
+app.get('/api/settings', (_req, res) => {
+  res.json(loadSettings())
+})
+
+app.put('/api/settings', (req, res) => {
+  const settings: Settings = {
+    showMonthView: req.body.showMonthView ?? true,
+    showWeekView: req.body.showWeekView ?? true,
+    showMvpFeatures: req.body.showMvpFeatures ?? true
+  }
+  saveSettings(settings)
+  res.json(settings)
+})
 
 // Events
 app.get('/api/events', (_req, res) => {

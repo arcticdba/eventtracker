@@ -86,6 +86,27 @@ export async function deleteSubmission(id: string): Promise<void> {
   await fetch(`${API_BASE}/submissions/${id}`, { method: 'DELETE' })
 }
 
+// Settings
+export interface UISettings {
+  showMonthView: boolean
+  showWeekView: boolean
+  showMvpFeatures: boolean
+}
+
+export async function fetchSettings(): Promise<UISettings> {
+  const res = await fetch(`${API_BASE}/settings`)
+  return res.json()
+}
+
+export async function saveSettings(settings: UISettings): Promise<UISettings> {
+  const res = await fetch(`${API_BASE}/settings`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(settings)
+  })
+  return res.json()
+}
+
 // Import
 export async function importFromSessionize(url: string): Promise<Omit<Event, 'id'>> {
   const res = await fetch(`${API_BASE}/import/sessionize`, {
