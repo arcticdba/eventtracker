@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import * as ContextMenu from '@radix-ui/react-context-menu'
 import { Event, Submission, EventState } from '../types'
 import { computeEventState } from '../utils/computeEventState'
@@ -246,67 +246,137 @@ export function EventList({ events, submissions, onEdit, onDelete, onSelect, onD
     }
   }, [selectedEventId])
 
+  const [showMoreFilters, setShowMoreFilters] = useState(false)
+  const moreFiltersRef = useRef<HTMLDivElement>(null)
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (moreFiltersRef.current && !moreFiltersRef.current.contains(e.target as Node)) {
+        setShowMoreFilters(false)
+      }
+    }
+    if (showMoreFilters) {
+      document.addEventListener('mousedown', handleClickOutside)
+      return () => document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [showMoreFilters])
+
+  const allSelected = allStates.every(s => filters.has(s))
+  const selectAll = () => onFiltersChange(new Set(allStates))
+
+  // Count active secondary filters
+  const activeSecondaryFilters = [
+    futureOnly,
+    !filters.has('none'),
+    showMvpFeatures && mvpCompletedOnly,
+    notFullyBooked
+  ].filter(Boolean).length
+
+  const statePillStyles: Record<EventState, { active: string; inactive: string }> = {
+    pending: { active: 'bg-yellow-100 text-yellow-800 ring-1 ring-yellow-300', inactive: 'bg-gray-100 text-gray-500 hover:bg-gray-200' },
+    selected: { active: 'bg-green-100 text-green-800 ring-1 ring-green-300', inactive: 'bg-gray-100 text-gray-500 hover:bg-gray-200' },
+    rejected: { active: 'bg-red-100 text-red-800 ring-1 ring-red-300', inactive: 'bg-gray-100 text-gray-500 hover:bg-gray-200' },
+    declined: { active: 'bg-orange-100 text-orange-800 ring-1 ring-orange-300', inactive: 'bg-gray-100 text-gray-500 hover:bg-gray-200' },
+    none: { active: 'bg-gray-200 text-gray-800 ring-1 ring-gray-400', inactive: 'bg-gray-100 text-gray-500 hover:bg-gray-200' }
+  }
+
   return (
     <div className="flex flex-col h-full">
-      <div className="pb-3 flex-shrink-0 bg-white space-y-2 px-1">
-        <div className="flex items-center gap-3">
-          <label className="flex items-center gap-1 text-sm">
-            <input
-              type="checkbox"
-              checked={futureOnly}
-              onChange={() => onFutureOnlyChange(!futureOnly)}
-              className="rounded border-gray-300"
-            />
-            <span>Future only</span>
-          </label>
-          <span className="text-gray-300">|</span>
-          <label className="flex items-center gap-1 text-sm">
-            <input
-              type="checkbox"
-              checked={filters.has('none')}
-              onChange={() => toggleFilter('none')}
-              className="rounded border-gray-300"
-            />
-            <span>{stateLabels['none']}</span>
-          </label>
-          {showMvpFeatures && (
-            <>
-              <span className="text-gray-300">|</span>
-              <label className="flex items-center gap-1 text-sm">
-                <input
-                  type="checkbox"
-                  checked={mvpCompletedOnly}
-                  onChange={() => onMvpCompletedOnlyChange(!mvpCompletedOnly)}
-                  className="rounded border-gray-300"
-                />
-                <span>MVP submission pending</span>
-              </label>
-            </>
-          )}
-          <span className="text-gray-300">|</span>
-          <label className="flex items-center gap-1 text-sm">
-            <input
-              type="checkbox"
-              checked={notFullyBooked}
-              onChange={() => onNotFullyBookedChange(!notFullyBooked)}
-              className="rounded border-gray-300"
-            />
-            <span>Not fully booked</span>
-          </label>
-        </div>
-        <div className="flex items-center gap-3">
-          <label className="text-sm text-gray-600">Status:</label>
+      <div className="pb-3 flex-shrink-0 bg-white px-1">
+        <div className="flex items-center gap-2 flex-wrap">
+          {/* All button */}
+          <button
+            onClick={selectAll}
+            className={`px-2.5 py-1 text-xs font-medium rounded-full transition-colors ${
+              allSelected
+                ? 'bg-blue-100 text-blue-800 ring-1 ring-blue-300'
+                : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
+            }`}
+          >
+            All
+          </button>
+
+          {/* State filter pills */}
           {allStates.filter(s => s !== 'none').map(state => (
-            <label key={state} className="flex items-center gap-1 text-sm">
-              <input
-                type="checkbox"
-                checked={filters.has(state)}
-                onChange={() => toggleFilter(state)}
-                className="rounded border-gray-300"
-              />
-              <span>{stateLabels[state]}</span>
-            </label>
+            <button
+              key={state}
+              onClick={() => toggleFilter(state)}
+              className={`px-2.5 py-1 text-xs font-medium rounded-full transition-colors ${
+                filters.has(state) ? statePillStyles[state].active : statePillStyles[state].inactive
+              }`}
+            >
+              {stateLabels[state]}
+            </button>
           ))}
+
+          {/* Divider */}
+          <div className="w-px h-5 bg-gray-300 mx-1" />
+
+          {/* More filters dropdown */}
+          <div className="relative" ref={moreFiltersRef}>
+            <button
+              onClick={() => setShowMoreFilters(!showMoreFilters)}
+              className={`px-2.5 py-1 text-xs font-medium rounded-full transition-colors flex items-center gap-1 ${
+                activeSecondaryFilters > 0
+                  ? 'bg-blue-100 text-blue-800 ring-1 ring-blue-300'
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              }`}
+            >
+              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+              </svg>
+              More
+              {activeSecondaryFilters > 0 && (
+                <span className="bg-blue-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                  {activeSecondaryFilters}
+                </span>
+              )}
+            </button>
+
+            {showMoreFilters && (
+              <div className="absolute top-full left-0 mt-1 bg-white rounded-lg shadow-lg border p-2 z-20 min-w-[180px]">
+                <label className="flex items-center gap-2 px-2 py-1.5 hover:bg-gray-50 rounded cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={futureOnly}
+                    onChange={() => onFutureOnlyChange(!futureOnly)}
+                    className="rounded border-gray-300"
+                  />
+                  <span className="text-sm">Future only</span>
+                </label>
+                <label className="flex items-center gap-2 px-2 py-1.5 hover:bg-gray-50 rounded cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={filters.has('none')}
+                    onChange={() => toggleFilter('none')}
+                    className="rounded border-gray-300"
+                  />
+                  <span className="text-sm">No submissions</span>
+                </label>
+                {showMvpFeatures && (
+                  <label className="flex items-center gap-2 px-2 py-1.5 hover:bg-gray-50 rounded cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={mvpCompletedOnly}
+                      onChange={() => onMvpCompletedOnlyChange(!mvpCompletedOnly)}
+                      className="rounded border-gray-300"
+                    />
+                    <span className="text-sm">MVP pending</span>
+                  </label>
+                )}
+                <label className="flex items-center gap-2 px-2 py-1.5 hover:bg-gray-50 rounded cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={notFullyBooked}
+                    onChange={() => onNotFullyBookedChange(!notFullyBooked)}
+                    className="rounded border-gray-300"
+                  />
+                  <span className="text-sm">Not fully booked</span>
+                </label>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
