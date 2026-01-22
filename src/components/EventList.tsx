@@ -166,16 +166,8 @@ export function EventList({ events, submissions, onEdit, onDelete, onSelect, onD
         if (endDate < today) return false
       }
 
-      // Filter by MVP submission pending (only when MVP features enabled)
-      // Only show selected events that don't have MVP submission completed
-      if (showMvpFeatures && mvpCompletedOnly) {
-        if (eventState !== 'selected' || event.mvpSubmission) {
-          return false
-        }
-      }
-
-      // Filter by not fully booked (in-person selected upcoming events without both travel and hotel)
-      if (notFullyBooked) {
+      // Helper to check if event needs booking
+      const checkNeedsBooking = () => {
         const startDate = new Date(event.dateStart)
         startDate.setHours(0, 0, 0, 0)
         const isUpcoming = startDate > today
@@ -183,11 +175,29 @@ export function EventList({ events, submissions, onEdit, onDelete, onSelect, onD
         const hasTravel = (event.travel?.length ?? 0) > 0
         const hasHotel = (event.hotels?.length ?? 0) > 0
         const isFullyBooked = hasTravel && hasHotel
+        return eventState === 'selected' && isInPerson && isUpcoming && !isFullyBooked
+      }
 
-        // Only show selected, in-person, upcoming events that are NOT fully booked
-        if (eventState !== 'selected' || !isInPerson || !isUpcoming || isFullyBooked) {
+      // Helper to check if event needs MVP submission
+      const checkNeedsMvp = () => {
+        return eventState === 'selected' && !event.mvpSubmission
+      }
+
+      // Helper to check if event has no submissions (needs attention)
+      const checkNeedsSubmission = () => {
+        return eventState === 'none' && filters.has('none')
+      }
+
+      // When both filters are enabled, use OR logic (show if either condition matches)
+      // Also include events with no submissions if 'none' is in the filter
+      if (notFullyBooked && showMvpFeatures && mvpCompletedOnly) {
+        if (!checkNeedsBooking() && !checkNeedsMvp() && !checkNeedsSubmission()) {
           return false
         }
+      } else if (notFullyBooked) {
+        if (!checkNeedsBooking() && !checkNeedsSubmission()) return false
+      } else if (showMvpFeatures && mvpCompletedOnly) {
+        if (!checkNeedsMvp() && !checkNeedsSubmission()) return false
       }
 
       // Filter by state
@@ -246,134 +256,177 @@ export function EventList({ events, submissions, onEdit, onDelete, onSelect, onD
     }
   }, [selectedEventId])
 
-  const [showMoreFilters, setShowMoreFilters] = useState(false)
-  const moreFiltersRef = useRef<HTMLDivElement>(null)
+  const [showCustomFilters, setShowCustomFilters] = useState(false)
+  const customFiltersRef = useRef<HTMLDivElement>(null)
 
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (moreFiltersRef.current && !moreFiltersRef.current.contains(e.target as Node)) {
-        setShowMoreFilters(false)
+      if (customFiltersRef.current && !customFiltersRef.current.contains(e.target as Node)) {
+        setShowCustomFilters(false)
       }
     }
-    if (showMoreFilters) {
+    if (showCustomFilters) {
       document.addEventListener('mousedown', handleClickOutside)
       return () => document.removeEventListener('mousedown', handleClickOutside)
     }
-  }, [showMoreFilters])
+  }, [showCustomFilters])
 
-  const allSelected = allStates.every(s => filters.has(s))
-  const selectAll = () => onFiltersChange(new Set(allStates))
+  // Define filter presets
+  type PresetId = 'upcoming' | 'pending' | 'needs-attention' | 'history' | 'custom'
 
-  // Count active secondary filters
-  const activeSecondaryFilters = [
-    futureOnly,
-    !filters.has('none'),
-    showMvpFeatures && mvpCompletedOnly,
-    notFullyBooked
-  ].filter(Boolean).length
+  interface Preset {
+    id: PresetId
+    label: string
+    description: string
+    filters: Set<EventState>
+    futureOnly: boolean
+    notFullyBooked: boolean
+    mvpCompletedOnly: boolean
+  }
 
-  const statePillStyles: Record<EventState, { active: string; inactive: string }> = {
-    pending: { active: 'bg-yellow-100 text-yellow-800 ring-1 ring-yellow-300', inactive: 'bg-gray-100 text-gray-500 hover:bg-gray-200' },
-    selected: { active: 'bg-green-100 text-green-800 ring-1 ring-green-300', inactive: 'bg-gray-100 text-gray-500 hover:bg-gray-200' },
-    rejected: { active: 'bg-red-100 text-red-800 ring-1 ring-red-300', inactive: 'bg-gray-100 text-gray-500 hover:bg-gray-200' },
-    declined: { active: 'bg-orange-100 text-orange-800 ring-1 ring-orange-300', inactive: 'bg-gray-100 text-gray-500 hover:bg-gray-200' },
-    none: { active: 'bg-gray-200 text-gray-800 ring-1 ring-gray-400', inactive: 'bg-gray-100 text-gray-500 hover:bg-gray-200' }
+  const presets: Preset[] = [
+    {
+      id: 'upcoming',
+      label: 'Upcoming',
+      description: 'Confirmed upcoming events',
+      filters: new Set(['selected'] as EventState[]),
+      futureOnly: true,
+      notFullyBooked: false,
+      mvpCompletedOnly: false
+    },
+    {
+      id: 'pending',
+      label: 'Pending',
+      description: 'Awaiting decision or no submissions yet',
+      filters: new Set(['pending', 'none'] as EventState[]),
+      futureOnly: true,
+      notFullyBooked: false,
+      mvpCompletedOnly: false
+    },
+    {
+      id: 'needs-attention',
+      label: 'Needs attention',
+      description: 'Upcoming events needing booking, MVP submission, or submissions',
+      filters: new Set(['selected', 'none'] as EventState[]),
+      futureOnly: true,
+      notFullyBooked: true,
+      mvpCompletedOnly: true
+    },
+    {
+      id: 'history',
+      label: 'History',
+      description: 'Past events',
+      filters: new Set(['selected', 'rejected', 'declined'] as EventState[]),
+      futureOnly: false,
+      notFullyBooked: false,
+      mvpCompletedOnly: false
+    }
+  ]
+
+  // Detect which preset matches current filters
+  const setsEqual = (a: Set<EventState>, b: Set<EventState>) =>
+    a.size === b.size && [...a].every(x => b.has(x))
+
+  const activePreset = presets.find(p =>
+    setsEqual(p.filters, filters) &&
+    p.futureOnly === futureOnly &&
+    p.notFullyBooked === notFullyBooked &&
+    p.mvpCompletedOnly === mvpCompletedOnly
+  )?.id || 'custom'
+
+  const applyPreset = (preset: Preset) => {
+    onFiltersChange(preset.filters)
+    onFutureOnlyChange(preset.futureOnly)
+    onNotFullyBookedChange(preset.notFullyBooked)
+    onMvpCompletedOnlyChange(preset.mvpCompletedOnly)
+    setShowCustomFilters(false)
   }
 
   return (
     <div className="flex flex-col h-full">
       <div className="pb-3 flex-shrink-0 bg-white px-1">
-        <div className="flex items-center gap-2 flex-wrap">
-          {/* All button */}
-          <button
-            onClick={selectAll}
-            className={`px-2.5 py-1 text-xs font-medium rounded-full transition-colors ${
-              allSelected
-                ? 'bg-blue-100 text-blue-800 ring-1 ring-blue-300'
-                : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
-            }`}
-          >
-            All
-          </button>
-
-          {/* State filter pills */}
-          {allStates.filter(s => s !== 'none').map(state => (
+        <div className="flex items-center gap-1.5 flex-wrap">
+          {/* Preset buttons */}
+          {presets.map(preset => (
             <button
-              key={state}
-              onClick={() => toggleFilter(state)}
-              className={`px-2.5 py-1 text-xs font-medium rounded-full transition-colors ${
-                filters.has(state) ? statePillStyles[state].active : statePillStyles[state].inactive
+              key={preset.id}
+              onClick={() => applyPreset(preset)}
+              title={preset.description}
+              className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
+                activePreset === preset.id
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
               }`}
             >
-              {stateLabels[state]}
+              {preset.label}
             </button>
           ))}
 
-          {/* Divider */}
-          <div className="w-px h-5 bg-gray-300 mx-1" />
-
-          {/* More filters dropdown */}
-          <div className="relative" ref={moreFiltersRef}>
+          {/* Custom filters dropdown */}
+          <div className="relative" ref={customFiltersRef}>
             <button
-              onClick={() => setShowMoreFilters(!showMoreFilters)}
-              className={`px-2.5 py-1 text-xs font-medium rounded-full transition-colors flex items-center gap-1 ${
-                activeSecondaryFilters > 0
-                  ? 'bg-blue-100 text-blue-800 ring-1 ring-blue-300'
+              onClick={() => setShowCustomFilters(!showCustomFilters)}
+              title="Custom filters"
+              className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors flex items-center gap-1.5 ${
+                activePreset === 'custom'
+                  ? 'bg-blue-600 text-white'
                   : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
               }`}
             >
               <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
               </svg>
-              More
-              {activeSecondaryFilters > 0 && (
-                <span className="bg-blue-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
-                  {activeSecondaryFilters}
-                </span>
-              )}
+              Custom
             </button>
 
-            {showMoreFilters && (
-              <div className="absolute top-full left-0 mt-1 bg-white rounded-lg shadow-lg border p-2 z-20 min-w-[180px]">
-                <label className="flex items-center gap-2 px-2 py-1.5 hover:bg-gray-50 rounded cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={futureOnly}
-                    onChange={() => onFutureOnlyChange(!futureOnly)}
-                    className="rounded border-gray-300"
-                  />
-                  <span className="text-sm">Future only</span>
-                </label>
-                <label className="flex items-center gap-2 px-2 py-1.5 hover:bg-gray-50 rounded cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={filters.has('none')}
-                    onChange={() => toggleFilter('none')}
-                    className="rounded border-gray-300"
-                  />
-                  <span className="text-sm">No submissions</span>
-                </label>
-                {showMvpFeatures && (
-                  <label className="flex items-center gap-2 px-2 py-1.5 hover:bg-gray-50 rounded cursor-pointer">
+            {showCustomFilters && (
+              <div className="absolute top-full left-0 mt-1 bg-white rounded-lg shadow-lg border p-3 z-20 min-w-[220px]">
+                <div className="text-xs font-medium text-gray-500 mb-2">Status</div>
+                <div className="space-y-1 mb-3">
+                  {allStates.map(state => (
+                    <label key={state} className="flex items-center gap-2 px-2 py-1 hover:bg-gray-50 rounded cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={filters.has(state)}
+                        onChange={() => toggleFilter(state)}
+                        className="rounded border-gray-300"
+                      />
+                      <span className="text-sm">{stateLabels[state]}</span>
+                    </label>
+                  ))}
+                </div>
+                <div className="border-t pt-2 space-y-1">
+                  <label className="flex items-center gap-2 px-2 py-1 hover:bg-gray-50 rounded cursor-pointer">
                     <input
                       type="checkbox"
-                      checked={mvpCompletedOnly}
-                      onChange={() => onMvpCompletedOnlyChange(!mvpCompletedOnly)}
+                      checked={futureOnly}
+                      onChange={() => onFutureOnlyChange(!futureOnly)}
                       className="rounded border-gray-300"
                     />
-                    <span className="text-sm">MVP pending</span>
+                    <span className="text-sm">Future only</span>
                   </label>
-                )}
-                <label className="flex items-center gap-2 px-2 py-1.5 hover:bg-gray-50 rounded cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={notFullyBooked}
-                    onChange={() => onNotFullyBookedChange(!notFullyBooked)}
-                    className="rounded border-gray-300"
-                  />
-                  <span className="text-sm">Not fully booked</span>
-                </label>
+                  <label className="flex items-center gap-2 px-2 py-1 hover:bg-gray-50 rounded cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={notFullyBooked}
+                      onChange={() => onNotFullyBookedChange(!notFullyBooked)}
+                      className="rounded border-gray-300"
+                    />
+                    <span className="text-sm">Not fully booked</span>
+                  </label>
+                  {showMvpFeatures && (
+                    <label className="flex items-center gap-2 px-2 py-1 hover:bg-gray-50 rounded cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={mvpCompletedOnly}
+                        onChange={() => onMvpCompletedOnlyChange(!mvpCompletedOnly)}
+                        className="rounded border-gray-300"
+                      />
+                      <span className="text-sm">MVP pending</span>
+                    </label>
+                  )}
+                </div>
               </div>
             )}
           </div>

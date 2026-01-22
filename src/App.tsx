@@ -31,8 +31,8 @@ export default function App() {
   const [showImportModal, setShowImportModal] = useState(false)
   const [importedEventData, setImportedEventData] = useState<Omit<Event, 'id'> | null>(null)
 
-  // Persistent filter state for EventList
-  const [eventFilters, setEventFilters] = useState<Set<EventState>>(new Set())
+  // Persistent filter state for EventList (default: "Upcoming" preset)
+  const [eventFilters, setEventFilters] = useState<Set<EventState>>(new Set(['selected']))
   const [eventFutureOnly, setEventFutureOnly] = useState(true)
   const [eventMvpCompletedOnly, setEventMvpCompletedOnly] = useState(false)
   const [eventNotFullyBooked, setEventNotFullyBooked] = useState(false)

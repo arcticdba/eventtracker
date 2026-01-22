@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { UISettings, DateFormat } from '../api'
 import { DATE_FORMAT_OPTIONS } from '../utils/formatDate'
 
@@ -8,6 +9,17 @@ interface SettingsProps {
 }
 
 export function Settings({ settings, onSettingsChange, onClose }: SettingsProps) {
+  // Close on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose()
+      }
+    }
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [onClose])
+
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg shadow-xl w-full max-w-md">
