@@ -1,12 +1,16 @@
 import { useState } from 'react'
 import { Event, Submission } from '../types'
 import { computeEventState } from '../utils/computeEventState'
+import { formatDate } from '../utils/formatDate'
+import { DateFormat } from '../api'
 
 interface MonthlyEventsBarProps {
   events: Event[]
   submissions: Submission[]
   selectedMonth: number | null
   onMonthSelect: (month: number | null) => void
+  maxEventsPerMonth: number  // 0 = no limit
+  dateFormat: DateFormat
 }
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
@@ -35,7 +39,7 @@ function getEventDotColor(event: Event, submissions: Submission[], isPast: boole
   }
 }
 
-export function MonthlyEventsBar({ events, submissions, selectedMonth, onMonthSelect }: MonthlyEventsBarProps) {
+export function MonthlyEventsBar({ events, submissions, selectedMonth, onMonthSelect, maxEventsPerMonth, dateFormat }: MonthlyEventsBarProps) {
   const [hoveredMonth, setHoveredMonth] = useState<number | null>(null)
   const currentYear = new Date().getFullYear()
   const currentMonth = new Date().getMonth()
@@ -80,6 +84,8 @@ export function MonthlyEventsBar({ events, submissions, selectedMonth, onMonthSe
           const isPast = index < currentMonth
           const isHovered = hoveredMonth === index
           const isSelected = selectedMonth === index
+          const exceedsLimit = maxEventsPerMonth > 0 && count > maxEventsPerMonth
+          const atLimit = maxEventsPerMonth > 0 && count === maxEventsPerMonth
 
           return (
             <div
@@ -95,8 +101,10 @@ export function MonthlyEventsBar({ events, submissions, selectedMonth, onMonthSe
                   h-12 border-r border-gray-200 last:border-r-0 flex items-center justify-center cursor-pointer
                   transition-colors
                   ${isSelected ? 'bg-blue-100 ring-2 ring-blue-500 ring-inset' : ''}
-                  ${!isSelected && isCurrentMonth ? 'bg-blue-50' : ''}
-                  ${!isSelected && isHovered ? 'bg-gray-100' : ''}
+                  ${!isSelected && exceedsLimit ? 'bg-red-100' : ''}
+                  ${!isSelected && !exceedsLimit && atLimit ? 'bg-amber-50' : ''}
+                  ${!isSelected && !exceedsLimit && !atLimit && isCurrentMonth ? 'bg-blue-50' : ''}
+                  ${!isSelected && !exceedsLimit && !atLimit && !isCurrentMonth && isHovered ? 'bg-gray-100' : ''}
                 `}
               >
                 {/* Event dots/indicators */}
@@ -134,16 +142,20 @@ export function MonthlyEventsBar({ events, submissions, selectedMonth, onMonthSe
                       {MONTHS[index]} {currentYear}
                       <span className="text-gray-400 font-normal ml-2">
                         {count} event{count !== 1 ? 's' : ''}
+                        {maxEventsPerMonth > 0 && ` / ${maxEventsPerMonth} max`}
                       </span>
                     </div>
+                    {exceedsLimit && (
+                      <div className="mb-2 px-2 py-1 bg-red-500/20 rounded text-xs text-red-300">
+                        Exceeds monthly limit by {count - maxEventsPerMonth}
+                      </div>
+                    )}
                     {count > 0 ? (
                       <ul className="space-y-1.5">
                         {monthEvents.map(event => {
-                          const startDate = new Date(event.dateStart)
-                          const endDate = new Date(event.dateEnd)
-                          const dateStr = startDate.getTime() === endDate.getTime()
-                            ? startDate.toLocaleDateString('en-US', { day: 'numeric', month: 'short' })
-                            : `${startDate.toLocaleDateString('en-US', { day: 'numeric', month: 'short' })} - ${endDate.toLocaleDateString('en-US', { day: 'numeric', month: 'short' })}`
+                          const dateStr = event.dateStart === event.dateEnd || !event.dateEnd
+                            ? formatDate(event.dateStart, dateFormat)
+                            : `${formatDate(event.dateStart, dateFormat)} - ${formatDate(event.dateEnd, dateFormat)}`
 
                           return (
                             <li key={event.id} className="text-xs">

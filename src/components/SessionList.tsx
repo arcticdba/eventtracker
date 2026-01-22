@@ -43,11 +43,13 @@ export function SessionList({ sessions, events, submissions, onEdit, onDelete, o
     setExpandedSessions(newExpanded)
   }
 
-  const filteredSessions = sessions.filter(session => {
-    if (!showActive && !showRetired) return true
-    if (session.retired) return showRetired
-    return showActive
-  })
+  const filteredSessions = sessions
+    .filter(session => {
+      if (!showActive && !showRetired) return true
+      if (session.retired) return showRetired
+      return showActive
+    })
+    .sort((a, b) => a.name.localeCompare(b.name))
 
   return (
     <div className="space-y-3">

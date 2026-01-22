@@ -43,6 +43,7 @@ interface Event {
   travel: TravelBooking[]
   hotels: HotelBooking[]
   mvpSubmission: boolean
+  notes: string
 }
 
 interface Session {
@@ -63,6 +64,7 @@ interface Submission {
   eventId: string
   state: 'submitted' | 'selected' | 'rejected' | 'declined'
   nameUsed: string
+  notes: string
 }
 
 interface Data {
@@ -71,10 +73,15 @@ interface Data {
   submissions: Submission[]
 }
 
+type DateFormat = 'YYYY-MM-DD' | 'MM/DD/YYYY' | 'DD/MM/YYYY' | 'DD.MM.YYYY' | 'DD-MM-YYYY' | 'YYYY/MM/DD'
+
 interface Settings {
   showMonthView: boolean
   showWeekView: boolean
   showMvpFeatures: boolean
+  maxEventsPerMonth: number
+  maxEventsPerYear: number
+  dateFormat: DateFormat
 }
 
 function loadData(): Data {
@@ -100,7 +107,10 @@ function saveData(data: Data): void {
 const defaultSettings: Settings = {
   showMonthView: true,
   showWeekView: true,
-  showMvpFeatures: true
+  showMvpFeatures: true,
+  maxEventsPerMonth: 0,
+  maxEventsPerYear: 0,
+  dateFormat: 'YYYY-MM-DD'
 }
 
 function loadSettings(): Settings {
@@ -128,7 +138,10 @@ app.put('/api/settings', (req, res) => {
   const settings: Settings = {
     showMonthView: req.body.showMonthView ?? true,
     showWeekView: req.body.showWeekView ?? true,
-    showMvpFeatures: req.body.showMvpFeatures ?? true
+    showMvpFeatures: req.body.showMvpFeatures ?? true,
+    maxEventsPerMonth: req.body.maxEventsPerMonth ?? 0,
+    maxEventsPerYear: req.body.maxEventsPerYear ?? 0,
+    dateFormat: req.body.dateFormat ?? 'YYYY-MM-DD'
   }
   saveSettings(settings)
   res.json(settings)
@@ -252,7 +265,8 @@ app.post('/api/submissions', (req, res) => {
     sessionId: req.body.sessionId,
     eventId: req.body.eventId,
     state: 'submitted',
-    nameUsed: req.body.nameUsed || session?.name || ''
+    nameUsed: req.body.nameUsed || session?.name || '',
+    notes: req.body.notes || ''
   }
   data.submissions.push(newSubmission)
   saveData(data)
@@ -263,7 +277,10 @@ app.put('/api/submissions/:id', (req, res) => {
   const data = loadData()
   const index = data.submissions.findIndex(s => s.id === req.params.id)
   if (index === -1) return res.status(404).json({ error: 'Submission not found' })
-  data.submissions[index] = { ...data.submissions[index], state: req.body.state }
+  const updates: Partial<Submission> = {}
+  if (req.body.state !== undefined) updates.state = req.body.state
+  if (req.body.notes !== undefined) updates.notes = req.body.notes
+  data.submissions[index] = { ...data.submissions[index], ...updates }
   saveData(data)
   res.json(data.submissions[index])
 })
@@ -275,6 +292,83 @@ app.delete('/api/submissions/:id', (req, res) => {
   data.submissions.splice(index, 1)
   saveData(data)
   res.status(204).send()
+})
+
+// Export all data as JSON
+app.get('/api/export/json', (_req, res) => {
+  const data = loadData()
+  res.setHeader('Content-Type', 'application/json')
+  res.setHeader('Content-Disposition', `attachment; filename="eventtracker-backup-${new Date().toISOString().split('T')[0]}.json"`)
+  res.json(data)
+})
+
+// Export events as CSV
+app.get('/api/export/events.csv', (_req, res) => {
+  const data = loadData()
+  const headers = ['id', 'name', 'country', 'city', 'dateStart', 'dateEnd', 'remote', 'callForContentUrl', 'callForContentLastDate', 'loginTool', 'mvpSubmission', 'notes']
+  const rows = data.events.map(e => [
+    e.id,
+    `"${(e.name || '').replace(/"/g, '""')}"`,
+    `"${(e.country || '').replace(/"/g, '""')}"`,
+    `"${(e.city || '').replace(/"/g, '""')}"`,
+    e.dateStart,
+    e.dateEnd,
+    e.remote ? 'true' : 'false',
+    `"${(e.callForContentUrl || '').replace(/"/g, '""')}"`,
+    e.callForContentLastDate,
+    `"${(e.loginTool || '').replace(/"/g, '""')}"`,
+    e.mvpSubmission ? 'true' : 'false',
+    `"${((e as any).notes || '').replace(/"/g, '""')}"`
+  ].join(','))
+
+  res.setHeader('Content-Type', 'text/csv')
+  res.setHeader('Content-Disposition', 'attachment; filename="events.csv"')
+  res.send([headers.join(','), ...rows].join('\n'))
+})
+
+// Export sessions as CSV
+app.get('/api/export/sessions.csv', (_req, res) => {
+  const data = loadData()
+  const headers = ['id', 'name', 'level', 'abstract', 'summary', 'goals', 'elevatorPitch', 'retired', 'alternateNames']
+  const rows = data.sessions.map(s => [
+    s.id,
+    `"${(s.name || '').replace(/"/g, '""')}"`,
+    s.level,
+    `"${(s.abstract || '').replace(/"/g, '""')}"`,
+    `"${(s.summary || '').replace(/"/g, '""')}"`,
+    `"${(s.goals || '').replace(/"/g, '""')}"`,
+    `"${(s.elevatorPitch || '').replace(/"/g, '""')}"`,
+    s.retired ? 'true' : 'false',
+    `"${(s.alternateNames || []).join('; ').replace(/"/g, '""')}"`
+  ].join(','))
+
+  res.setHeader('Content-Type', 'text/csv')
+  res.setHeader('Content-Disposition', 'attachment; filename="sessions.csv"')
+  res.send([headers.join(','), ...rows].join('\n'))
+})
+
+// Export submissions as CSV
+app.get('/api/export/submissions.csv', (_req, res) => {
+  const data = loadData()
+  const headers = ['id', 'sessionId', 'eventId', 'state', 'nameUsed', 'notes', 'sessionName', 'eventName']
+  const rows = data.submissions.map(sub => {
+    const session = data.sessions.find(s => s.id === sub.sessionId)
+    const event = data.events.find(e => e.id === sub.eventId)
+    return [
+      sub.id,
+      sub.sessionId,
+      sub.eventId,
+      sub.state,
+      `"${(sub.nameUsed || '').replace(/"/g, '""')}"`,
+      `"${(sub.notes || '').replace(/"/g, '""')}"`,
+      `"${(session?.name || '').replace(/"/g, '""')}"`,
+      `"${(event?.name || '').replace(/"/g, '""')}"`
+    ].join(',')
+  })
+
+  res.setHeader('Content-Type', 'text/csv')
+  res.setHeader('Content-Disposition', 'attachment; filename="submissions.csv"')
+  res.send([headers.join(','), ...rows].join('\n'))
 })
 
 // Parse Sessionize CFS page

@@ -1,9 +1,13 @@
 import { useState } from 'react'
-import { Event, Submission } from '../types'
+import { Event, Session, Submission } from '../types'
+import { formatDate } from '../utils/formatDate'
+import { DateFormat } from '../api'
 
 interface Props {
   events: Event[]
+  sessions: Session[]
   submissions: Submission[]
+  dateFormat: DateFormat
 }
 
 // Map country names to regions
@@ -60,8 +64,9 @@ function getMonth(dateStr: string): number {
 
 const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
-export function Statistics({ events, submissions }: Props) {
+export function Statistics({ events, sessions, submissions, dateFormat }: Props) {
   const [selectedYear, setSelectedYear] = useState<number | null>(null)
+  const [showRetiredSessions, setShowRetiredSessions] = useState(false)
 
   // Get events with selected sessions
   const selectedSubmissions = submissions.filter(s => s.state === 'selected')
@@ -182,6 +187,61 @@ export function Statistics({ events, submissions }: Props) {
   const maxByYear = Math.max(...Object.values(eventsByYear), 1)
   const maxByRegion = Math.max(...Object.values(eventsByRegion), 1)
   const maxBySeason = Math.max(...Object.values(eventsBySeason), 1)
+
+  // Session performance statistics
+  const sessionStats = sessions
+    .filter(s => showRetiredSessions || !s.retired)
+    .map(session => {
+      const sessionSubs = filteredSubmissions.filter(sub => sub.sessionId === session.id)
+      const submitted = sessionSubs.length
+      const selected = sessionSubs.filter(s => s.state === 'selected').length
+      const rejected = sessionSubs.filter(s => s.state === 'rejected').length
+      const declined = sessionSubs.filter(s => s.state === 'declined').length
+      const pending = sessionSubs.filter(s => s.state === 'submitted').length
+      // Acceptance rate: selected / (selected + rejected) - only count submissions where conference made a decision
+      const decided = selected + rejected
+      const acceptanceRate = decided > 0 ? Math.round((selected / decided) * 100) : null
+      return {
+        session,
+        submitted,
+        selected,
+        rejected,
+        declined,
+        pending,
+        decided,
+        acceptanceRate
+      }
+    })
+    .filter(s => s.submitted > 0)
+    .sort((a, b) => {
+      // Sort by acceptance rate descending, then by number of selections
+      if (a.acceptanceRate === null && b.acceptanceRate === null) return b.selected - a.selected
+      if (a.acceptanceRate === null) return 1
+      if (b.acceptanceRate === null) return -1
+      if (a.acceptanceRate !== b.acceptanceRate) return b.acceptanceRate - a.acceptanceRate
+      return b.selected - a.selected
+    })
+
+  // Acceptance rate by level
+  const levelStats: Record<string, { submitted: number; selected: number; rejected: number; declined: number }> = {}
+  const levels = ['100', '200', '300', '400', '500']
+  levels.forEach(level => {
+    levelStats[level] = { submitted: 0, selected: 0, rejected: 0, declined: 0 }
+  })
+
+  sessions.filter(s => showRetiredSessions || !s.retired).forEach(session => {
+    const level = session.level
+    if (!levels.includes(level)) return
+    const sessionSubs = filteredSubmissions.filter(sub => sub.sessionId === session.id)
+    levelStats[level].submitted += sessionSubs.length
+    levelStats[level].selected += sessionSubs.filter(s => s.state === 'selected').length
+    levelStats[level].rejected += sessionSubs.filter(s => s.state === 'rejected').length
+    levelStats[level].declined += sessionSubs.filter(s => s.state === 'declined').length
+  })
+
+  // Categorize sessions by performance (using selected + rejected as the denominator)
+  const highPerforming = sessionStats.filter(s => s.acceptanceRate !== null && s.acceptanceRate >= 50 && s.decided >= 2)
+  const needsRework = sessionStats.filter(s => s.acceptanceRate !== null && s.acceptanceRate < 30 && s.decided >= 3)
 
   return (
     <div className="space-y-6">
@@ -370,7 +430,7 @@ export function Statistics({ events, submissions }: Props) {
                     fontSize: size > 40 ? '14px' : '12px'
                   }}
                   title={data.count > 0
-                    ? `${data.count} event${data.count !== 1 ? 's' : ''}:\n${data.events.map(e => `${e.name} (${e.date})`).join('\n')}`
+                    ? `${data.count} event${data.count !== 1 ? 's' : ''}:\n${data.events.map(e => `${e.name} (${formatDate(e.date, dateFormat)})`).join('\n')}`
                     : 'No events'
                   }
                 >
@@ -392,7 +452,7 @@ export function Statistics({ events, submissions }: Props) {
               <span
                 key={country}
                 className="px-3 py-1 bg-gray-100 rounded-full text-sm cursor-default"
-                title={data.events.map(e => `${e.name} (${e.date})`).join('\n')}
+                title={data.events.map(e => `${e.name} (${formatDate(e.date, dateFormat)})`).join('\n')}
               >
                 {country}: <strong>{data.count}</strong>
               </span>
@@ -417,6 +477,183 @@ export function Statistics({ events, submissions }: Props) {
         ) : (
           <p className="text-gray-400 text-sm">No countries visited yet</p>
         )}
+      </div>
+
+      {/* Session Performance Section */}
+      <div className="border-t pt-6 mt-6">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-xl font-bold">Session Performance</h2>
+          <label className="flex items-center gap-2 text-sm">
+            <input
+              type="checkbox"
+              checked={showRetiredSessions}
+              onChange={e => setShowRetiredSessions(e.target.checked)}
+              className="rounded border-gray-300"
+            />
+            <span>Include retired sessions</span>
+          </label>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* Acceptance Rate by Level */}
+          <div className="bg-white rounded-lg shadow p-4">
+            <h3 className="text-lg font-semibold mb-4">Acceptance Rate by Level</h3>
+            <div className="space-y-3">
+              {levels.map(level => {
+                const stats = levelStats[level]
+                const decided = stats.selected + stats.rejected
+                const rate = decided > 0 ? Math.round((stats.selected / decided) * 100) : null
+                const levelLabel = level === '100' ? 'Beginner' :
+                                   level === '200' ? 'Intermediate' :
+                                   level === '300' ? 'Advanced' :
+                                   level === '400' ? 'Expert' : 'Master'
+
+                return (
+                  <div key={level} className="flex items-center gap-3">
+                    <span className={`w-20 text-sm font-medium px-2 py-0.5 rounded ${
+                      level === '100' ? 'bg-green-100 text-green-700' :
+                      level === '200' ? 'bg-teal-100 text-teal-700' :
+                      level === '300' ? 'bg-yellow-100 text-yellow-700' :
+                      level === '400' ? 'bg-orange-100 text-orange-700' : 'bg-red-100 text-red-700'
+                    }`}>
+                      {level}
+                    </span>
+                    <div className="flex-1">
+                      {decided > 0 ? (
+                        <div className="flex items-center gap-2">
+                          <div className="flex-1 bg-gray-200 rounded-full h-5 overflow-hidden">
+                            <div
+                              className={`h-full rounded-full ${rate! >= 50 ? 'bg-green-500' : rate! >= 30 ? 'bg-yellow-500' : 'bg-red-500'}`}
+                              style={{ width: `${rate}%` }}
+                            />
+                          </div>
+                          <span className="text-sm font-medium w-12 text-right">{rate}%</span>
+                        </div>
+                      ) : (
+                        <span className="text-xs text-gray-400">No data</span>
+                      )}
+                    </div>
+                    <span className="text-xs text-gray-500 w-24">
+                      {stats.selected}/{decided} accepted
+                    </span>
+                  </div>
+                )
+              })}
+            </div>
+            <p className="text-xs text-gray-400 mt-3">Based on sessions with decisions (selected or rejected)</p>
+          </div>
+
+          {/* High Performing vs Needs Rework */}
+          <div className="bg-white rounded-lg shadow p-4">
+            <h3 className="text-lg font-semibold mb-4">Session Health</h3>
+            <div className="space-y-4">
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="w-3 h-3 rounded-full bg-green-500"></span>
+                  <span className="text-sm font-medium text-gray-700">High Performing ({highPerforming.length})</span>
+                  <span className="text-xs text-gray-400">≥50% rate, 2+ decisions</span>
+                </div>
+                {highPerforming.length > 0 ? (
+                  <div className="flex flex-wrap gap-1.5">
+                    {highPerforming.slice(0, 8).map(s => (
+                      <span key={s.session.id} className="px-2 py-0.5 bg-green-50 text-green-700 rounded text-xs" title={`${s.acceptanceRate}% (${s.selected}/${s.decided})`}>
+                        {s.session.name.length > 25 ? s.session.name.slice(0, 25) + '...' : s.session.name}
+                      </span>
+                    ))}
+                    {highPerforming.length > 8 && (
+                      <span className="px-2 py-0.5 text-gray-400 text-xs">+{highPerforming.length - 8} more</span>
+                    )}
+                  </div>
+                ) : (
+                  <p className="text-xs text-gray-400">No high performing sessions yet</p>
+                )}
+              </div>
+
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="w-3 h-3 rounded-full bg-red-500"></span>
+                  <span className="text-sm font-medium text-gray-700">Needs Rework ({needsRework.length})</span>
+                  <span className="text-xs text-gray-400">&lt;30% rate, 3+ decisions</span>
+                </div>
+                {needsRework.length > 0 ? (
+                  <div className="flex flex-wrap gap-1.5">
+                    {needsRework.map(s => (
+                      <span key={s.session.id} className="px-2 py-0.5 bg-red-50 text-red-700 rounded text-xs" title={`${s.acceptanceRate}% (${s.selected}/${s.decided})`}>
+                        {s.session.name.length > 25 ? s.session.name.slice(0, 25) + '...' : s.session.name}
+                      </span>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-xs text-gray-400">No sessions need rework</p>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Session Acceptance Rates Table */}
+        <div className="bg-white rounded-lg shadow p-4 mt-6">
+          <h3 className="text-lg font-semibold mb-4">Session Acceptance Rates</h3>
+          {sessionStats.length > 0 ? (
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b text-left">
+                    <th className="pb-2 font-medium text-gray-600">Session</th>
+                    <th className="pb-2 font-medium text-gray-600 text-center w-16">Level</th>
+                    <th className="pb-2 font-medium text-gray-600 text-center w-20">Submitted</th>
+                    <th className="pb-2 font-medium text-gray-600 text-center w-20">Selected</th>
+                    <th className="pb-2 font-medium text-gray-600 text-center w-20">Rejected</th>
+                    <th className="pb-2 font-medium text-gray-600 text-center w-24">Rate</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {sessionStats.map(s => (
+                    <tr key={s.session.id} className="border-b border-gray-100 hover:bg-gray-50">
+                      <td className="py-2">
+                        <div className="flex items-center gap-2">
+                          <span className="truncate max-w-[200px]" title={s.session.name}>{s.session.name}</span>
+                          {s.session.retired && (
+                            <span className="flex-shrink-0 px-1.5 py-0.5 text-xs rounded bg-gray-200 text-gray-600">Retired</span>
+                          )}
+                          {s.pending > 0 && (
+                            <span className="flex-shrink-0 px-1.5 py-0.5 text-xs rounded bg-yellow-100 text-yellow-700" title={`${s.pending} pending submission${s.pending > 1 ? 's' : ''}`}>
+                              {s.pending} pending
+                            </span>
+                          )}
+                        </div>
+                      </td>
+                      <td className="py-2 text-center">
+                        <span className={`px-1.5 py-0.5 rounded text-xs ${
+                          s.session.level === '100' ? 'bg-green-100 text-green-700' :
+                          s.session.level === '200' ? 'bg-teal-100 text-teal-700' :
+                          s.session.level === '300' ? 'bg-yellow-100 text-yellow-700' :
+                          s.session.level === '400' ? 'bg-orange-100 text-orange-700' : 'bg-red-100 text-red-700'
+                        }`}>
+                          {s.session.level}
+                        </span>
+                      </td>
+                      <td className="py-2 text-center text-gray-600">{s.decided}</td>
+                      <td className="py-2 text-center text-green-600 font-medium">{s.selected}</td>
+                      <td className="py-2 text-center text-red-600">{s.rejected}</td>
+                      <td className="py-2 text-center">
+                        {s.acceptanceRate !== null ? (
+                          <span className={`font-medium ${s.acceptanceRate >= 50 ? 'text-green-600' : s.acceptanceRate >= 30 ? 'text-yellow-600' : 'text-red-600'}`}>
+                            {s.acceptanceRate}%
+                          </span>
+                        ) : (
+                          <span className="text-gray-400">-</span>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <p className="text-gray-400 text-sm">No session submissions yet</p>
+          )}
+        </div>
       </div>
 
       {/* Cities List */}

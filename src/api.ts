@@ -64,11 +64,11 @@ export async function fetchSubmissions(): Promise<Submission[]> {
   return res.json()
 }
 
-export async function createSubmission(sessionId: string, eventId: string, nameUsed: string): Promise<Submission> {
+export async function createSubmission(sessionId: string, eventId: string, nameUsed: string, notes?: string): Promise<Submission> {
   const res = await fetch(`${API_BASE}/submissions`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ sessionId, eventId, nameUsed })
+    body: JSON.stringify({ sessionId, eventId, nameUsed, notes: notes || '' })
   })
   return res.json()
 }
@@ -82,15 +82,29 @@ export async function updateSubmissionState(id: string, state: SubmissionState):
   return res.json()
 }
 
+export async function updateSubmissionNotes(id: string, notes: string): Promise<Submission> {
+  const res = await fetch(`${API_BASE}/submissions/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ notes })
+  })
+  return res.json()
+}
+
 export async function deleteSubmission(id: string): Promise<void> {
   await fetch(`${API_BASE}/submissions/${id}`, { method: 'DELETE' })
 }
 
 // Settings
+export type DateFormat = 'YYYY-MM-DD' | 'MM/DD/YYYY' | 'DD/MM/YYYY' | 'DD.MM.YYYY' | 'DD-MM-YYYY' | 'YYYY/MM/DD'
+
 export interface UISettings {
   showMonthView: boolean
   showWeekView: boolean
   showMvpFeatures: boolean
+  maxEventsPerMonth: number  // 0 = no limit
+  maxEventsPerYear: number   // 0 = no limit
+  dateFormat: DateFormat
 }
 
 export async function fetchSettings(): Promise<UISettings> {

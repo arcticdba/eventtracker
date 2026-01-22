@@ -5,6 +5,7 @@ interface SessionSelection {
   sessionId: string
   nameUsed: string
   newAlternateName?: string  // If set, this name should be added to the session's alternateNames
+  notes?: string             // Optional notes for this submission
 }
 
 interface Props {
@@ -28,6 +29,8 @@ export function SessionPicker({ sessions, submissions, eventId, onAdd, onClose }
   const [selections, setSelections] = useState<Map<string, string>>(new Map())
   // Map of sessionId -> newly created alternate names (not yet saved to session)
   const [newNames, setNewNames] = useState<Map<string, string[]>>(new Map())
+  // Map of sessionId -> notes
+  const [notes, setNotes] = useState<Map<string, string>>(new Map())
   // Map of sessionId -> input value for new name being typed
   const [newNameInputs, setNewNameInputs] = useState<Map<string, string>>(new Map())
   // Set of sessionIds currently showing the "add new name" input
@@ -103,16 +106,24 @@ export function SessionPicker({ sessions, submissions, eventId, onAdd, onClose }
     setShowingNewNameInput(newShowing)
   }
 
+  const updateNotes = (sessionId: string, value: string) => {
+    const newNotes = new Map(notes)
+    newNotes.set(sessionId, value)
+    setNotes(newNotes)
+  }
+
   const handleAdd = () => {
     if (selections.size > 0) {
       const result: SessionSelection[] = Array.from(selections.entries()).map(
         ([sessionId, nameUsed]) => {
           const sessionNewNames = newNames.get(sessionId) || []
           const isNewName = sessionNewNames.includes(nameUsed)
+          const sessionNotes = notes.get(sessionId)
           return {
             sessionId,
             nameUsed,
-            newAlternateName: isNewName ? nameUsed : undefined
+            newAlternateName: isNewName ? nameUsed : undefined,
+            notes: sessionNotes || undefined
           }
         }
       )
@@ -230,6 +241,16 @@ export function SessionPicker({ sessions, submissions, eventId, onAdd, onClose }
                         </div>
                       </div>
                     )}
+                    <div className="space-y-1">
+                      <label className="text-xs text-gray-600">Notes:</label>
+                      <textarea
+                        value={notes.get(session.id) || ''}
+                        onChange={e => updateNotes(session.id, e.target.value)}
+                        placeholder="Add notes for this submission..."
+                        className="block w-full text-sm rounded border-gray-300 py-1 px-2 border"
+                        rows={2}
+                      />
+                    </div>
                   </div>
                 )}
               </div>

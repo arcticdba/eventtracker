@@ -1,10 +1,12 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { Event, TravelBooking, HotelBooking, TravelType } from '../types'
 import { v4 as uuidv4 } from 'uuid'
+import { getOverlappingEvents } from '../utils/getOverlappingEvents'
 
 interface Props {
   event?: Event
   initialData?: Omit<Event, 'id'>
+  allEvents: Event[]  // All events for overlap detection
   onSave: (data: Omit<Event, 'id'>) => void
   onCancel: () => void
   showMvpFeatures?: boolean
@@ -18,7 +20,7 @@ const travelTypeLabels: Record<TravelType, string> = {
   other: 'Other'
 }
 
-export function EventForm({ event, initialData, onSave, onCancel, showMvpFeatures = true }: Props) {
+export function EventForm({ event, initialData, allEvents, onSave, onCancel, showMvpFeatures = true }: Props) {
   // Use event first (for editing), then initialData (for import), then empty
   const source = event || initialData
   const [name, setName] = useState(source?.name || '')
@@ -26,6 +28,29 @@ export function EventForm({ event, initialData, onSave, onCancel, showMvpFeature
   const [city, setCity] = useState(source?.city || '')
   const [dateStart, setDateStart] = useState(source?.dateStart || '')
   const [dateEnd, setDateEnd] = useState(source?.dateEnd || '')
+
+  // Calculate overlapping events based on current date inputs
+  const overlappingEvents = useMemo(() => {
+    if (!dateStart) return []
+    // Create a temporary event object for overlap detection
+    const tempEvent: Event = {
+      id: event?.id || 'temp-new-event',
+      name: name || 'New Event',
+      country,
+      city,
+      dateStart,
+      dateEnd: dateEnd || dateStart,
+      remote: false,
+      callForContentUrl: '',
+      callForContentLastDate: '',
+      loginTool: '',
+      travel: [],
+      hotels: [],
+      mvpSubmission: false,
+      notes: ''
+    }
+    return getOverlappingEvents(tempEvent, allEvents)
+  }, [dateStart, dateEnd, event?.id, allEvents, name, country, city])
   const [remote, setRemote] = useState(source?.remote || false)
   const [callForContentUrl, setCallForContentUrl] = useState(source?.callForContentUrl || '')
   const [callForContentLastDate, setCallForContentLastDate] = useState(source?.callForContentLastDate || '')
@@ -35,6 +60,7 @@ export function EventForm({ event, initialData, onSave, onCancel, showMvpFeature
   // Default mvpSubmission to true when MVP features are hidden, so events created
   // during that time won't suddenly need MVP submission when re-enabled
   const [mvpSubmission, setMvpSubmission] = useState(source?.mvpSubmission ?? !showMvpFeatures)
+  const [notes, setNotes] = useState(source?.notes || '')
 
   // Add travel form state
   const [showAddTravel, setShowAddTravel] = useState(false)
@@ -61,6 +87,7 @@ export function EventForm({ event, initialData, onSave, onCancel, showMvpFeature
       setTravel(initialData.travel || [])
       setHotels(initialData.hotels || [])
       setMvpSubmission(initialData.mvpSubmission ?? !showMvpFeatures)
+      setNotes(initialData.notes || '')
     }
   }, [initialData, event, showMvpFeatures])
 
@@ -122,7 +149,8 @@ export function EventForm({ event, initialData, onSave, onCancel, showMvpFeature
       loginTool,
       travel,
       hotels,
-      mvpSubmission
+      mvpSubmission,
+      notes
     })
   }
 
@@ -139,61 +167,83 @@ export function EventForm({ event, initialData, onSave, onCancel, showMvpFeature
           required
         />
       </div>
-      <div className="grid grid-cols-3 gap-4">
-        <div>
+      <div className="flex gap-3 items-end">
+        <div className="flex-1">
           <label className="block text-sm font-medium text-gray-700">Country</label>
           <input
             type="text"
             value={country}
             onChange={e => setCountry(e.target.value)}
-            className="mt-1 block w-full rounded border-gray-300 shadow-sm px-3 py-2 border"
+            className="mt-1 block w-full rounded border-gray-300 shadow-sm px-2 py-1.5 border text-sm"
           />
         </div>
-        <div>
+        <div className="flex-1">
           <label className="block text-sm font-medium text-gray-700">City</label>
           <input
             type="text"
             value={city}
             onChange={e => setCity(e.target.value)}
-            className="mt-1 block w-full rounded border-gray-300 shadow-sm px-3 py-2 border"
+            className="mt-1 block w-full rounded border-gray-300 shadow-sm px-2 py-1.5 border text-sm"
           />
         </div>
-        <div className="flex items-end pb-2">
-          <div className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              id="remote"
-              checked={remote}
-              onChange={e => setRemote(e.target.checked)}
-              className="rounded border-gray-300"
-            />
-            <label htmlFor="remote" className="text-sm text-gray-700">Remote event</label>
-          </div>
-        </div>
-      </div>
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Start Date</label>
+        <div className="flex items-center gap-1.5 pb-1">
           <input
-            type="date"
+            type="checkbox"
+            id="remote"
+            checked={remote}
+            onChange={e => setRemote(e.target.checked)}
+            className="rounded border-gray-300"
+          />
+          <label htmlFor="remote" className="text-xs text-gray-700 leading-tight text-center">Remote<br/>event</label>
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Start</label>
+          <input
+            type="text"
             value={dateStart}
             onChange={e => setDateStart(e.target.value)}
-            className="mt-1 block w-full rounded border-gray-300 shadow-sm px-3 py-2 border"
+            placeholder="YYYY-MM-DD"
+            pattern="\d{4}-\d{2}-\d{2}"
+            className="mt-1 block w-28 rounded border-gray-300 shadow-sm px-2 py-1.5 border text-sm"
             required
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">End Date</label>
+          <label className="block text-sm font-medium text-gray-700">End</label>
           <input
-            type="date"
+            type="text"
             value={dateEnd}
             onChange={e => setDateEnd(e.target.value)}
-            min={dateStart}
-            className="mt-1 block w-full rounded border-gray-300 shadow-sm px-3 py-2 border"
+            placeholder="YYYY-MM-DD"
+            pattern="\d{4}-\d{2}-\d{2}"
+            className="mt-1 block w-28 rounded border-gray-300 shadow-sm px-2 py-1.5 border text-sm"
             required
           />
         </div>
       </div>
+      {/* Overlap warning */}
+      {overlappingEvents.length > 0 && (
+        <div className="bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
+          <div className="flex items-start gap-2">
+            <span className="text-amber-600 mt-0.5">⚠</span>
+            <div>
+              <p className="text-sm font-medium text-amber-800">Date conflict detected</p>
+              <p className="text-sm text-amber-700">
+                {overlappingEvents.length === 1
+                  ? `Overlaps with ${overlappingEvents[0].name}${overlappingEvents[0].city ? ` (${overlappingEvents[0].city})` : ''}`
+                  : `Overlaps with ${overlappingEvents.length} events:`}
+              </p>
+              {overlappingEvents.length > 1 && (
+                <ul className="text-sm text-amber-700 mt-1 list-disc list-inside">
+                  {overlappingEvents.map(e => (
+                    <li key={e.id}>{e.name}{e.city ? ` (${e.city})` : ''}</li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
       <div>
         <label className="block text-sm font-medium text-gray-700">Call for Content URL</label>
         <input
@@ -221,6 +271,16 @@ export function EventForm({ event, initialData, onSave, onCancel, showMvpFeature
           onChange={e => setLoginTool(e.target.value)}
           className="mt-1 block w-full rounded border-gray-300 shadow-sm px-3 py-2 border"
           placeholder="e.g., Sessionize, Papercall"
+        />
+      </div>
+      <div>
+        <label className="block text-sm font-medium text-gray-700">Notes</label>
+        <textarea
+          value={notes}
+          onChange={e => setNotes(e.target.value)}
+          rows={3}
+          className="mt-1 block w-full rounded border-gray-300 shadow-sm px-3 py-2 border"
+          placeholder="Any additional notes about this event..."
         />
       </div>
 

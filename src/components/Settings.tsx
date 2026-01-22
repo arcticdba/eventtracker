@@ -1,4 +1,5 @@
-import { UISettings } from '../api'
+import { UISettings, DateFormat } from '../api'
+import { DATE_FORMAT_OPTIONS } from '../utils/formatDate'
 
 interface SettingsProps {
   settings: UISettings
@@ -55,6 +56,96 @@ export function Settings({ settings, onSettingsChange, onClose }: SettingsProps)
                 className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
               />
             </label>
+          </div>
+
+          <h3 className="text-sm font-semibold text-gray-800 mt-6 mb-3">Speaker Bandwidth</h3>
+          <p className="text-xs text-gray-500 mb-3">
+            Set soft limits to help manage your speaking schedule. Set to 0 for no limit.
+          </p>
+
+          <div className="space-y-3">
+            <label className="flex items-center justify-between">
+              <span className="text-sm text-gray-700">Max events per month</span>
+              <input
+                type="number"
+                min="0"
+                max="31"
+                value={settings.maxEventsPerMonth}
+                onChange={e => onSettingsChange({ ...settings, maxEventsPerMonth: parseInt(e.target.value) || 0 })}
+                className="w-20 rounded border-gray-300 text-sm px-2 py-1"
+              />
+            </label>
+
+            <label className="flex items-center justify-between">
+              <span className="text-sm text-gray-700">Max events per year</span>
+              <input
+                type="number"
+                min="0"
+                max="365"
+                value={settings.maxEventsPerYear}
+                onChange={e => onSettingsChange({ ...settings, maxEventsPerYear: parseInt(e.target.value) || 0 })}
+                className="w-20 rounded border-gray-300 text-sm px-2 py-1"
+              />
+            </label>
+          </div>
+
+          <h3 className="text-sm font-semibold text-gray-800 mt-6 mb-3">Display</h3>
+
+          <div className="space-y-3">
+            <label className="flex items-center justify-between">
+              <span className="text-sm text-gray-700">Date format</span>
+              <select
+                value={settings.dateFormat}
+                onChange={e => onSettingsChange({ ...settings, dateFormat: e.target.value as DateFormat })}
+                className="rounded border-gray-300 text-sm px-2 py-1"
+              >
+                {DATE_FORMAT_OPTIONS.map(opt => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label} ({opt.example})
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
+
+          <h3 className="text-sm font-semibold text-gray-800 mt-6 mb-3">Export & Backup</h3>
+          <p className="text-xs text-gray-500 mb-3">
+            Download your data for backup or use in other applications.
+          </p>
+
+          <div className="space-y-2">
+            <div className="flex gap-2">
+              <a
+                href="/api/export/json"
+                download
+                className="flex-1 px-3 py-2 bg-green-600 text-white text-sm rounded hover:bg-green-700 text-center"
+              >
+                Backup All (JSON)
+              </a>
+            </div>
+            <div className="flex gap-2">
+              <a
+                href="/api/export/events.csv"
+                download
+                className="flex-1 px-3 py-1.5 bg-gray-100 text-gray-700 text-sm rounded hover:bg-gray-200 text-center"
+              >
+                Events CSV
+              </a>
+              <a
+                href="/api/export/sessions.csv"
+                download
+                className="flex-1 px-3 py-1.5 bg-gray-100 text-gray-700 text-sm rounded hover:bg-gray-200 text-center"
+              >
+                Sessions CSV
+              </a>
+              <a
+                href="/api/export/submissions.csv"
+                download
+                className="flex-1 px-3 py-1.5 bg-gray-100 text-gray-700 text-sm rounded hover:bg-gray-200 text-center"
+              >
+                Submissions CSV
+              </a>
+            </div>
           </div>
         </div>
 

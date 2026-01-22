@@ -1,7 +1,10 @@
-import { useEffect } from 'react'
+import { useEffect, useRef, useCallback } from 'react'
 import * as ContextMenu from '@radix-ui/react-context-menu'
 import { Event, Submission, EventState } from '../types'
 import { computeEventState } from '../utils/computeEventState'
+import { getOverlappingEvents } from '../utils/getOverlappingEvents'
+import { formatDate } from '../utils/formatDate'
+import { DateFormat } from '../api'
 
 interface Props {
   events: Event[]
@@ -20,7 +23,10 @@ interface Props {
   showMvpFeatures?: boolean
   mvpCompletedOnly: boolean
   onMvpCompletedOnlyChange: (value: boolean) => void
+  notFullyBooked: boolean
+  onNotFullyBookedChange: (value: boolean) => void
   onFilteredCountChange?: (filtered: number, total: number) => void
+  dateFormat: DateFormat
 }
 
 const allStates: EventState[] = ['pending', 'selected', 'rejected', 'declined', 'none']
@@ -132,7 +138,7 @@ function formatLocation(country: string, city: string, remote: boolean): string 
   return parts.join(', ') || 'No location'
 }
 
-export function EventList({ events, submissions, onEdit, onDelete, onSelect, onDecline, onToggleRemote, onToggleMvpSubmission, selectedEventId, filters, onFiltersChange, futureOnly, onFutureOnlyChange, showMvpFeatures = true, mvpCompletedOnly, onMvpCompletedOnlyChange, onFilteredCountChange }: Props) {
+export function EventList({ events, submissions, onEdit, onDelete, onSelect, onDecline, onToggleRemote, onToggleMvpSubmission, selectedEventId, filters, onFiltersChange, futureOnly, onFutureOnlyChange, showMvpFeatures = true, mvpCompletedOnly, onMvpCompletedOnlyChange, notFullyBooked, onNotFullyBookedChange, onFilteredCountChange, dateFormat }: Props) {
   const toggleFilter = (state: EventState) => {
     const newFilters = new Set(filters)
     if (newFilters.has(state)) {
@@ -168,6 +174,22 @@ export function EventList({ events, submissions, onEdit, onDelete, onSelect, onD
         }
       }
 
+      // Filter by not fully booked (in-person selected upcoming events without both travel and hotel)
+      if (notFullyBooked) {
+        const startDate = new Date(event.dateStart)
+        startDate.setHours(0, 0, 0, 0)
+        const isUpcoming = startDate > today
+        const isInPerson = !event.remote
+        const hasTravel = (event.travel?.length ?? 0) > 0
+        const hasHotel = (event.hotels?.length ?? 0) > 0
+        const isFullyBooked = hasTravel && hasHotel
+
+        // Only show selected, in-person, upcoming events that are NOT fully booked
+        if (eventState !== 'selected' || !isInPerson || !isUpcoming || isFullyBooked) {
+          return false
+        }
+      }
+
       // Filter by state
       if (filters.size === 0) return true
       return filters.has(eventState)
@@ -181,9 +203,52 @@ export function EventList({ events, submissions, onEdit, onDelete, onSelect, onD
     onFilteredCountChange?.(filteredEvents.length, events.length)
   }, [filteredEvents.length, events.length, onFilteredCountChange])
 
+  const listRef = useRef<HTMLDivElement>(null)
+
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (filteredEvents.length === 0) return
+
+    const currentIndex = selectedEventId
+      ? filteredEvents.findIndex(ev => ev.id === selectedEventId)
+      : -1
+
+    switch (e.key) {
+      case 'ArrowDown':
+      case 'j':
+        e.preventDefault()
+        const nextIndex = currentIndex < filteredEvents.length - 1 ? currentIndex + 1 : 0
+        onSelect(filteredEvents[nextIndex])
+        break
+      case 'ArrowUp':
+      case 'k':
+        e.preventDefault()
+        const prevIndex = currentIndex > 0 ? currentIndex - 1 : filteredEvents.length - 1
+        onSelect(filteredEvents[prevIndex])
+        break
+      case 'Enter':
+        e.preventDefault()
+        if (currentIndex >= 0) {
+          onEdit(filteredEvents[currentIndex])
+        }
+        break
+      case 'Escape':
+        e.preventDefault()
+        listRef.current?.blur()
+        break
+    }
+  }, [filteredEvents, selectedEventId, onSelect, onEdit])
+
+  // Scroll selected event into view
+  useEffect(() => {
+    if (selectedEventId && listRef.current) {
+      const selectedElement = listRef.current.querySelector(`[data-event-id="${selectedEventId}"]`)
+      selectedElement?.scrollIntoView({ block: 'nearest', behavior: 'smooth' })
+    }
+  }, [selectedEventId])
+
   return (
-    <div className="flex flex-col h-full px-0.5">
-      <div className="pb-3 flex-shrink-0 bg-white space-y-2">
+    <div className="flex flex-col h-full">
+      <div className="pb-3 flex-shrink-0 bg-white space-y-2 px-1">
         <div className="flex items-center gap-3">
           <label className="flex items-center gap-1 text-sm">
             <input
@@ -218,6 +283,16 @@ export function EventList({ events, submissions, onEdit, onDelete, onSelect, onD
               </label>
             </>
           )}
+          <span className="text-gray-300">|</span>
+          <label className="flex items-center gap-1 text-sm">
+            <input
+              type="checkbox"
+              checked={notFullyBooked}
+              onChange={() => onNotFullyBookedChange(!notFullyBooked)}
+              className="rounded border-gray-300"
+            />
+            <span>Not fully booked</span>
+          </label>
         </div>
         <div className="flex items-center gap-3">
           <label className="text-sm text-gray-600">Status:</label>
@@ -235,7 +310,12 @@ export function EventList({ events, submissions, onEdit, onDelete, onSelect, onD
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto space-y-3">
+      <div
+        ref={listRef}
+        tabIndex={0}
+        onKeyDown={handleKeyDown}
+        className="flex-1 overflow-y-auto space-y-3 outline-none p-1"
+      >
         {events.length === 0 ? (
           <p className="text-gray-500 text-sm">No events yet. Create one to get started.</p>
         ) : filteredEvents.length === 0 ? (
@@ -250,11 +330,13 @@ export function EventList({ events, submissions, onEdit, onDelete, onSelect, onD
           const daysUntilCfcClose = getDaysRemaining(event.callForContentLastDate)
           const daysUntilEvent = getDaysRemaining(event.dateStart)
           const eventInPast = daysUntilEvent !== null && daysUntilEvent < 0
+          const overlappingEvents = getOverlappingEvents(event, events)
 
           return (
             <ContextMenu.Root key={event.id}>
               <ContextMenu.Trigger asChild>
                 <div
+                  data-event-id={event.id}
                   onClick={() => onSelect(event)}
                   onDoubleClick={() => onEdit(event)}
                   className={`p-3 border rounded-lg cursor-pointer transition ${
@@ -277,7 +359,7 @@ export function EventList({ events, submissions, onEdit, onDelete, onSelect, onD
                     {formatLocation(event.country, event.city, false)}
                   </p>
                   <p className="text-sm text-gray-500">
-                    {event.dateStart}{event.dateEnd && event.dateEnd !== event.dateStart ? ` - ${event.dateEnd}` : ''}
+                    {formatDate(event.dateStart, dateFormat)}{event.dateEnd && event.dateEnd !== event.dateStart ? ` - ${formatDate(event.dateEnd, dateFormat)}` : ''}
                   </p>
                   <div className="flex flex-wrap items-center gap-2 mt-1">
                     <span className="text-xs text-gray-400">
@@ -317,16 +399,16 @@ export function EventList({ events, submissions, onEdit, onDelete, onSelect, onD
                       </span>
                     )}
                     <span
-                      className={event.travel?.length > 0 ? 'text-green-600' : 'text-gray-300'}
-                      title={event.travel?.length > 0 ? `${event.travel.length} travel booking(s)` : 'No travel booked'}
+                      className={event.travel?.length ? 'text-green-600' : 'text-gray-300'}
+                      title={event.travel?.length ? `${event.travel.length} travel booking(s)` : 'No travel booked'}
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                       </svg>
                     </span>
                     <span
-                      className={event.hotels?.length > 0 ? 'text-green-600' : 'text-gray-300'}
-                      title={event.hotels?.length > 0 ? `${event.hotels.length} hotel booking(s)` : 'No hotel booked'}
+                      className={event.hotels?.length ? 'text-green-600' : 'text-gray-300'}
+                      title={event.hotels?.length ? `${event.hotels.length} hotel booking(s)` : 'No hotel booked'}
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
@@ -337,6 +419,18 @@ export function EventList({ events, submissions, onEdit, onDelete, onSelect, onD
                     <div className="mt-1">
                       <span className="px-1.5 py-0.5 text-xs rounded bg-red-600 text-white font-medium">
                         MVP submission pending
+                      </span>
+                    </div>
+                  )}
+                  {overlappingEvents.length > 0 && (
+                    <div className="mt-1">
+                      <span
+                        className="px-1.5 py-0.5 text-xs rounded bg-amber-100 text-amber-800 font-medium"
+                        title={overlappingEvents.map(e => `${e.name}${e.city ? ` (${e.city})` : ''}`).join('\n')}
+                      >
+                        {overlappingEvents.length === 1
+                          ? `Overlaps with ${overlappingEvents[0].name}${overlappingEvents[0].city ? ` (${overlappingEvents[0].city})` : ''}`
+                          : `Overlaps with ${overlappingEvents.length} events`}
                       </span>
                     </div>
                   )}

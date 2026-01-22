@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Event, Session, Submission, SubmissionState, EventState } from './types'
 import * as api from './api'
 import { EventList } from './components/EventList'
@@ -12,6 +12,7 @@ import { Statistics } from './components/Statistics'
 import { MonthlyEventsBar } from './components/MonthlyEventsBar'
 import { WeeklyEventsBar } from './components/WeeklyEventsBar'
 import { Settings } from './components/Settings'
+import { CommandPalette } from './components/CommandPalette'
 import { UISettings } from './api'
 
 type Tab = 'events' | 'sessions' | 'statistics'
@@ -34,6 +35,7 @@ export default function App() {
   const [eventFilters, setEventFilters] = useState<Set<EventState>>(new Set())
   const [eventFutureOnly, setEventFutureOnly] = useState(true)
   const [eventMvpCompletedOnly, setEventMvpCompletedOnly] = useState(false)
+  const [eventNotFullyBooked, setEventNotFullyBooked] = useState(false)
 
   // Persistent filter state for SessionList
   const [sessionShowActive, setSessionShowActive] = useState(true)
@@ -47,16 +49,46 @@ export default function App() {
 
   // Settings
   const [showSettings, setShowSettings] = useState(false)
+  const [showCommandPalette, setShowCommandPalette] = useState(false)
   const [uiSettings, setUISettings] = useState<UISettings>({
     showMonthView: true,
     showWeekView: true,
-    showMvpFeatures: true
+    showMvpFeatures: true,
+    maxEventsPerMonth: 0,
+    maxEventsPerYear: 0,
+    dateFormat: 'YYYY-MM-DD'
   })
 
   useEffect(() => {
     loadData()
     loadSettings()
   }, [])
+
+  // Global keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Cmd+K or Ctrl+K to open command palette
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault()
+        setShowCommandPalette(true)
+      }
+      // Cmd+, or Ctrl+, to open settings
+      if ((e.metaKey || e.ctrlKey) && e.key === ',') {
+        e.preventDefault()
+        setShowSettings(true)
+      }
+      // Cmd+N or Ctrl+N to create new event (when on events tab)
+      if ((e.metaKey || e.ctrlKey) && e.key === 'n' && activeTab === 'events' && !showEventForm) {
+        e.preventDefault()
+        setShowEventForm(true)
+        setEditingEvent(null)
+        setImportedEventData(null)
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [activeTab, showEventForm])
 
   async function loadSettings() {
     const settings = await api.fetchSettings()
@@ -146,13 +178,13 @@ export default function App() {
   }
 
   // Submission handlers
-  async function handleAddSessionsToEvent(selections: { sessionId: string; nameUsed: string; newAlternateName?: string }[]) {
+  async function handleAddSessionsToEvent(selections: { sessionId: string; nameUsed: string; newAlternateName?: string; notes?: string }[]) {
     if (!selectedEvent) return
 
     const newSubmissions: Submission[] = []
     const updatedSessions: Session[] = []
 
-    for (const { sessionId, nameUsed, newAlternateName } of selections) {
+    for (const { sessionId, nameUsed, newAlternateName, notes } of selections) {
       // If a new alternate name was created, save it to the session
       if (newAlternateName) {
         const session = sessions.find(s => s.id === sessionId)
@@ -171,7 +203,7 @@ export default function App() {
         s => s.sessionId === sessionId && s.eventId === selectedEvent.id
       )
       if (!exists) {
-        const created = await api.createSubmission(sessionId, selectedEvent.id, nameUsed)
+        const created = await api.createSubmission(sessionId, selectedEvent.id, nameUsed, notes)
         newSubmissions.push(created)
       }
     }
@@ -189,6 +221,11 @@ export default function App() {
 
   async function handleUpdateSubmissionState(id: string, state: SubmissionState) {
     const updated = await api.updateSubmissionState(id, state)
+    setSubmissions(submissions.map(s => s.id === updated.id ? updated : s))
+  }
+
+  async function handleUpdateSubmissionNotes(id: string, notes: string) {
+    const updated = await api.updateSubmissionNotes(id, notes)
     setSubmissions(submissions.map(s => s.id === updated.id ? updated : s))
   }
 
@@ -230,9 +267,19 @@ export default function App() {
         <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
           <h1 className="text-2xl font-bold text-gray-900">Speaking Event Tracker</h1>
           <button
+            onClick={() => setShowCommandPalette(true)}
+            className="flex items-center gap-2 px-3 py-1.5 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg border border-gray-200"
+            title="Command Palette (⌘K)"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <span className="text-sm text-gray-400">⌘K</span>
+          </button>
+          <button
             onClick={() => setShowSettings(true)}
             className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg"
-            title="Settings"
+            title="Settings (⌘,)"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
@@ -287,20 +334,48 @@ export default function App() {
                 submissions={submissions}
                 selectedMonth={selectedMonth}
                 onMonthSelect={setSelectedMonth}
+                maxEventsPerMonth={uiSettings.maxEventsPerMonth}
+                dateFormat={uiSettings.dateFormat}
               />
             )}
             {uiSettings.showWeekView && (
               <WeeklyEventsBar
                 events={events}
                 submissions={submissions}
+                maxEventsPerMonth={uiSettings.maxEventsPerMonth}
+                selectedMonth={selectedMonth}
+                onMonthSelect={setSelectedMonth}
+                dateFormat={uiSettings.dateFormat}
               />
             )}
+            {/* Year bandwidth warning */}
+            {uiSettings.maxEventsPerYear > 0 && (() => {
+              const eventsThisYear = events.filter(e => new Date(e.dateStart).getFullYear() === currentYear).length
+              if (eventsThisYear > uiSettings.maxEventsPerYear) {
+                return (
+                  <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-2 mb-4 flex-shrink-0">
+                    <span className="text-sm text-red-700">
+                      Year bandwidth exceeded: {eventsThisYear} events / {uiSettings.maxEventsPerYear} max ({eventsThisYear - uiSettings.maxEventsPerYear} over limit)
+                    </span>
+                  </div>
+                )
+              } else if (eventsThisYear === uiSettings.maxEventsPerYear) {
+                return (
+                  <div className="bg-amber-50 border border-amber-200 rounded-lg px-4 py-2 mb-4 flex-shrink-0">
+                    <span className="text-sm text-amber-700">
+                      Year bandwidth at limit: {eventsThisYear} events / {uiSettings.maxEventsPerYear} max
+                    </span>
+                  </div>
+                )
+              }
+              return null
+            })()}
           </>
         )}
 
         {activeTab === 'statistics' ? (
           <div className="flex-1 overflow-y-auto">
-            <Statistics events={events} submissions={submissions} />
+            <Statistics events={events} sessions={sessions} submissions={submissions} dateFormat={uiSettings.dateFormat} />
           </div>
         ) : (
           <div className={`flex-1 grid gap-4 ${activeTab === 'events' && !showEventForm ? 'grid-cols-1 lg:grid-cols-2' : 'grid-cols-1'} overflow-hidden`}>
@@ -348,6 +423,7 @@ export default function App() {
                       <EventForm
                         event={editingEvent || undefined}
                         initialData={importedEventData || undefined}
+                        allEvents={events}
                         onSave={handleSaveEvent}
                         onCancel={() => { setShowEventForm(false); setEditingEvent(null); setImportedEventData(null) }}
                         showMvpFeatures={uiSettings.showMvpFeatures}
@@ -370,7 +446,10 @@ export default function App() {
                         showMvpFeatures={uiSettings.showMvpFeatures}
                         mvpCompletedOnly={eventMvpCompletedOnly}
                         onMvpCompletedOnlyChange={setEventMvpCompletedOnly}
+                        notFullyBooked={eventNotFullyBooked}
+                        onNotFullyBookedChange={setEventNotFullyBooked}
                         onFilteredCountChange={(filtered, total) => setEventListCounts({ filtered, total })}
+                        dateFormat={uiSettings.dateFormat}
                       />
                     )}
                   </div>
@@ -445,6 +524,7 @@ export default function App() {
                         submissions={eventSubmissions}
                         sessions={sessions}
                         onUpdateState={handleUpdateSubmissionState}
+                        onUpdateNotes={handleUpdateSubmissionNotes}
                         onDelete={handleDeleteSubmission}
                       />
                     )
@@ -479,6 +559,33 @@ export default function App() {
           onClose={() => setShowSettings(false)}
         />
       )}
+
+      <CommandPalette
+        isOpen={showCommandPalette}
+        onClose={() => setShowCommandPalette(false)}
+        events={events}
+        submissions={submissions}
+        onNewEvent={() => {
+          setActiveTab('events')
+          setShowEventForm(true)
+          setEditingEvent(null)
+          setImportedEventData(null)
+        }}
+        onNewSession={() => {
+          setActiveTab('sessions')
+          setShowSessionForm(true)
+          setEditingSession(null)
+        }}
+        onOpenSettings={() => setShowSettings(true)}
+        onSelectEvent={setSelectedEvent}
+        onEditEvent={(e) => {
+          setActiveTab('events')
+          setEditingEvent(e)
+          setShowEventForm(true)
+        }}
+        currentTab={activeTab}
+        onTabChange={setActiveTab}
+      />
     </div>
   )
 }

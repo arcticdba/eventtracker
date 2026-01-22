@@ -28,6 +28,7 @@ export interface Event {
   travel: TravelBooking[]
   hotels: HotelBooking[]
   mvpSubmission: boolean
+  notes: string
 }
 
 export interface Session {
@@ -48,6 +49,7 @@ export interface Submission {
   eventId: string
   state: SubmissionState
   nameUsed: string
+  notes: string
 }
 
 export type EventState = 'selected' | 'rejected' | 'declined' | 'pending' | 'none'

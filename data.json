@@ -2255,15 +2255,16 @@
       "name": "Scottish Summit 2022",
       "country": "Scotland",
       "city": "Glasgow",
-      "dateStart": "2022-02-25",
-      "dateEnd": "2022-06-10",
+      "dateStart": "2022-06-10",
+      "dateEnd": "2022-06-11",
       "remote": false,
       "callForContentUrl": "",
       "callForContentLastDate": "",
       "loginTool": "",
       "travel": [],
       "hotels": [],
-      "mvpSubmission": true
+      "mvpSubmission": true,
+      "notes": ""
     },
     {
       "id": "8ee5e1de-0675-4f6b-904a-c5b6466acb84",
@@ -6628,7 +6629,7 @@
       "id": "8e9f011e-6de8-43ef-b8b4-856747a7f876",
       "sessionId": "2ad95f20-0fed-424c-b83d-a0f41c6850cc",
       "eventId": "d35bd577-b45c-4cbd-b18e-0ac9c553eb2b",
-      "state": "declined"
+      "state": "rejected"
     },
     {
       "id": "3a74d4cc-e7f6-4ed7-8f30-ffc0fd8f766b",
@@ -6640,7 +6641,7 @@
       "id": "0285e81a-55d8-4190-9184-5594bbdafd2f",
       "sessionId": "49702390-6731-4329-821f-13ce8dd18c39",
       "eventId": "d35bd577-b45c-4cbd-b18e-0ac9c553eb2b",
-      "state": "rejected"
+      "state": "declined"
     },
     {
       "id": "422221c6-9502-4191-8079-3f4e77b93662",
@@ -6724,13 +6725,13 @@
       "id": "37cecd06-3d70-4838-9bd8-ae04647f71e9",
       "sessionId": "b9bb41f6-2665-49e2-b281-a20052359107",
       "eventId": "154cd380-42ca-4c61-b736-8e53885060f6",
-      "state": "rejected"
+      "state": "declined"
     },
     {
       "id": "a0bfe6c5-6ed5-465d-9bf6-797547db7b23",
       "sessionId": "d04b6edf-4849-402f-af8a-17eda1ced266",
       "eventId": "154cd380-42ca-4c61-b736-8e53885060f6",
-      "state": "declined"
+      "state": "rejected"
     },
     {
       "id": "17cb3ac0-d23c-4722-8ae0-3a1225f050b6",
@@ -8248,7 +8249,8 @@
       "sessionId": "bf4de97c-9af6-4a35-b369-6e0a9c160055",
       "eventId": "b507099b-f927-4767-9429-386aa767cc74",
       "state": "selected",
-      "nameUsed": "Turning insights into action: The art of data communication"
+      "nameUsed": "Turning insights into action: The art of data communication",
+      "notes": "With Valerie"
     },
     {
       "id": "f20d4d9d-04dd-48e3-922a-bfa384d6b3b2",
