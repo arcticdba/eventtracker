@@ -4,6 +4,7 @@ import { Event, Submission, Session, EventState } from '../types'
 import { computeEventState } from '../utils/computeEventState'
 import { getOverlappingEvents } from '../utils/getOverlappingEvents'
 import { formatDate } from '../utils/formatDate'
+import { getCountryFlagOrEmpty } from '../utils/countryFlags'
 import { DateFormat } from '../api'
 
 interface Props {
@@ -568,7 +569,7 @@ export function EventList({ events, submissions, sessions, onEdit, onDelete, onS
                     )}
                   </div>
                   <p className="text-sm text-gray-500">
-                    {formatLocation(event.country, event.city, false)}
+                    {getCountryFlagOrEmpty(event.country)}{getCountryFlagOrEmpty(event.country) && ' '}{formatLocation(event.country, event.city, false)}
                   </p>
                   <p className="text-sm text-gray-500">
                     {formatDate(event.dateStart, dateFormat)}{event.dateEnd && event.dateEnd !== event.dateStart ? ` - ${formatDate(event.dateEnd, dateFormat)}` : ''}

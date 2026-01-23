@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from 'react'
 import { Event, TravelBooking, HotelBooking, TravelType } from '../types'
 import { v4 as uuidv4 } from 'uuid'
 import { getOverlappingEvents } from '../utils/getOverlappingEvents'
+import { getCountryFlagOrEmpty } from '../utils/countryFlags'
 
 interface Props {
   event?: Event
@@ -185,12 +186,17 @@ export function EventForm({ event, initialData, allEvents, onSave, onCancel, sho
       <div className="flex gap-3 items-end">
         <div className="flex-1">
           <label className="block text-sm font-medium text-gray-700">Country</label>
-          <input
-            type="text"
-            value={country}
-            onChange={e => setCountry(e.target.value)}
-            className="mt-1 block w-full rounded border-gray-300 shadow-sm px-3 py-2 border"
-          />
+          <div className="mt-1 flex items-center gap-2">
+            <input
+              type="text"
+              value={country}
+              onChange={e => setCountry(e.target.value)}
+              className="block w-full rounded border-gray-300 shadow-sm px-3 py-2 border"
+            />
+            {getCountryFlagOrEmpty(country) && (
+              <span className="text-2xl">{getCountryFlagOrEmpty(country)}</span>
+            )}
+          </div>
         </div>
         <div className="flex-1">
           <label className="block text-sm font-medium text-gray-700">City</label>
