@@ -41,6 +41,7 @@ export function EventForm({ event, initialData, allEvents, onSave, onCancel, sho
       dateStart,
       dateEnd: dateEnd || dateStart,
       remote: false,
+      url: '',
       callForContentUrl: '',
       callForContentLastDate: '',
       loginTool: '',
@@ -52,6 +53,7 @@ export function EventForm({ event, initialData, allEvents, onSave, onCancel, sho
     return getOverlappingEvents(tempEvent, allEvents)
   }, [dateStart, dateEnd, event?.id, allEvents, name, country, city])
   const [remote, setRemote] = useState(source?.remote || false)
+  const [url, setUrl] = useState(source?.url || '')
   const [callForContentUrl, setCallForContentUrl] = useState(source?.callForContentUrl || '')
   const [callForContentLastDate, setCallForContentLastDate] = useState(source?.callForContentLastDate || '')
   const [loginTool, setLoginTool] = useState(source?.loginTool || '')
@@ -144,6 +146,7 @@ export function EventForm({ event, initialData, allEvents, onSave, onCancel, sho
       dateStart,
       dateEnd,
       remote,
+      url,
       callForContentUrl,
       callForContentLastDate,
       loginTool,
@@ -157,15 +160,27 @@ export function EventForm({ event, initialData, allEvents, onSave, onCancel, sho
   return (
     <form onSubmit={handleSubmit} className="space-y-4 p-4 bg-gray-50 rounded-lg">
       <h3 className="text-sm font-semibold text-gray-800">Event Details</h3>
-      <div>
-        <label className="block text-sm font-medium text-gray-700">Name</label>
-        <input
-          type="text"
-          value={name}
-          onChange={e => setName(e.target.value)}
-          className="mt-1 block w-full rounded border-gray-300 shadow-sm px-3 py-2 border"
-          required
-        />
+      <div className="flex gap-3 items-end">
+        <div className="flex-1">
+          <label className="block text-sm font-medium text-gray-700">Name</label>
+          <input
+            type="text"
+            value={name}
+            onChange={e => setName(e.target.value)}
+            className="mt-1 block w-full rounded border-gray-300 shadow-sm px-3 py-2 border"
+            required
+          />
+        </div>
+        <div className="flex items-center gap-2 pb-2">
+          <input
+            type="checkbox"
+            id="remote"
+            checked={remote}
+            onChange={e => setRemote(e.target.checked)}
+            className="rounded border-gray-300"
+          />
+          <label htmlFor="remote" className="text-sm text-gray-700">Remote event</label>
+        </div>
       </div>
       <div className="flex gap-3 items-end">
         <div className="flex-1">
@@ -174,7 +189,7 @@ export function EventForm({ event, initialData, allEvents, onSave, onCancel, sho
             type="text"
             value={country}
             onChange={e => setCountry(e.target.value)}
-            className="mt-1 block w-full rounded border-gray-300 shadow-sm px-2 py-1.5 border text-sm"
+            className="mt-1 block w-full rounded border-gray-300 shadow-sm px-3 py-2 border"
           />
         </div>
         <div className="flex-1">
@@ -183,18 +198,8 @@ export function EventForm({ event, initialData, allEvents, onSave, onCancel, sho
             type="text"
             value={city}
             onChange={e => setCity(e.target.value)}
-            className="mt-1 block w-full rounded border-gray-300 shadow-sm px-2 py-1.5 border text-sm"
+            className="mt-1 block w-full rounded border-gray-300 shadow-sm px-3 py-2 border"
           />
-        </div>
-        <div className="flex items-center gap-1.5 pb-1">
-          <input
-            type="checkbox"
-            id="remote"
-            checked={remote}
-            onChange={e => setRemote(e.target.checked)}
-            className="rounded border-gray-300"
-          />
-          <label htmlFor="remote" className="text-xs text-gray-700 leading-tight text-center">Remote<br/>event</label>
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700">Start</label>
@@ -204,7 +209,7 @@ export function EventForm({ event, initialData, allEvents, onSave, onCancel, sho
             onChange={e => setDateStart(e.target.value)}
             placeholder="YYYY-MM-DD"
             pattern="\d{4}-\d{2}-\d{2}"
-            className="mt-1 block w-28 rounded border-gray-300 shadow-sm px-2 py-1.5 border text-sm"
+            className="mt-1 block w-32 rounded border-gray-300 shadow-sm px-3 py-2 border"
             required
           />
         </div>
@@ -216,7 +221,7 @@ export function EventForm({ event, initialData, allEvents, onSave, onCancel, sho
             onChange={e => setDateEnd(e.target.value)}
             placeholder="YYYY-MM-DD"
             pattern="\d{4}-\d{2}-\d{2}"
-            className="mt-1 block w-28 rounded border-gray-300 shadow-sm px-2 py-1.5 border text-sm"
+            className="mt-1 block w-32 rounded border-gray-300 shadow-sm px-3 py-2 border"
             required
           />
         </div>
@@ -245,33 +250,45 @@ export function EventForm({ event, initialData, allEvents, onSave, onCancel, sho
         </div>
       )}
       <div>
-        <label className="block text-sm font-medium text-gray-700">Call for Content URL</label>
+        <label className="block text-sm font-medium text-gray-700">Event URL</label>
         <input
           type="url"
-          value={callForContentUrl}
-          onChange={e => setCallForContentUrl(e.target.value)}
+          value={url}
+          onChange={e => setUrl(e.target.value)}
           className="mt-1 block w-full rounded border-gray-300 shadow-sm px-3 py-2 border"
           placeholder="https://..."
         />
       </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700">Call for Content Last Date</label>
-        <input
-          type="date"
-          value={callForContentLastDate}
-          onChange={e => setCallForContentLastDate(e.target.value)}
-          className="mt-1 block w-full rounded border-gray-300 shadow-sm px-3 py-2 border"
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700">Login Tool</label>
-        <input
-          type="text"
-          value={loginTool}
-          onChange={e => setLoginTool(e.target.value)}
-          className="mt-1 block w-full rounded border-gray-300 shadow-sm px-3 py-2 border"
-          placeholder="e.g., Sessionize, Papercall"
-        />
+      <div className="flex gap-3">
+        <div className="flex-1">
+          <label className="block text-sm font-medium text-gray-700">Call for Content URL</label>
+          <input
+            type="url"
+            value={callForContentUrl}
+            onChange={e => setCallForContentUrl(e.target.value)}
+            className="mt-1 block w-full rounded border-gray-300 shadow-sm px-3 py-2 border"
+            placeholder="https://..."
+          />
+        </div>
+        <div className="w-36">
+          <label className="block text-sm font-medium text-gray-700">Login Tool</label>
+          <input
+            type="text"
+            value={loginTool}
+            onChange={e => setLoginTool(e.target.value)}
+            className="mt-1 block w-full rounded border-gray-300 shadow-sm px-3 py-2 border"
+            placeholder="Sessionize"
+          />
+        </div>
+        <div className="w-40">
+          <label className="block text-sm font-medium text-gray-700">CfC Deadline</label>
+          <input
+            type="date"
+            value={callForContentLastDate}
+            onChange={e => setCallForContentLastDate(e.target.value)}
+            className="mt-1 block w-full rounded border-gray-300 shadow-sm px-3 py-2 border"
+          />
+        </div>
       </div>
       <div>
         <label className="block text-sm font-medium text-gray-700">Notes</label>

@@ -22,6 +22,7 @@ export interface Event {
   dateStart: string
   dateEnd: string
   remote: boolean
+  url: string
   callForContentUrl: string
   callForContentLastDate: string
   loginTool: string
@@ -30,6 +31,8 @@ export interface Event {
   mvpSubmission: boolean
   notes: string
 }
+
+export type TargetAudience = 'Developer' | 'IT Pro' | 'Business Decision Maker' | 'Technical Decision Maker' | 'Student' | 'Other'
 
 export interface Session {
   id: string
@@ -41,6 +44,11 @@ export interface Session {
   goals: string
   elevatorPitch: string
   retired: boolean
+  materialsUrl: string
+  targetAudience: TargetAudience[]
+  primaryTechnology: string
+  additionalTechnology: string
+  equipmentNotes: string
 }
 
 export interface Submission {

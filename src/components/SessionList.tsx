@@ -32,6 +32,7 @@ const levelColors: Record<string, string> = {
 
 export function SessionList({ sessions, events, submissions, onEdit, onDelete, onToggleRetired, showActive, onShowActiveChange, showRetired, onShowRetiredChange }: Props) {
   const [expandedSessions, setExpandedSessions] = useState<Set<string>>(new Set())
+  const [searchQuery, setSearchQuery] = useState('')
 
   const toggleExpanded = (sessionId: string) => {
     const newExpanded = new Set(expandedSessions)
@@ -45,16 +46,55 @@ export function SessionList({ sessions, events, submissions, onEdit, onDelete, o
 
   const filteredSessions = sessions
     .filter(session => {
+      // Active/Retired filter
       if (!showActive && !showRetired) return true
-      if (session.retired) return showRetired
-      return showActive
+      if (session.retired) {
+        if (!showRetired) return false
+      } else {
+        if (!showActive) return false
+      }
+
+      // Search filter
+      if (searchQuery.trim()) {
+        const query = searchQuery.toLowerCase()
+        const matchesName = session.name.toLowerCase().includes(query)
+        const matchesAlternate = session.alternateNames?.some(n => n.toLowerCase().includes(query))
+        const matchesPrimaryTech = session.primaryTechnology?.toLowerCase().includes(query)
+        const matchesAdditionalTech = session.additionalTechnology?.toLowerCase().includes(query)
+        if (!matchesName && !matchesAlternate && !matchesPrimaryTech && !matchesAdditionalTech) {
+          return false
+        }
+      }
+
+      return true
     })
     .sort((a, b) => a.name.localeCompare(b.name))
 
   return (
     <div className="space-y-3">
-      <div className="flex items-center gap-3">
-        <label className="text-sm text-gray-600">Filter:</label>
+      <div className="flex items-center gap-3 flex-wrap">
+        <div className="relative flex-1 min-w-[200px]">
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={e => setSearchQuery(e.target.value)}
+            placeholder="Search sessions..."
+            className="w-full pl-8 pr-3 py-1.5 text-sm border rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-400 outline-none"
+          />
+          <svg className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          {searchQuery && (
+            <button
+              onClick={() => setSearchQuery('')}
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          )}
+        </div>
         <label className="flex items-center gap-1 text-sm">
           <input
             type="checkbox"

@@ -1,5 +1,14 @@
 import { useState, useEffect } from 'react'
-import { Session } from '../types'
+import { Session, TargetAudience } from '../types'
+
+const TARGET_AUDIENCES: TargetAudience[] = [
+  'Developer',
+  'IT Pro',
+  'Business Decision Maker',
+  'Technical Decision Maker',
+  'Student',
+  'Other'
+]
 
 interface Props {
   session?: Session
@@ -17,6 +26,11 @@ export function SessionForm({ session, onSave, onCancel }: Props) {
   const [abstract, setAbstract] = useState(session?.abstract || '')
   const [goals, setGoals] = useState(session?.goals || '')
   const [retired, setRetired] = useState(session?.retired || false)
+  const [materialsUrl, setMaterialsUrl] = useState(session?.materialsUrl || '')
+  const [targetAudience, setTargetAudience] = useState<TargetAudience[]>(session?.targetAudience || [])
+  const [primaryTechnology, setPrimaryTechnology] = useState(session?.primaryTechnology || '')
+  const [additionalTechnology, setAdditionalTechnology] = useState(session?.additionalTechnology || '')
+  const [equipmentNotes, setEquipmentNotes] = useState(session?.equipmentNotes || '')
 
   // Handle Escape key to cancel
   useEffect(() => {
@@ -31,7 +45,29 @@ export function SessionForm({ session, onSave, onCancel }: Props) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    onSave({ name, alternateNames, level, abstract, summary, goals, elevatorPitch, retired })
+    onSave({
+      name,
+      alternateNames,
+      level,
+      abstract,
+      summary,
+      goals,
+      elevatorPitch,
+      retired,
+      materialsUrl,
+      targetAudience,
+      primaryTechnology,
+      additionalTechnology,
+      equipmentNotes
+    })
+  }
+
+  const toggleAudience = (audience: TargetAudience) => {
+    if (targetAudience.includes(audience)) {
+      setTargetAudience(targetAudience.filter(a => a !== audience))
+    } else {
+      setTargetAudience([...targetAudience, audience])
+    }
   }
 
   const addAlternateName = () => {
@@ -48,15 +84,42 @@ export function SessionForm({ session, onSave, onCancel }: Props) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 p-4 bg-gray-50 rounded-lg">
-      <div>
-        <label className="block text-sm font-medium text-gray-700">Name</label>
-        <input
-          type="text"
-          value={name}
-          onChange={e => setName(e.target.value)}
-          className="mt-1 block w-full rounded border-gray-300 shadow-sm px-3 py-2 border"
-          required
-        />
+      <div className="flex gap-4 items-end">
+        <div className="flex-1">
+          <label className="block text-sm font-medium text-gray-700">Name</label>
+          <input
+            type="text"
+            value={name}
+            onChange={e => setName(e.target.value)}
+            maxLength={110}
+            className="mt-1 block w-full rounded border-gray-300 shadow-sm px-3 py-2 border"
+            required
+          />
+        </div>
+        <div className="w-24">
+          <label className="block text-sm font-medium text-gray-700">Level</label>
+          <select
+            value={level}
+            onChange={e => setLevel(e.target.value)}
+            className="mt-1 block w-full rounded border-gray-300 shadow-sm px-3 py-2 border"
+          >
+            <option value="100">100</option>
+            <option value="200">200</option>
+            <option value="300">300</option>
+            <option value="400">400</option>
+            <option value="500">500</option>
+          </select>
+        </div>
+        <div className="flex items-center gap-2 pb-2">
+          <input
+            type="checkbox"
+            id="retired"
+            checked={retired}
+            onChange={e => setRetired(e.target.checked)}
+            className="rounded border-gray-300"
+          />
+          <label htmlFor="retired" className="text-sm text-gray-700">Retired</label>
+        </div>
       </div>
       <div>
         <label className="block text-sm font-medium text-gray-700">Alternate Names</label>
@@ -79,6 +142,7 @@ export function SessionForm({ session, onSave, onCancel }: Props) {
               value={newAlternateName}
               onChange={e => setNewAlternateName(e.target.value)}
               onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addAlternateName() } }}
+              maxLength={110}
               className="flex-1 rounded border-gray-300 shadow-sm px-3 py-2 border text-sm"
               placeholder="Add alternate name..."
             />
@@ -93,27 +157,23 @@ export function SessionForm({ session, onSave, onCancel }: Props) {
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium text-gray-700">Level</label>
-        <select
-          value={level}
-          onChange={e => setLevel(e.target.value)}
-          className="mt-1 block w-full rounded border-gray-300 shadow-sm px-3 py-2 border"
-        >
-          <option value="100">100</option>
-          <option value="200">200</option>
-          <option value="300">300</option>
-          <option value="400">400</option>
-          <option value="500">500</option>
-        </select>
-      </div>
-      <div>
         <label className="block text-sm font-medium text-gray-700">Summary</label>
         <input
           type="text"
           value={summary}
           onChange={e => setSummary(e.target.value)}
           className="mt-1 block w-full rounded border-gray-300 shadow-sm px-3 py-2 border"
-          placeholder="Brief one-liner description"
+          placeholder="Brief description, 150 words max"
+        />
+      </div>
+      <div>
+        <label className="block text-sm font-medium text-gray-700">Abstract</label>
+        <textarea
+          value={abstract}
+          onChange={e => setAbstract(e.target.value)}
+          rows={10}
+          className="mt-1 block w-full rounded border-gray-300 shadow-sm px-3 py-2 border"
+          placeholder="Full session description"
         />
       </div>
       <div>
@@ -127,16 +187,6 @@ export function SessionForm({ session, onSave, onCancel }: Props) {
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-gray-700">Abstract</label>
-        <textarea
-          value={abstract}
-          onChange={e => setAbstract(e.target.value)}
-          rows={4}
-          className="mt-1 block w-full rounded border-gray-300 shadow-sm px-3 py-2 border"
-          placeholder="Full session description"
-        />
-      </div>
-      <div>
         <label className="block text-sm font-medium text-gray-700">Goals</label>
         <textarea
           value={goals}
@@ -146,15 +196,63 @@ export function SessionForm({ session, onSave, onCancel }: Props) {
           placeholder="What attendees will learn or achieve"
         />
       </div>
-      <div className="flex items-center gap-2">
+      <div>
+        <label className="block text-sm font-medium text-gray-700">Materials URL</label>
         <input
-          type="checkbox"
-          id="retired"
-          checked={retired}
-          onChange={e => setRetired(e.target.checked)}
-          className="rounded border-gray-300"
+          type="url"
+          value={materialsUrl}
+          onChange={e => setMaterialsUrl(e.target.value)}
+          className="mt-1 block w-full rounded border-gray-300 shadow-sm px-3 py-2 border"
+          placeholder="Link to slides, repo, or resources"
         />
-        <label htmlFor="retired" className="text-sm text-gray-700">Retired</label>
+      </div>
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">Target Audience</label>
+        <div className="flex flex-wrap gap-3">
+          {TARGET_AUDIENCES.map(audience => (
+            <label key={audience} className="flex items-center gap-1.5">
+              <input
+                type="checkbox"
+                checked={targetAudience.includes(audience)}
+                onChange={() => toggleAudience(audience)}
+                className="rounded border-gray-300"
+              />
+              <span className="text-sm text-gray-700">{audience}</span>
+            </label>
+          ))}
+        </div>
+      </div>
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Primary Technology</label>
+          <input
+            type="text"
+            value={primaryTechnology}
+            onChange={e => setPrimaryTechnology(e.target.value)}
+            className="mt-1 block w-full rounded border-gray-300 shadow-sm px-3 py-2 border"
+            placeholder="e.g., Azure, .NET, SQL Server"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Additional Technology</label>
+          <input
+            type="text"
+            value={additionalTechnology}
+            onChange={e => setAdditionalTechnology(e.target.value)}
+            className="mt-1 block w-full rounded border-gray-300 shadow-sm px-3 py-2 border"
+            placeholder="e.g., Docker, Kubernetes"
+          />
+        </div>
+      </div>
+      <div>
+        <label className="block text-sm font-medium text-gray-700">Equipment Notes</label>
+        <textarea
+          value={equipmentNotes}
+          onChange={e => setEquipmentNotes(e.target.value)}
+          rows={2}
+          className="mt-1 block w-full rounded border-gray-300 shadow-sm px-3 py-2 border"
+          placeholder="Special equipment requirements (e.g., multiple monitors, specific hardware)"
+        />
       </div>
       <div className="flex gap-2">
         <button

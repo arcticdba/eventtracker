@@ -15,12 +15,12 @@ interface CommandPaletteProps {
   onClose: () => void
   events: Event[]
   submissions: Submission[]
+  selectedEvent: Event | null
   onNewEvent: () => void
   onNewSession: () => void
+  onAddSessionToEvent: () => void
   onOpenSettings: () => void
   onSelectEvent: (event: Event) => void
-  onEditEvent: (event: Event) => void
-  currentTab: 'events' | 'sessions' | 'statistics'
   onTabChange: (tab: 'events' | 'sessions' | 'statistics') => void
 }
 
@@ -29,12 +29,12 @@ export function CommandPalette({
   onClose,
   events,
   submissions,
+  selectedEvent,
   onNewEvent,
   onNewSession,
+  onAddSessionToEvent,
   onOpenSettings,
   onSelectEvent,
-  onEditEvent,
-  currentTab,
   onTabChange
 }: CommandPaletteProps) {
   const [search, setSearch] = useState('')
@@ -59,7 +59,14 @@ export function CommandPalette({
   const commands: Command[] = [
     // Actions
     { id: 'new-event', label: 'New Event', shortcut: 'N', category: 'action', action: () => { onNewEvent(); onClose() } },
-    { id: 'new-session', label: 'New Session', category: 'action', action: () => { onNewSession(); onClose() } },
+    { id: 'new-session', label: 'New Session', shortcut: 'S', category: 'action', action: () => { onNewSession(); onClose() } },
+    ...(selectedEvent ? [{
+      id: 'add-session-to-event',
+      label: `Submit Session to ${selectedEvent.name}`,
+      shortcut: 'U',
+      category: 'action' as const,
+      action: () => { onAddSessionToEvent(); onClose() }
+    }] : []),
     { id: 'settings', label: 'Open Settings', shortcut: ',', category: 'action', action: () => { onOpenSettings(); onClose() } },
     { id: 'export', label: 'Export All Data (JSON)', category: 'action', action: () => { window.location.href = '/api/export/json'; onClose() } },
 

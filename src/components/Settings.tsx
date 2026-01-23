@@ -158,6 +158,25 @@ export function Settings({ settings, onSettingsChange, onClose }: SettingsProps)
                 Submissions CSV
               </a>
             </div>
+            <div className="flex gap-2">
+              <a
+                href="/api/export/events.ics"
+                download
+                className="flex-1 px-3 py-1.5 bg-blue-100 text-blue-700 text-sm rounded hover:bg-blue-200 text-center"
+              >
+                All Events iCal
+              </a>
+              <a
+                href="/api/export/events.ics?selected=true"
+                download
+                className="flex-1 px-3 py-1.5 bg-blue-100 text-blue-700 text-sm rounded hover:bg-blue-200 text-center"
+              >
+                Confirmed Events iCal
+              </a>
+            </div>
+            <p className="text-xs text-gray-400 mt-1">
+              Tip: Right-click any event to export it individually to your calendar.
+            </p>
           </div>
         </div>
 

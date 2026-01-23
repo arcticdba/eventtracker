@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import * as ContextMenu from '@radix-ui/react-context-menu'
-import { Event, Submission, EventState } from '../types'
+import { Event, Submission, Session, EventState } from '../types'
 import { computeEventState } from '../utils/computeEventState'
 import { getOverlappingEvents } from '../utils/getOverlappingEvents'
 import { formatDate } from '../utils/formatDate'
@@ -9,6 +9,7 @@ import { DateFormat } from '../api'
 interface Props {
   events: Event[]
   submissions: Submission[]
+  sessions: Session[]
   onEdit: (event: Event) => void
   onDelete: (id: string) => void
   onSelect: (event: Event) => void
@@ -20,11 +21,17 @@ interface Props {
   onFiltersChange: (filters: Set<EventState>) => void
   futureOnly: boolean
   onFutureOnlyChange: (futureOnly: boolean) => void
+  pastOnly: boolean
+  onPastOnlyChange: (pastOnly: boolean) => void
   showMvpFeatures?: boolean
   mvpCompletedOnly: boolean
   onMvpCompletedOnlyChange: (value: boolean) => void
   notFullyBooked: boolean
   onNotFullyBookedChange: (value: boolean) => void
+  cfsOpen: boolean
+  onCfsOpenChange: (value: boolean) => void
+  equipmentNeeded: boolean
+  onEquipmentNeededChange: (value: boolean) => void
   onFilteredCountChange?: (filtered: number, total: number) => void
   dateFormat: DateFormat
 }
@@ -138,7 +145,7 @@ function formatLocation(country: string, city: string, remote: boolean): string 
   return parts.join(', ') || 'No location'
 }
 
-export function EventList({ events, submissions, onEdit, onDelete, onSelect, onDecline, onToggleRemote, onToggleMvpSubmission, selectedEventId, filters, onFiltersChange, futureOnly, onFutureOnlyChange, showMvpFeatures = true, mvpCompletedOnly, onMvpCompletedOnlyChange, notFullyBooked, onNotFullyBookedChange, onFilteredCountChange, dateFormat }: Props) {
+export function EventList({ events, submissions, sessions, onEdit, onDelete, onSelect, onDecline, onToggleRemote, onToggleMvpSubmission, selectedEventId, filters, onFiltersChange, futureOnly, onFutureOnlyChange, pastOnly, onPastOnlyChange, showMvpFeatures = true, mvpCompletedOnly, onMvpCompletedOnlyChange, notFullyBooked, onNotFullyBookedChange, cfsOpen, onCfsOpenChange, equipmentNeeded, onEquipmentNeededChange, onFilteredCountChange, dateFormat }: Props) {
   const toggleFilter = (state: EventState) => {
     const newFilters = new Set(filters)
     if (newFilters.has(state)) {
@@ -164,6 +171,13 @@ export function EventList({ events, submissions, onEdit, onDelete, onSelect, onD
         const endDate = new Date(event.dateEnd || event.dateStart)
         endDate.setHours(0, 0, 0, 0)
         if (endDate < today) return false
+      }
+
+      // Filter by past only (event has ended)
+      if (pastOnly) {
+        const endDate = new Date(event.dateEnd || event.dateStart)
+        endDate.setHours(0, 0, 0, 0)
+        if (endDate >= today) return false
       }
 
       // Helper to check if event needs booking
@@ -198,6 +212,24 @@ export function EventList({ events, submissions, onEdit, onDelete, onSelect, onD
         if (!checkNeedsBooking() && !checkNeedsSubmission()) return false
       } else if (showMvpFeatures && mvpCompletedOnly) {
         if (!checkNeedsMvp() && !checkNeedsSubmission()) return false
+      }
+
+      // Filter by CFS open (call for speakers/content still open)
+      if (cfsOpen) {
+        if (!event.callForContentLastDate) return false
+        const cfsDate = new Date(event.callForContentLastDate)
+        cfsDate.setHours(23, 59, 59, 999) // End of day
+        if (cfsDate < today) return false
+      }
+
+      // Filter by equipment needed (selected sessions with equipment notes)
+      if (equipmentNeeded) {
+        const eventSubmissions = submissions.filter(s => s.eventId === event.id && s.state === 'selected')
+        const hasEquipment = eventSubmissions.some(sub => {
+          const session = sessions.find(s => s.id === sub.sessionId)
+          return session?.equipmentNotes?.trim()
+        })
+        if (!hasEquipment) return false
       }
 
       // Filter by state
@@ -273,7 +305,7 @@ export function EventList({ events, submissions, onEdit, onDelete, onSelect, onD
   }, [showCustomFilters])
 
   // Define filter presets
-  type PresetId = 'upcoming' | 'pending' | 'needs-attention' | 'history' | 'custom'
+  type PresetId = 'all' | 'upcoming' | 'pending' | 'needs-attention' | 'history' | 'custom'
 
   interface Preset {
     id: PresetId
@@ -281,19 +313,37 @@ export function EventList({ events, submissions, onEdit, onDelete, onSelect, onD
     description: string
     filters: Set<EventState>
     futureOnly: boolean
+    pastOnly: boolean
     notFullyBooked: boolean
     mvpCompletedOnly: boolean
+    cfsOpen: boolean
+    equipmentNeeded: boolean
   }
 
   const presets: Preset[] = [
+    {
+      id: 'all',
+      label: 'All',
+      description: 'All events',
+      filters: new Set(allStates),
+      futureOnly: false,
+      pastOnly: false,
+      notFullyBooked: false,
+      mvpCompletedOnly: false,
+      cfsOpen: false,
+      equipmentNeeded: false
+    },
     {
       id: 'upcoming',
       label: 'Upcoming',
       description: 'Confirmed upcoming events',
       filters: new Set(['selected'] as EventState[]),
       futureOnly: true,
+      pastOnly: false,
       notFullyBooked: false,
-      mvpCompletedOnly: false
+      mvpCompletedOnly: false,
+      cfsOpen: false,
+      equipmentNeeded: false
     },
     {
       id: 'pending',
@@ -301,8 +351,11 @@ export function EventList({ events, submissions, onEdit, onDelete, onSelect, onD
       description: 'Awaiting decision or no submissions yet',
       filters: new Set(['pending', 'none'] as EventState[]),
       futureOnly: true,
+      pastOnly: false,
       notFullyBooked: false,
-      mvpCompletedOnly: false
+      mvpCompletedOnly: false,
+      cfsOpen: false,
+      equipmentNeeded: false
     },
     {
       id: 'needs-attention',
@@ -310,8 +363,11 @@ export function EventList({ events, submissions, onEdit, onDelete, onSelect, onD
       description: 'Upcoming events needing booking, MVP submission, or submissions',
       filters: new Set(['selected', 'none'] as EventState[]),
       futureOnly: true,
+      pastOnly: false,
       notFullyBooked: true,
-      mvpCompletedOnly: true
+      mvpCompletedOnly: true,
+      cfsOpen: false,
+      equipmentNeeded: false
     },
     {
       id: 'history',
@@ -319,8 +375,11 @@ export function EventList({ events, submissions, onEdit, onDelete, onSelect, onD
       description: 'Past events',
       filters: new Set(['selected', 'rejected', 'declined'] as EventState[]),
       futureOnly: false,
+      pastOnly: true,
       notFullyBooked: false,
-      mvpCompletedOnly: false
+      mvpCompletedOnly: false,
+      cfsOpen: false,
+      equipmentNeeded: false
     }
   ]
 
@@ -331,15 +390,21 @@ export function EventList({ events, submissions, onEdit, onDelete, onSelect, onD
   const activePreset = presets.find(p =>
     setsEqual(p.filters, filters) &&
     p.futureOnly === futureOnly &&
+    p.pastOnly === pastOnly &&
     p.notFullyBooked === notFullyBooked &&
-    p.mvpCompletedOnly === mvpCompletedOnly
+    p.mvpCompletedOnly === mvpCompletedOnly &&
+    p.cfsOpen === cfsOpen &&
+    p.equipmentNeeded === equipmentNeeded
   )?.id || 'custom'
 
   const applyPreset = (preset: Preset) => {
     onFiltersChange(preset.filters)
     onFutureOnlyChange(preset.futureOnly)
+    onPastOnlyChange(preset.pastOnly)
     onNotFullyBookedChange(preset.notFullyBooked)
     onMvpCompletedOnlyChange(preset.mvpCompletedOnly)
+    onCfsOpenChange(preset.cfsOpen)
+    onEquipmentNeededChange(preset.equipmentNeeded)
     setShowCustomFilters(false)
   }
 
@@ -381,7 +446,7 @@ export function EventList({ events, submissions, onEdit, onDelete, onSelect, onD
             </button>
 
             {showCustomFilters && (
-              <div className="absolute top-full left-0 mt-1 bg-white rounded-lg shadow-lg border p-3 z-20 min-w-[220px]">
+              <div className="absolute top-full right-0 mt-1 bg-white rounded-lg shadow-lg border p-3 z-20 min-w-[220px]">
                 <div className="text-xs font-medium text-gray-500 mb-2">Status</div>
                 <div className="space-y-1 mb-3">
                   {allStates.map(state => (
@@ -426,6 +491,24 @@ export function EventList({ events, submissions, onEdit, onDelete, onSelect, onD
                       <span className="text-sm">MVP pending</span>
                     </label>
                   )}
+                  <label className="flex items-center gap-2 px-2 py-1 hover:bg-gray-50 rounded cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={cfsOpen}
+                      onChange={() => onCfsOpenChange(!cfsOpen)}
+                      className="rounded border-gray-300"
+                    />
+                    <span className="text-sm">CFS open</span>
+                  </label>
+                  <label className="flex items-center gap-2 px-2 py-1 hover:bg-gray-50 rounded cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={equipmentNeeded}
+                      onChange={() => onEquipmentNeededChange(!equipmentNeeded)}
+                      className="rounded border-gray-300"
+                    />
+                    <span className="text-sm">Equipment needed</span>
+                  </label>
                 </div>
               </div>
             )}
@@ -450,6 +533,12 @@ export function EventList({ events, submissions, onEdit, onDelete, onSelect, onD
           const submissionCount = eventSubmissions.length
           const selectedCount = eventSubmissions.filter(s => s.state === 'selected').length
           const isSelected = event.id === selectedEventId
+          // Check if any selected sessions have equipment notes
+          const selectedSessionsWithEquipment = eventSubmissions
+            .filter(s => s.state === 'selected')
+            .map(s => sessions.find(sess => sess.id === s.sessionId))
+            .filter(sess => sess?.equipmentNotes?.trim())
+          const hasEquipmentNeeds = selectedSessionsWithEquipment.length > 0
           const daysUntilCfcClose = getDaysRemaining(event.callForContentLastDate)
           const daysUntilEvent = getDaysRemaining(event.dateStart)
           const eventInPast = daysUntilEvent !== null && daysUntilEvent < 0
@@ -557,6 +646,16 @@ export function EventList({ events, submissions, onEdit, onDelete, onSelect, onD
                       </span>
                     </div>
                   )}
+                  {hasEquipmentNeeds && (
+                    <div className="mt-1">
+                      <span
+                        className="px-1.5 py-0.5 text-xs rounded bg-purple-100 text-purple-700 font-medium"
+                        title={selectedSessionsWithEquipment.map(s => `${s!.name}: ${s!.equipmentNotes}`).join('\n')}
+                      >
+                        Equipment needed
+                      </span>
+                    </div>
+                  )}
                 </div>
                 <div className="flex flex-col items-end gap-1 text-xs">
                   {submissionCount > 0 && state !== 'declined' && state !== 'rejected' && (
@@ -614,6 +713,21 @@ export function EventList({ events, submissions, onEdit, onDelete, onSelect, onD
                       <span className={event.mvpSubmission ? '' : 'ml-6'}>MVP submission completed</span>
                     </ContextMenu.CheckboxItem>
                   )}
+                  <ContextMenu.Separator className="h-px bg-gray-200 my-1" />
+                  <ContextMenu.Item
+                    className="flex items-center px-2 py-1.5 text-sm rounded hover:bg-gray-100 cursor-pointer outline-none"
+                    onSelect={() => {
+                      const link = document.createElement('a')
+                      link.href = `/api/export/events.ics?eventId=${event.id}`
+                      link.download = `${event.name.replace(/[^a-z0-9]/gi, '-')}.ics`
+                      link.click()
+                    }}
+                  >
+                    <svg className="w-4 h-4 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    Export to Calendar
+                  </ContextMenu.Item>
                 </ContextMenu.Content>
               </ContextMenu.Portal>
             </ContextMenu.Root>

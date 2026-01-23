@@ -67,6 +67,8 @@ const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep
 export function Statistics({ events, sessions, submissions, dateFormat }: Props) {
   const [selectedYear, setSelectedYear] = useState<number | null>(null)
   const [showRetiredSessions, setShowRetiredSessions] = useState(false)
+  const [compareYear1, setCompareYear1] = useState<number | null>(null)
+  const [compareYear2, setCompareYear2] = useState<number | null>(null)
 
   // Get events with selected sessions
   const selectedSubmissions = submissions.filter(s => s.state === 'selected')
@@ -197,7 +199,11 @@ export function Statistics({ events, sessions, submissions, dateFormat }: Props)
       const selected = sessionSubs.filter(s => s.state === 'selected').length
       const rejected = sessionSubs.filter(s => s.state === 'rejected').length
       const declined = sessionSubs.filter(s => s.state === 'declined').length
-      const pending = sessionSubs.filter(s => s.state === 'submitted').length
+      const pendingSubs = sessionSubs.filter(s => s.state === 'submitted')
+      const pending = pendingSubs.length
+      const pendingEventNames = pendingSubs
+        .map(sub => events.find(e => e.id === sub.eventId)?.name)
+        .filter(Boolean) as string[]
       // Acceptance rate: selected / (selected + rejected) - only count submissions where conference made a decision
       const decided = selected + rejected
       const acceptanceRate = decided > 0 ? Math.round((selected / decided) * 100) : null
@@ -208,6 +214,7 @@ export function Statistics({ events, sessions, submissions, dateFormat }: Props)
         rejected,
         declined,
         pending,
+        pendingEventNames,
         decided,
         acceptanceRate
       }
@@ -279,6 +286,126 @@ export function Statistics({ events, sessions, submissions, dateFormat }: Props)
           <div className="text-sm text-gray-500">Countries</div>
         </div>
       </div>
+
+      {/* Year-over-Year Trends */}
+      {!selectedYear && years.length >= 2 && (() => {
+        const currentYear = new Date().getFullYear()
+        // Initialize compare years if not set
+        const year1 = compareYear1 ?? currentYear
+        const year2 = compareYear2 ?? (years.includes(currentYear - 1) ? currentYear - 1 : years.find(y => y !== year1) ?? currentYear - 1)
+
+        // Calculate stats for each year
+        const getYearStats = (year: number) => {
+          const yearEvents = allEventsWithSelected.filter(e => getYear(e.dateStart) === year)
+          const yearSubmissions = submissions.filter(s => {
+            const event = events.find(e => e.id === s.eventId)
+            return event && getYear(event.dateStart) === year
+          })
+          const yearSelectedSubs = yearSubmissions.filter(s => s.state === 'selected')
+          const eventsSubmittedTo = new Set(yearSubmissions.map(s => s.eventId)).size
+          const eventsAccepted = new Set(yearSelectedSubs.map(s => s.eventId)).size
+          const acceptRate = eventsSubmittedTo > 0 ? Math.round((eventsAccepted / eventsSubmittedTo) * 100) : 0
+          const countries = new Set(yearEvents.filter(e => !e.remote && e.country).map(e => e.country)).size
+          const cities = new Set(yearEvents.filter(e => !e.remote && e.city).map(e => e.city)).size
+
+          return {
+            events: yearEvents.length,
+            submitted: eventsSubmittedTo,
+            acceptRate,
+            countries,
+            cities
+          }
+        }
+
+        const stats1 = getYearStats(year1)
+        const stats2 = getYearStats(year2)
+
+        const getTrend = (current: number, previous: number) => {
+          if (previous === 0) return current > 0 ? { direction: 'up' as const, change: current } : { direction: 'same' as const, change: 0 }
+          const change = current - previous
+          const pct = Math.round((change / previous) * 100)
+          if (change > 0) return { direction: 'up' as const, change: pct }
+          if (change < 0) return { direction: 'down' as const, change: Math.abs(pct) }
+          return { direction: 'same' as const, change: 0 }
+        }
+
+        const eventsTrend = getTrend(stats1.events, stats2.events)
+        const acceptTrend = getTrend(stats1.acceptRate, stats2.acceptRate)
+        const countriesTrend = getTrend(stats1.countries, stats2.countries)
+
+        const TrendIndicator = ({ trend }: { trend: { direction: 'up' | 'down' | 'same'; change: number } }) => {
+          if (trend.direction === 'same') return <span className="text-gray-400 text-xs">→ same</span>
+          const color = trend.direction === 'up' ? 'text-green-600' : 'text-red-600'
+          const arrow = trend.direction === 'up' ? '↑' : '↓'
+          return <span className={`${color} text-xs font-medium`}>{arrow} {trend.change}%</span>
+        }
+
+        // Get all years with data for the dropdown (include years with no data too for flexibility)
+        const allYearsForDropdown = [...new Set([...years, currentYear, currentYear - 1])].sort((a, b) => b - a)
+
+        return (
+          <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg shadow p-4">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold">Year-over-Year Comparison</h3>
+              <div className="flex items-center gap-2 text-sm">
+                <select
+                  value={year1}
+                  onChange={e => setCompareYear1(Number(e.target.value))}
+                  className="rounded border-gray-300 text-sm py-1 px-2"
+                >
+                  {allYearsForDropdown.map(y => (
+                    <option key={y} value={y}>{y}</option>
+                  ))}
+                </select>
+                <span className="text-gray-400">vs</span>
+                <select
+                  value={year2}
+                  onChange={e => setCompareYear2(Number(e.target.value))}
+                  className="rounded border-gray-300 text-sm py-1 px-2"
+                >
+                  {allYearsForDropdown.map(y => (
+                    <option key={y} value={y}>{y}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            <div className="grid grid-cols-4 gap-4">
+              <div className="text-center">
+                <div className="text-xs text-gray-500 mb-1">Events Spoken</div>
+                <div className="flex items-baseline justify-center gap-2">
+                  <span className="text-2xl font-bold text-blue-600">{stats1.events}</span>
+                  <span className="text-gray-400 text-sm">vs {stats2.events}</span>
+                </div>
+                <TrendIndicator trend={eventsTrend} />
+              </div>
+              <div className="text-center">
+                <div className="text-xs text-gray-500 mb-1">Acceptance Rate</div>
+                <div className="flex items-baseline justify-center gap-2">
+                  <span className="text-2xl font-bold text-orange-600">{stats1.acceptRate}%</span>
+                  <span className="text-gray-400 text-sm">vs {stats2.acceptRate}%</span>
+                </div>
+                <TrendIndicator trend={acceptTrend} />
+              </div>
+              <div className="text-center">
+                <div className="text-xs text-gray-500 mb-1">Countries</div>
+                <div className="flex items-baseline justify-center gap-2">
+                  <span className="text-2xl font-bold text-purple-600">{stats1.countries}</span>
+                  <span className="text-gray-400 text-sm">vs {stats2.countries}</span>
+                </div>
+                <TrendIndicator trend={countriesTrend} />
+              </div>
+              <div className="text-center">
+                <div className="text-xs text-gray-500 mb-1">Cities</div>
+                <div className="flex items-baseline justify-center gap-2">
+                  <span className="text-2xl font-bold text-teal-600">{stats1.cities}</span>
+                  <span className="text-gray-400 text-sm">vs {stats2.cities}</span>
+                </div>
+                <TrendIndicator trend={getTrend(stats1.cities, stats2.cities)} />
+              </div>
+            </div>
+          </div>
+        )
+      })()}
 
       <div className="grid md:grid-cols-2 gap-6">
         {/* Events by Year */}
@@ -503,10 +630,6 @@ export function Statistics({ events, sessions, submissions, dateFormat }: Props)
                 const stats = levelStats[level]
                 const decided = stats.selected + stats.rejected
                 const rate = decided > 0 ? Math.round((stats.selected / decided) * 100) : null
-                const levelLabel = level === '100' ? 'Beginner' :
-                                   level === '200' ? 'Intermediate' :
-                                   level === '300' ? 'Advanced' :
-                                   level === '400' ? 'Expert' : 'Master'
 
                 return (
                   <div key={level} className="flex items-center gap-3">
@@ -540,7 +663,7 @@ export function Statistics({ events, sessions, submissions, dateFormat }: Props)
                 )
               })}
             </div>
-            <p className="text-xs text-gray-400 mt-3">Based on sessions with decisions (selected or rejected)</p>
+            <p className="text-xs text-gray-400 mt-3">Based on sessions with selections (selected or rejected)</p>
           </div>
 
           {/* High Performing vs Needs Rework */}
@@ -551,7 +674,7 @@ export function Statistics({ events, sessions, submissions, dateFormat }: Props)
                 <div className="flex items-center gap-2 mb-2">
                   <span className="w-3 h-3 rounded-full bg-green-500"></span>
                   <span className="text-sm font-medium text-gray-700">High Performing ({highPerforming.length})</span>
-                  <span className="text-xs text-gray-400">≥50% rate, 2+ decisions</span>
+                  <span className="text-xs text-gray-400">≥50% rate, 2+ selections</span>
                 </div>
                 {highPerforming.length > 0 ? (
                   <div className="flex flex-wrap gap-1.5">
@@ -573,7 +696,7 @@ export function Statistics({ events, sessions, submissions, dateFormat }: Props)
                 <div className="flex items-center gap-2 mb-2">
                   <span className="w-3 h-3 rounded-full bg-red-500"></span>
                   <span className="text-sm font-medium text-gray-700">Needs Rework ({needsRework.length})</span>
-                  <span className="text-xs text-gray-400">&lt;30% rate, 3+ decisions</span>
+                  <span className="text-xs text-gray-400">&lt;30% rate, 3+ selections</span>
                 </div>
                 {needsRework.length > 0 ? (
                   <div className="flex flex-wrap gap-1.5">
@@ -617,7 +740,7 @@ export function Statistics({ events, sessions, submissions, dateFormat }: Props)
                             <span className="flex-shrink-0 px-1.5 py-0.5 text-xs rounded bg-gray-200 text-gray-600">Retired</span>
                           )}
                           {s.pending > 0 && (
-                            <span className="flex-shrink-0 px-1.5 py-0.5 text-xs rounded bg-yellow-100 text-yellow-700" title={`${s.pending} pending submission${s.pending > 1 ? 's' : ''}`}>
+                            <span className="flex-shrink-0 px-1.5 py-0.5 text-xs rounded bg-yellow-100 text-yellow-700" title={`Pending: ${s.pendingEventNames.join(', ')}`}>
                               {s.pending} pending
                             </span>
                           )}

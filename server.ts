@@ -371,6 +371,101 @@ app.get('/api/export/submissions.csv', (_req, res) => {
   res.send([headers.join(','), ...rows].join('\n'))
 })
 
+// Export events as iCal
+app.get('/api/export/events.ics', (req, res) => {
+  const data = loadData()
+  const { selected, eventId } = req.query
+
+  // Filter events
+  let eventsToExport = data.events
+
+  // Single event export
+  if (eventId && typeof eventId === 'string') {
+    eventsToExport = data.events.filter(e => e.id === eventId)
+  }
+  // Only events with selected submissions
+  else if (selected === 'true') {
+    const eventIdsWithSelected = new Set(
+      data.submissions
+        .filter(s => s.state === 'selected')
+        .map(s => s.eventId)
+    )
+    eventsToExport = data.events.filter(e => eventIdsWithSelected.has(e.id))
+  }
+
+  // Helper to format date as iCal date (YYYYMMDD)
+  const formatICalDate = (dateStr: string): string => {
+    return dateStr.replace(/-/g, '')
+  }
+
+  // Helper to escape text for iCal
+  const escapeICalText = (text: string): string => {
+    return (text || '')
+      .replace(/\\/g, '\\\\')
+      .replace(/;/g, '\\;')
+      .replace(/,/g, '\\,')
+      .replace(/\n/g, '\\n')
+  }
+
+  // Build iCal content
+  const lines: string[] = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//EventTracker//Speaking Events//EN',
+    'CALSCALE:GREGORIAN',
+    'METHOD:PUBLISH',
+    'X-WR-CALNAME:Speaking Events'
+  ]
+
+  for (const event of eventsToExport) {
+    const location = [event.city, event.country].filter(Boolean).join(', ')
+
+    // Get selected sessions for this event
+    const selectedSessions = data.submissions
+      .filter(s => s.eventId === event.id && s.state === 'selected')
+      .map(s => {
+        const session = data.sessions.find(sess => sess.id === s.sessionId)
+        return s.nameUsed || session?.name || 'Unknown session'
+      })
+
+    let description = ''
+    if (selectedSessions.length > 0) {
+      description = `Sessions: ${selectedSessions.join(', ')}`
+    }
+    if (event.notes) {
+      description += (description ? '\\n\\n' : '') + event.notes
+    }
+
+    // Calculate end date (add 1 day for all-day events in iCal)
+    const endDate = new Date(event.dateEnd)
+    endDate.setDate(endDate.getDate() + 1)
+    const endDateStr = endDate.toISOString().split('T')[0]
+
+    lines.push('BEGIN:VEVENT')
+    lines.push(`UID:${event.id}@eventtracker`)
+    lines.push(`DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').split('.')[0]}Z`)
+    lines.push(`DTSTART;VALUE=DATE:${formatICalDate(event.dateStart)}`)
+    lines.push(`DTEND;VALUE=DATE:${formatICalDate(endDateStr)}`)
+    lines.push(`SUMMARY:${escapeICalText(event.name)}`)
+    if (location) {
+      lines.push(`LOCATION:${escapeICalText(location)}`)
+    }
+    if (description) {
+      lines.push(`DESCRIPTION:${escapeICalText(description)}`)
+    }
+    if ((event as any).url) {
+      lines.push(`URL:${(event as any).url}`)
+    }
+    lines.push('END:VEVENT')
+  }
+
+  lines.push('END:VCALENDAR')
+
+  res.setHeader('Content-Type', 'text/calendar; charset=utf-8')
+  res.setHeader('Content-Disposition', 'attachment; filename="speaking-events.ics"')
+  res.send(lines.join('\r\n'))
+})
+
 // Parse Sessionize CFS page
 app.post('/api/import/sessionize', async (req, res) => {
   const { url } = req.body

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import { Event, Session, Submission, SubmissionState, EventState } from './types'
 import * as api from './api'
 import { EventList } from './components/EventList'
@@ -34,8 +34,11 @@ export default function App() {
   // Persistent filter state for EventList (default: "Upcoming" preset)
   const [eventFilters, setEventFilters] = useState<Set<EventState>>(new Set(['selected']))
   const [eventFutureOnly, setEventFutureOnly] = useState(true)
+  const [eventPastOnly, setEventPastOnly] = useState(false)
   const [eventMvpCompletedOnly, setEventMvpCompletedOnly] = useState(false)
   const [eventNotFullyBooked, setEventNotFullyBooked] = useState(false)
+  const [eventCfsOpen, setEventCfsOpen] = useState(false)
+  const [eventEquipmentNeeded, setEventEquipmentNeeded] = useState(false)
 
   // Persistent filter state for SessionList
   const [sessionShowActive, setSessionShowActive] = useState(true)
@@ -84,11 +87,24 @@ export default function App() {
         setEditingEvent(null)
         setImportedEventData(null)
       }
+      // Cmd+S or Ctrl+S to create new session
+      if ((e.metaKey || e.ctrlKey) && e.key === 's' && !showSessionForm) {
+        e.preventDefault()
+        setActiveTab('sessions')
+        setShowSessionForm(true)
+        setEditingSession(null)
+      }
+      // Cmd+U or Ctrl+U to submit session to selected event
+      if ((e.metaKey || e.ctrlKey) && e.key === 'u' && selectedEvent && !showSessionPicker) {
+        e.preventDefault()
+        setActiveTab('events')
+        setShowSessionPicker(true)
+      }
     }
 
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [activeTab, showEventForm])
+  }, [activeTab, showEventForm, showSessionForm, showSessionPicker, selectedEvent])
 
   async function loadSettings() {
     const settings = await api.fetchSettings()
@@ -432,6 +448,7 @@ export default function App() {
                       <EventList
                         events={filteredEvents}
                         submissions={submissions}
+                        sessions={sessions}
                         onEdit={e => { setEditingEvent(e); setShowEventForm(true) }}
                         onDelete={handleDeleteEvent}
                         onSelect={setSelectedEvent}
@@ -443,11 +460,17 @@ export default function App() {
                         onFiltersChange={setEventFilters}
                         futureOnly={eventFutureOnly}
                         onFutureOnlyChange={setEventFutureOnly}
+                        pastOnly={eventPastOnly}
+                        onPastOnlyChange={setEventPastOnly}
                         showMvpFeatures={uiSettings.showMvpFeatures}
                         mvpCompletedOnly={eventMvpCompletedOnly}
                         onMvpCompletedOnlyChange={setEventMvpCompletedOnly}
                         notFullyBooked={eventNotFullyBooked}
                         onNotFullyBookedChange={setEventNotFullyBooked}
+                        cfsOpen={eventCfsOpen}
+                        onCfsOpenChange={setEventCfsOpen}
+                        equipmentNeeded={eventEquipmentNeeded}
+                        onEquipmentNeededChange={setEventEquipmentNeeded}
                         onFilteredCountChange={(filtered, total) => setEventListCounts({ filtered, total })}
                         dateFormat={uiSettings.dateFormat}
                       />
@@ -565,6 +588,7 @@ export default function App() {
         onClose={() => setShowCommandPalette(false)}
         events={events}
         submissions={submissions}
+        selectedEvent={selectedEvent}
         onNewEvent={() => {
           setActiveTab('events')
           setShowEventForm(true)
@@ -576,14 +600,14 @@ export default function App() {
           setShowSessionForm(true)
           setEditingSession(null)
         }}
+        onAddSessionToEvent={() => {
+          if (selectedEvent) {
+            setActiveTab('events')
+            setShowSessionPicker(true)
+          }
+        }}
         onOpenSettings={() => setShowSettings(true)}
         onSelectEvent={setSelectedEvent}
-        onEditEvent={(e) => {
-          setActiveTab('events')
-          setEditingEvent(e)
-          setShowEventForm(true)
-        }}
-        currentTab={activeTab}
         onTabChange={setActiveTab}
       />
     </div>
