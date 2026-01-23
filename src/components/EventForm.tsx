@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from 'react'
 import { Event, TravelBooking, HotelBooking, TravelType } from '../types'
 import { v4 as uuidv4 } from 'uuid'
 import { getOverlappingEvents } from '../utils/getOverlappingEvents'
-import { getCountryFlagOrEmpty } from '../utils/countryFlags'
+import { getCountryFlagOrEmpty, normalizeCountryName } from '../utils/countryFlags'
 
 interface Props {
   event?: Event
@@ -142,7 +142,7 @@ export function EventForm({ event, initialData, allEvents, onSave, onCancel, sho
     e.preventDefault()
     onSave({
       name,
-      country,
+      country: normalizeCountryName(country),
       city,
       dateStart,
       dateEnd,

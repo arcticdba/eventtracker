@@ -99,6 +99,77 @@ const countryToCode: Record<string, string> = {
   'remote': '🌐',
 }
 
+// Map ISO codes to canonical country names
+const codeToCanonicalName: Record<string, string> = {
+  'US': 'United States',
+  'CA': 'Canada',
+  'MX': 'Mexico',
+  'GB': 'United Kingdom',
+  'DE': 'Germany',
+  'FR': 'France',
+  'ES': 'Spain',
+  'IT': 'Italy',
+  'NL': 'Netherlands',
+  'BE': 'Belgium',
+  'SE': 'Sweden',
+  'NO': 'Norway',
+  'DK': 'Denmark',
+  'FI': 'Finland',
+  'PL': 'Poland',
+  'AT': 'Austria',
+  'CH': 'Switzerland',
+  'IE': 'Ireland',
+  'PT': 'Portugal',
+  'CZ': 'Czechia',
+  'HU': 'Hungary',
+  'RO': 'Romania',
+  'GR': 'Greece',
+  'HR': 'Croatia',
+  'SI': 'Slovenia',
+  'SK': 'Slovakia',
+  'BG': 'Bulgaria',
+  'RS': 'Serbia',
+  'UA': 'Ukraine',
+  'LT': 'Lithuania',
+  'LV': 'Latvia',
+  'EE': 'Estonia',
+  'IS': 'Iceland',
+  'MT': 'Malta',
+  'LU': 'Luxembourg',
+  'CY': 'Cyprus',
+  'JP': 'Japan',
+  'CN': 'China',
+  'KR': 'South Korea',
+  'IN': 'India',
+  'SG': 'Singapore',
+  'TH': 'Thailand',
+  'VN': 'Vietnam',
+  'MY': 'Malaysia',
+  'ID': 'Indonesia',
+  'PH': 'Philippines',
+  'TW': 'Taiwan',
+  'HK': 'Hong Kong',
+  'IL': 'Israel',
+  'AE': 'United Arab Emirates',
+  'SA': 'Saudi Arabia',
+  'QA': 'Qatar',
+  'TR': 'Turkey',
+  'AU': 'Australia',
+  'NZ': 'New Zealand',
+  'BR': 'Brazil',
+  'AR': 'Argentina',
+  'CL': 'Chile',
+  'CO': 'Colombia',
+  'PE': 'Peru',
+  'UY': 'Uruguay',
+  'ZA': 'South Africa',
+  'EG': 'Egypt',
+  'NG': 'Nigeria',
+  'KE': 'Kenya',
+  'MA': 'Morocco',
+  '🌐': 'Online',
+}
+
 // Convert ISO 3166-1 alpha-2 code to flag emoji
 function isoToFlagEmoji(countryCode: string): string {
   if (countryCode === '🌐') return countryCode
@@ -121,4 +192,14 @@ export function getCountryFlag(country: string): string | null {
 // Get flag emoji, returning empty string if not found (for display purposes)
 export function getCountryFlagOrEmpty(country: string): string {
   return getCountryFlag(country) || ''
+}
+
+// Normalize country name to canonical form
+// Returns the canonical name if recognized, otherwise returns the original input
+export function normalizeCountryName(country: string): string {
+  if (!country) return country
+  const normalized = country.toLowerCase().trim()
+  const code = countryToCode[normalized]
+  if (!code) return country // Keep original if not recognized
+  return codeToCanonicalName[code] || country
 }
