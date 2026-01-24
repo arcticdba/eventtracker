@@ -10,12 +10,15 @@ A React/TypeScript application for tracking speaking engagements, session submis
 - Visual indicators showing days until CfS closes and days until event starts
 - Import events directly from Sessionize CfS pages
 - Filter events by status (pending, selected, rejected, declined) and future/past
+- Country flag emojis displayed alongside locations
+- Country name normalization for data consistency
 
 ### Session Management
 - Maintain a library of talk sessions with titles, abstracts, summaries, and elevator pitches
 - Support for alternate session names (for localized or variant titles)
 - Track session difficulty levels
 - Mark sessions as retired when no longer actively submitting
+- Search sessions by name (including alternate names)
 
 ### Submission Tracking
 - Link sessions to events as submissions
@@ -26,6 +29,7 @@ A React/TypeScript application for tracking speaking engagements, session submis
 ### Travel & Hotel Booking
 - Track travel bookings (flights, trains, buses, cars) per event
 - Track hotel reservations with booking references
+- Add, edit, and remove bookings inline
 - Visual indicators showing booking status on event list
 - Support for booking reference numbers or URLs
 
@@ -33,14 +37,22 @@ A React/TypeScript application for tracking speaking engagements, session submis
 - Checkbox to mark events submitted to Microsoft MVP portal
 - Visual indicator (dashed border) for selected events not yet submitted to MVP
 
+### Export Options
+- Backup all data as JSON
+- Export events, sessions, and submissions as CSV
+- Export selected events to iCal (.ics) for calendar import
+- Export individual events to iCal via right-click menu
+
 ### Statistics Dashboard
 - Summary cards: Events spoken at, Events submitted to, Acceptance rate, Countries visited
+- Year-over-year comparison with selectable years and trend indicators
 - Events by year chart (clickable to filter all stats by year)
 - Events by region breakdown
 - Events by season distribution
 - In-person vs remote event ratio
-- Top countries with hover tooltips showing event details
-- Cities visited list
+- Top countries with flag emojis and hover tooltips showing event details
+- Countries and cities visited lists with flag emojis
+- Session performance analytics with acceptance rates by level
 
 ## Tech Stack
 
@@ -169,7 +181,6 @@ In Portainer, simply recreate the container to have updates show.
 
 ```
 ├── server.ts              # Express backend API
-├── data.json              # Data storage file
 ├── src/
 │   ├── App.tsx            # Main application component
 │   ├── api.ts             # API client functions
@@ -185,8 +196,12 @@ In Portainer, simply recreate the container to have updates show.
 │   │   ├── StateSelector.tsx   # Submission state dropdown
 │   │   └── ImportFromSessionize.tsx  # Sessionize URL importer
 │   └── utils/
-│       └── computeEventState.ts  # Event state computation
+│       ├── computeEventState.ts  # Event state computation
+│       ├── formatDate.ts         # Date formatting utilities
+│       └── countryFlags.ts       # Country flag emojis and normalization
 ```
+
+Note: `data.json` and `settings.json` are created at runtime and not included in the repository.
 
 ## API Endpoints
 
@@ -207,6 +222,7 @@ In Portainer, simply recreate the container to have updates show.
 | PUT | /api/submissions/:id | Update submission state |
 | DELETE | /api/submissions/:id | Delete submission |
 | POST | /api/import/sessionize | Parse Sessionize CfS page |
+| GET | /api/export/events.ics | Export selected events as iCal |
 
 ## License
 

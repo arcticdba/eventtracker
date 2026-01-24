@@ -7,7 +7,7 @@ A web application for conference speakers to track speaking engagements, session
 The application consists of:
 - **Frontend**: React + TypeScript + Tailwind CSS (Vite build)
 - **Backend**: Express.js API server
-- **Storage**: JSON files for data persistence (data.json, settings.json)
+- **Storage**: JSON files for data persistence (data.json, settings.json - not included in repository)
 - **Deployment**: Docker containerized
 
 ---
@@ -21,17 +21,19 @@ Represents a conference or speaking event.
 interface Event {
   id: string                    // UUID
   name: string                  // Event name (e.g., "SQLBits 2026")
-  country: string               // Country name
+  country: string               // Country name (normalized on save)
   city: string                  // City name
   dateStart: string             // ISO date (YYYY-MM-DD)
   dateEnd: string               // ISO date (YYYY-MM-DD)
   remote: boolean               // Is this a remote/online event?
+  url: string                   // Event website URL
   callForContentUrl: string     // URL to CfS page
   callForContentLastDate: string // CfS deadline (ISO date)
   loginTool: string             // Submission platform (e.g., "Sessionize", "Papercall")
   travel: TravelBooking[]       // Array of travel bookings
   hotels: HotelBooking[]        // Array of hotel bookings
   mvpSubmission: boolean        // Has MVP portal submission been completed?
+  notes: string                 // Free-form notes about the event
 }
 ```
 
@@ -39,6 +41,8 @@ interface Event {
 Represents a talk/presentation that can be submitted to events.
 
 ```typescript
+type TargetAudience = 'Developer' | 'IT Pro' | 'Business Decision Maker' | 'Technical Decision Maker' | 'Student' | 'Other'
+
 interface Session {
   id: string                    // UUID
   name: string                  // Primary session title
@@ -49,6 +53,11 @@ interface Session {
   goals: string                 // Learning objectives
   elevatorPitch: string         // 30-second pitch
   retired: boolean              // No longer actively submitting this session
+  materialsUrl: string          // Link to slides, repo, or resources
+  targetAudience: TargetAudience[] // Target audience checkboxes
+  primaryTechnology: string     // Primary technology area (e.g., "Azure", ".NET")
+  additionalTechnology: string  // Additional technology area
+  equipmentNotes: string        // Special equipment requirements
 }
 ```
 
@@ -89,12 +98,15 @@ interface HotelBooking {
 ### UI Settings
 
 ```typescript
+type DateFormat = 'us' | 'eu' | 'iso'
+
 interface UISettings {
   showMonthView: boolean        // Show monthly timeline bar
   showWeekView: boolean         // Show weekly timeline bar
   showMvpFeatures: boolean      // Show MVP-related UI elements
   maxEventsPerMonth: number     // Soft limit for events per month (0 = no limit)
   maxEventsPerYear: number      // Soft limit for events per year (0 = no limit)
+  dateFormat: DateFormat        // Date display format (us: MM/DD/YYYY, eu: DD/MM/YYYY, iso: YYYY-MM-DD)
 }
 ```
 
@@ -199,6 +211,16 @@ Base URL: `/api`
 |--------|----------|-------------|
 | POST | `/import/sessionize` | Parse Sessionize CfS page (body: `{url}`) |
 
+### Export
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/export/json` | Download all data as JSON backup |
+| GET | `/export/csv/events` | Download events as CSV |
+| GET | `/export/csv/sessions` | Download sessions as CSV |
+| GET | `/export/csv/submissions` | Download submissions as CSV |
+| GET | `/export/events.ics` | Download all selected events as iCal file |
+| GET | `/export/events.ics?eventId=X` | Download single event as iCal file |
+
 ---
 
 ## UI Components
@@ -212,6 +234,7 @@ Three-tab layout:
 
 Header contains:
 - Application title
+- Command palette button (opens with ⌘K)
 - Settings button (cog icon)
 
 ### Events Tab
@@ -244,15 +267,22 @@ Two optional timeline visualizations (toggled via settings):
 - Import button (opens Sessionize import modal)
 - New Event button
 
-**Filters (2 rows, sticky/non-scrolling):**
+**Smart Filter Presets:**
 
-Row 1:
-- "Future only" checkbox - hides past events
-- "No submissions" checkbox - shows only events with no submissions
-- "MVP submission pending" checkbox (when MVP features enabled) - shows only selected events missing MVP submission
-
-Row 2:
-- Status filters: Pending, Selected, Rejected, Declined
+Quick filter buttons for common views:
+- **All** - Show all events, no filtering
+- **Upcoming** (default) - Selected events, future only
+- **Pending** - Pending + no submissions, future only
+- **Needs attention** - Selected events needing booking OR MVP submission, plus events with no submissions, future only
+- **History** - Selected, rejected, declined events, past only
+- **Custom** - Opens dropdown with all filter options:
+  - Status checkboxes (Pending, Selected, Rejected, Declined, No submissions)
+  - Future only
+  - Past only
+  - Not fully booked
+  - MVP pending
+  - CFS open (events with Call for Speakers still accepting submissions)
+  - Equipment needed (events with selected sessions that have equipment notes)
 
 **Event Cards:**
 - Background color based on event state
@@ -260,7 +290,7 @@ Row 2:
 - Content:
   - Event name
   - "Remote" badge if applicable
-  - Location (City, Country)
+  - Location (City, Country) with country flag emoji
   - Date range
   - Submission count and selected count
   - Login tool icon (clickable link to CfS URL)
@@ -269,9 +299,10 @@ Row 2:
   - Travel/Hotel icons (green if booked, gray if not)
   - "MVP submission pending" red badge (when applicable)
   - Overlap warning badge (amber) if event dates overlap with other events
+  - "Equipment needed" purple badge if any selected session has equipment notes
 - Actions: Decline (bulk decline all submissions), Edit, Delete
 - Double-click to edit
-- Right-click context menu: Remote event toggle, MVP submission completed toggle
+- Right-click context menu: Remote event toggle, MVP submission completed toggle, Export to iCal
 
 #### Submission Panel (Right Side)
 
@@ -289,6 +320,7 @@ Shows when event is selected:
 ### Sessions Tab
 
 **Filters:**
+- Search bar (filters by session name, including alternate names)
 - Active checkbox
 - Retired checkbox
 - Count display
@@ -318,15 +350,33 @@ Shows analytics for events with at least one selected submission:
 - Acceptance Rate (events accepted / events submitted)
 - Countries visited
 
+**Year-over-Year Comparison:**
+- Selectable year dropdowns to compare any two years
+- Shows trends for: Events Spoken, Acceptance Rate, Countries, Cities
+- Trend indicators showing percentage change (up/down arrows)
+
 **Charts:**
 - Events by Year (horizontal bar chart, clickable to filter)
 - Events by Region (Europe, North America, Asia, etc.)
 - Events by Season (Spring/Summer/Fall/Winter)
 - Event Format (In-Person vs Remote pie chart)
 - Events by Month (bubble chart with size proportional to count)
-- Top Countries (badges with count, hover shows events)
-- Countries Visited (badge list)
+- Top Countries (badges with flag emoji and count, hover shows events)
+- Countries Visited (badge list with flag emojis)
 - Cities Visited (grid list)
+
+**Session Performance:**
+- Checkbox to include/exclude retired sessions
+- Acceptance Rate by Level (100-500) with bar charts
+- Session Health summary:
+  - High Performing: ≥50% acceptance rate, 2+ selections
+  - Needs Rework: <30% acceptance rate, 3+ selections
+- Session Acceptance Rates table:
+  - Columns: Session, Level, Submitted (decided only), Selected, Rejected, Rate
+  - Sessions with pending submissions show yellow "N pending" tag
+  - Hover on pending tag shows event names
+  - Retired sessions show "Retired" tag
+  - Sorted by acceptance rate descending
 
 ### Forms
 
@@ -334,17 +384,18 @@ Shows analytics for events with at least one selected submission:
 Two sections:
 
 **Event Details:**
-- Name (required)
-- Country, City (row with Remote checkbox)
+- Name (required), Remote checkbox
+- Country (with flag emoji preview), City
 - Start Date, End Date (required)
-- Call for Content URL
-- Call for Content Last Date
-- Login Tool
+- Event URL
+- Call for Content URL, Login Tool, CfC Deadline (on same row)
+- Notes
+- Country names are normalized on save (e.g., "usa" → "United States", "holland" → "Netherlands")
 
 **Event Logistics:**
 - MVP submission completed checkbox (when MVP features enabled)
-- Travel bookings list with add/remove
-- Hotel bookings list with add/remove
+- Travel bookings list with add/edit/remove
+- Hotel bookings list with add/edit/remove
 
 #### SessionForm
 - Name (required)
@@ -354,6 +405,11 @@ Two sections:
 - Elevator Pitch (textarea)
 - Abstract (textarea)
 - Goals (textarea)
+- Materials URL
+- Target Audience (checkboxes: Developer, IT Pro, Business Decision Maker, Technical Decision Maker, Student, Other)
+- Primary Technology
+- Additional Technology
+- Equipment Notes (special requirements like multiple monitors)
 - Retired checkbox
 
 #### SessionPicker
@@ -363,16 +419,49 @@ Modal for adding sessions to an event:
 - "+ Add new name" option to create new alternate on the fly
 - Multi-select support with count badge
 
+### Command Palette
+
+Opens with ⌘K (or Ctrl+K). Provides quick access to:
+
+**Actions:**
+- New Event (⌘N)
+- New Session (⌘S)
+- Submit Session to [Event] (⌘U) - only when an event is selected
+- Open Settings (⌘,)
+- Export All Data (JSON)
+
+**Navigation:**
+- Go to Events/Sessions/Statistics tabs
+- Jump to Pending Event
+- Jump to Selected Event
+- Jump to Next Upcoming Event
+- Quick search for events by name
+
+Features:
+- Fuzzy search filtering
+- Arrow keys + Enter to navigate and select
+- Escape to close
+
 ### Settings Modal
+
+Closes with Escape key.
 
 **UI Settings:**
 - Show monthly events view (toggle)
 - Show weekly events view (toggle)
 - Show MVP submission features (toggle)
+- Date format (US: MM/DD/YYYY, EU: DD/MM/YYYY, ISO: YYYY-MM-DD)
 
 **Speaker Bandwidth:**
 - Max events per month (number input, 0 = no limit)
 - Max events per year (number input, 0 = no limit)
+
+**Export & Backup:**
+- Backup All (JSON) - downloads complete data backup
+- Export Events (CSV)
+- Export Sessions (CSV)
+- Export Submissions (CSV)
+- Export Selected Events (iCal) - downloads .ics file for calendar import
 
 Settings persist to server-side settings.json.
 
@@ -496,13 +585,14 @@ Mount `/data` for persistent storage of data.json and settings.json.
 │   │   ├── MonthlyEventsBar.tsx # Monthly timeline
 │   │   ├── WeeklyEventsBar.tsx  # Weekly timeline
 │   │   ├── Settings.tsx      # Settings modal
+│   │   ├── CommandPalette.tsx # Command palette (⌘K)
 │   │   └── ImportFromSessionize.tsx # Import modal
 │   └── utils/
 │       ├── computeEventState.ts # Event state computation
-│       └── getOverlappingEvents.ts # Overlap detection
+│       ├── getOverlappingEvents.ts # Overlap detection
+│       ├── formatDate.ts     # Date formatting utilities
+│       └── countryFlags.ts   # Country flag emoji and name normalization
 ├── server.ts                 # Express API server
-├── data.json                 # Event/Session/Submission data
-├── settings.json             # UI settings
 ├── package.json
 ├── Dockerfile
 ├── tailwind.config.js
@@ -530,6 +620,27 @@ Mount `/data` for persistent storage of data.json and settings.json.
 
 ---
 
+## Keyboard Shortcuts
+
+**Global:**
+| Shortcut | Action |
+|----------|--------|
+| ⌘K | Open command palette |
+| ⌘, | Open settings |
+| ⌘N | New event (when on events tab) |
+| ⌘S | New session |
+| ⌘U | Submit session to selected event |
+| Escape | Close dialogs/modals |
+
+**Event List (when focused):**
+| Shortcut | Action |
+|----------|--------|
+| ↑/↓ or j/k | Navigate events |
+| Enter | Edit selected event |
+| Escape | Blur list |
+
+---
+
 ## Key Implementation Notes
 
 1. **State Management**: All state in App.tsx, passed down via props. No external state library.
@@ -547,3 +658,5 @@ Mount `/data` for persistent storage of data.json and settings.json.
 7. **Responsive Layout**: 50/50 split panels on events tab, single column on mobile.
 
 8. **Filter Persistence**: Filter state maintained in App.tsx, survives tab switches.
+
+9. **Session Sorting**: Sessions are sorted alphabetically by name in both the session list and session picker.

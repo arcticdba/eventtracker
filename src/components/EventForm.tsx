@@ -69,11 +69,17 @@ export function EventForm({ event, initialData, allEvents, onSave, onCancel, sho
   const [showAddTravel, setShowAddTravel] = useState(false)
   const [newTravelType, setNewTravelType] = useState<TravelType>('flight')
   const [newTravelRef, setNewTravelRef] = useState('')
+  const [editingTravelId, setEditingTravelId] = useState<string | null>(null)
+  const [editTravelType, setEditTravelType] = useState<TravelType>('flight')
+  const [editTravelRef, setEditTravelRef] = useState('')
 
   // Add hotel form state
   const [showAddHotel, setShowAddHotel] = useState(false)
   const [newHotelName, setNewHotelName] = useState('')
   const [newHotelRef, setNewHotelRef] = useState('')
+  const [editingHotelId, setEditingHotelId] = useState<string | null>(null)
+  const [editHotelName, setEditHotelName] = useState('')
+  const [editHotelRef, setEditHotelRef] = useState('')
 
   // Update form when initialData changes (e.g., after import while form is open)
   useEffect(() => {
@@ -117,6 +123,22 @@ export function EventForm({ event, initialData, allEvents, onSave, onCancel, sho
     setTravel(travel.filter(t => t.id !== id))
   }
 
+  const startEditTravel = (t: TravelBooking) => {
+    setEditingTravelId(t.id)
+    setEditTravelType(t.type)
+    setEditTravelRef(t.reference)
+  }
+
+  const saveEditTravel = () => {
+    if (!editTravelRef.trim() || !editingTravelId) return
+    setTravel(travel.map(t => t.id === editingTravelId ? { ...t, type: editTravelType, reference: editTravelRef.trim() } : t))
+    setEditingTravelId(null)
+  }
+
+  const cancelEditTravel = () => {
+    setEditingTravelId(null)
+  }
+
   const addHotel = () => {
     if (!newHotelName.trim()) return
     setHotels([...hotels, { id: uuidv4(), name: newHotelName.trim(), reference: newHotelRef.trim() }])
@@ -127,6 +149,22 @@ export function EventForm({ event, initialData, allEvents, onSave, onCancel, sho
 
   const removeHotel = (id: string) => {
     setHotels(hotels.filter(h => h.id !== id))
+  }
+
+  const startEditHotel = (h: HotelBooking) => {
+    setEditingHotelId(h.id)
+    setEditHotelName(h.name)
+    setEditHotelRef(h.reference)
+  }
+
+  const saveEditHotel = () => {
+    if (!editHotelName.trim() || !editingHotelId) return
+    setHotels(hotels.map(h => h.id === editingHotelId ? { ...h, name: editHotelName.trim(), reference: editHotelRef.trim() } : h))
+    setEditingHotelId(null)
+  }
+
+  const cancelEditHotel = () => {
+    setEditingHotelId(null)
   }
 
   const isUrl = (str: string) => {
@@ -339,24 +377,72 @@ export function EventForm({ event, initialData, allEvents, onSave, onCancel, sho
         {travel.length > 0 && (
           <div className="space-y-2 mb-2">
             {travel.map(t => (
-              <div key={t.id} className="flex items-center gap-2 text-sm bg-white p-2 rounded border">
-                <span className="font-medium text-gray-600">{travelTypeLabels[t.type]}</span>
-                <span className="text-gray-400">-</span>
-                {isUrl(t.reference) ? (
-                  <a href={t.reference} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline truncate flex-1">
-                    {t.reference}
-                  </a>
-                ) : (
-                  <span className="text-gray-700 truncate flex-1">{t.reference}</span>
-                )}
-                <button
-                  type="button"
-                  onClick={() => removeTravel(t.id)}
-                  className="text-red-500 hover:text-red-700"
-                >
-                  Remove
-                </button>
-              </div>
+              editingTravelId === t.id ? (
+                <div key={t.id} className="flex gap-2 items-end bg-white p-2 rounded border">
+                  <div>
+                    <label className="block text-xs text-gray-500">Type</label>
+                    <select
+                      value={editTravelType}
+                      onChange={e => setEditTravelType(e.target.value as TravelType)}
+                      className="mt-1 rounded border-gray-300 shadow-sm px-2 py-1 border text-sm"
+                    >
+                      {Object.entries(travelTypeLabels).map(([value, label]) => (
+                        <option key={value} value={value}>{label}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="flex-1">
+                    <label className="block text-xs text-gray-500">Reference / URL</label>
+                    <input
+                      type="text"
+                      value={editTravelRef}
+                      onChange={e => setEditTravelRef(e.target.value)}
+                      className="mt-1 w-full rounded border-gray-300 shadow-sm px-2 py-1 border text-sm"
+                      placeholder="Booking ref or URL"
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    onClick={saveEditTravel}
+                    className="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700"
+                  >
+                    Save
+                  </button>
+                  <button
+                    type="button"
+                    onClick={cancelEditTravel}
+                    className="px-3 py-1 bg-gray-300 text-gray-700 text-sm rounded hover:bg-gray-400"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              ) : (
+                <div key={t.id} className="flex items-center gap-2 text-sm bg-white p-2 rounded border">
+                  <span className="font-medium text-gray-600">{travelTypeLabels[t.type]}</span>
+                  <span className="text-gray-400">-</span>
+                  {isUrl(t.reference) ? (
+                    <a href={t.reference} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline truncate flex-1">
+                      {t.reference}
+                    </a>
+                  ) : (
+                    <span className="text-gray-700 truncate flex-1">{t.reference}</span>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => startEditTravel(t)}
+                    className="text-blue-500 hover:text-blue-700"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => removeTravel(t.id)}
+                    className="text-red-500 hover:text-red-700"
+                  >
+                    Remove
+                  </button>
+                </div>
+              )
             ))}
           </div>
         )}
@@ -422,28 +508,74 @@ export function EventForm({ event, initialData, allEvents, onSave, onCancel, sho
         {hotels.length > 0 && (
           <div className="space-y-2 mb-2">
             {hotels.map(h => (
-              <div key={h.id} className="flex items-center gap-2 text-sm bg-white p-2 rounded border">
-                <span className="font-medium text-gray-700">{h.name}</span>
-                {h.reference && (
-                  <>
-                    <span className="text-gray-400">-</span>
-                    {isUrl(h.reference) ? (
-                      <a href={h.reference} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline truncate flex-1">
-                        {h.reference}
-                      </a>
-                    ) : (
-                      <span className="text-gray-500 truncate flex-1">{h.reference}</span>
-                    )}
-                  </>
-                )}
-                <button
-                  type="button"
-                  onClick={() => removeHotel(h.id)}
-                  className="text-red-500 hover:text-red-700 ml-auto"
-                >
-                  Remove
-                </button>
-              </div>
+              editingHotelId === h.id ? (
+                <div key={h.id} className="flex gap-2 items-end bg-white p-2 rounded border">
+                  <div className="flex-1">
+                    <label className="block text-xs text-gray-500">Hotel Name</label>
+                    <input
+                      type="text"
+                      value={editHotelName}
+                      onChange={e => setEditHotelName(e.target.value)}
+                      className="mt-1 w-full rounded border-gray-300 shadow-sm px-2 py-1 border text-sm"
+                      placeholder="Hotel name"
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <label className="block text-xs text-gray-500">Reference / URL</label>
+                    <input
+                      type="text"
+                      value={editHotelRef}
+                      onChange={e => setEditHotelRef(e.target.value)}
+                      className="mt-1 w-full rounded border-gray-300 shadow-sm px-2 py-1 border text-sm"
+                      placeholder="Booking ref or URL (optional)"
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    onClick={saveEditHotel}
+                    className="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700"
+                  >
+                    Save
+                  </button>
+                  <button
+                    type="button"
+                    onClick={cancelEditHotel}
+                    className="px-3 py-1 bg-gray-300 text-gray-700 text-sm rounded hover:bg-gray-400"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              ) : (
+                <div key={h.id} className="flex items-center gap-2 text-sm bg-white p-2 rounded border">
+                  <span className="font-medium text-gray-700">{h.name}</span>
+                  {h.reference && (
+                    <>
+                      <span className="text-gray-400">-</span>
+                      {isUrl(h.reference) ? (
+                        <a href={h.reference} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline truncate flex-1">
+                          {h.reference}
+                        </a>
+                      ) : (
+                        <span className="text-gray-500 truncate flex-1">{h.reference}</span>
+                      )}
+                    </>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => startEditHotel(h)}
+                    className="text-blue-500 hover:text-blue-700 ml-auto"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => removeHotel(h.id)}
+                    className="text-red-500 hover:text-red-700"
+                  >
+                    Remove
+                  </button>
+                </div>
+              )
             ))}
           </div>
         )}

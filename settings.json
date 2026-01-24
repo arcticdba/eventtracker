@@ -1,8 +1,0 @@
-{
-  "showMonthView": false,
-  "showWeekView": true,
-  "showMvpFeatures": true,
-  "maxEventsPerMonth": 2,
-  "maxEventsPerYear": 0,
-  "dateFormat": "YYYY-MM-DD"
-}

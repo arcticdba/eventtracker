@@ -37,6 +37,7 @@ interface Event {
   dateStart: string
   dateEnd: string
   remote: boolean
+  url: string
   callForContentUrl: string
   callForContentLastDate: string
   loginTool: string
@@ -163,12 +164,14 @@ app.post('/api/events', (req, res) => {
     dateStart: req.body.dateStart,
     dateEnd: req.body.dateEnd,
     remote: req.body.remote || false,
+    url: req.body.url || '',
     callForContentUrl: req.body.callForContentUrl || '',
     callForContentLastDate: req.body.callForContentLastDate || '',
     loginTool: req.body.loginTool || '',
     travel: req.body.travel || [],
     hotels: req.body.hotels || [],
-    mvpSubmission: req.body.mvpSubmission || false
+    mvpSubmission: req.body.mvpSubmission || false,
+    notes: req.body.notes || ''
   }
   data.events.push(newEvent)
   saveData(data)

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Event, Session, Submission } from '../types'
 import { formatDate } from '../utils/formatDate'
 import { DateFormat } from '../api'
+import { getCountryFlagOrEmpty } from '../utils/countryFlags'
 
 interface Props {
   events: Event[]
@@ -581,7 +582,7 @@ export function Statistics({ events, sessions, submissions, dateFormat }: Props)
                 className="px-3 py-1 bg-gray-100 rounded-full text-sm cursor-default"
                 title={data.events.map(e => `${e.name} (${formatDate(e.date, dateFormat)})`).join('\n')}
               >
-                {country}: <strong>{data.count}</strong>
+                {getCountryFlagOrEmpty(country)}{getCountryFlagOrEmpty(country) && ' '}{country}: <strong>{data.count}</strong>
               </span>
             ))}
           </div>
@@ -596,8 +597,8 @@ export function Statistics({ events, sessions, submissions, dateFormat }: Props)
         {countriesVisited.length > 0 ? (
           <div className="flex flex-wrap gap-2">
             {countriesVisited.map(country => (
-              <span key={country} className="px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-sm">
-                {country}
+              <span key={country} className="px-3 py-1 bg-gray-100 rounded-full text-sm">
+                {getCountryFlagOrEmpty(country)}{getCountryFlagOrEmpty(country) && ' '}{country}
               </span>
             ))}
           </div>
