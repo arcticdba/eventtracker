@@ -51,12 +51,18 @@ interface Session {
   id: string
   name: string
   alternateNames: string[]
+  sessionType: string
   level: string
   abstract: string
   summary: string
   goals: string
   elevatorPitch: string
   retired: boolean
+  materialsUrl: string
+  targetAudience: string[]
+  primaryTechnology: string
+  additionalTechnology: string
+  equipmentNotes: string
 }
 
 interface Submission {

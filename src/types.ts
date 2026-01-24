@@ -34,10 +34,13 @@ export interface Event {
 
 export type TargetAudience = 'Developer' | 'IT Pro' | 'Business Decision Maker' | 'Technical Decision Maker' | 'Student' | 'Other'
 
+export type SessionType = 'Session (45-60 min)' | 'Workshop (full day)' | 'Short session (20 min)' | 'Lightning Talk (5-10 min)' | 'Keynote'
+
 export interface Session {
   id: string
   name: string
   alternateNames: string[]
+  sessionType: SessionType
   level: string
   abstract: string
   summary: string

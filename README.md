@@ -16,14 +16,16 @@ A React/TypeScript application for tracking speaking engagements, session submis
 ### Session Management
 - Maintain a library of talk sessions with titles, abstracts, summaries, and elevator pitches
 - Support for alternate session names (for localized or variant titles)
-- Track session difficulty levels
+- Track session difficulty levels (100-500)
+- Session types: Session, Workshop, Short session, Lightning Talk, Keynote
 - Mark sessions as retired when no longer actively submitting
 - Search sessions by name (including alternate names)
 
 ### Submission Tracking
 - Link sessions to events as submissions
 - Track submission states: submitted, selected, rejected, declined
-- Bulk decline all submissions for an event
+- Bulk decline or reject all pending submissions for an event
+- Session type tags displayed on submissions
 - Visual status indicators on event cards (color-coded backgrounds)
 
 ### Travel & Hotel Booking

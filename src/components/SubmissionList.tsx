@@ -10,6 +10,22 @@ const levelColors: Record<string, string> = {
   '500': 'bg-red-100 text-red-700'
 }
 
+const sessionTypeColors: Record<string, string> = {
+  'Session (45-60 min)': 'bg-blue-100 text-blue-700',
+  'Workshop (full day)': 'bg-indigo-100 text-indigo-700',
+  'Short session (20 min)': 'bg-cyan-100 text-cyan-700',
+  'Lightning Talk (5-10 min)': 'bg-pink-100 text-pink-700',
+  'Keynote': 'bg-amber-100 text-amber-700'
+}
+
+const sessionTypeShortLabels: Record<string, string> = {
+  'Session (45-60 min)': 'Session',
+  'Workshop (full day)': 'Workshop',
+  'Short session (20 min)': '20 min',
+  'Lightning Talk (5-10 min)': 'Lightning',
+  'Keynote': 'Keynote'
+}
+
 interface Props {
   submissions: Submission[]
   sessions: Session[]
@@ -61,6 +77,9 @@ export function SubmissionList({ submissions, sessions, onUpdateState, onUpdateN
                   <div className="flex items-center gap-2">
                     <span className={`px-1.5 py-0.5 text-xs rounded ${levelColors[session.level] || 'bg-gray-100'}`}>
                       {session.level}
+                    </span>
+                    <span className={`px-1.5 py-0.5 text-xs rounded ${sessionTypeColors[session.sessionType || 'Session (45-60 min)'] || 'bg-gray-100 text-gray-700'}`}>
+                      {sessionTypeShortLabels[session.sessionType || 'Session (45-60 min)'] || session.sessionType || 'Session'}
                     </span>
                     {isAlternateName && (
                       <span className="text-xs px-1.5 py-0.5 rounded bg-purple-100 text-purple-700">

@@ -43,10 +43,13 @@ Represents a talk/presentation that can be submitted to events.
 ```typescript
 type TargetAudience = 'Developer' | 'IT Pro' | 'Business Decision Maker' | 'Technical Decision Maker' | 'Student' | 'Other'
 
+type SessionType = 'Session (45-60 min)' | 'Workshop (full day)' | 'Short session (20 min)' | 'Lightning Talk (5-10 min)' | 'Keynote'
+
 interface Session {
   id: string                    // UUID
-  name: string                  // Primary session title
+  name: string                  // Primary session title (max 80 characters)
   alternateNames: string[]      // Alternative titles for different events
+  sessionType: SessionType      // Type of session (default: Session)
   level: string                 // Difficulty level: "100", "200", "300", "400", "500"
   abstract: string              // Full session description
   summary: string               // Brief one-liner description
@@ -302,7 +305,7 @@ Quick filter buttons for common views:
   - "Equipment needed" purple badge if any selected session has equipment notes
 - Actions: Decline (bulk decline all submissions), Edit, Delete
 - Double-click to edit
-- Right-click context menu: Remote event toggle, MVP submission completed toggle, Export to iCal
+- Right-click context menu: Reject all pending (if pending submissions exist), Remote event toggle, MVP submission completed toggle, Export to iCal
 
 #### Submission Panel (Right Side)
 
@@ -312,6 +315,7 @@ Shows when event is selected:
 - List of submissions with:
   - Session name (uses nameUsed if different from primary)
   - Level badge (color-coded 100-500)
+  - Session type badge (Session=blue, Workshop=indigo, 20 min=cyan, Lightning=pink, Keynote=amber)
   - "alt name" badge if using alternate name
   - State dropdown selector
   - Remove button
@@ -328,6 +332,7 @@ Shows when event is selected:
 **Session Cards:**
 - Session name
 - Level badge (100=green, 200=teal, 300=yellow, 400=orange, 500=red)
+- Session type badge (Session=blue, Workshop=indigo, 20 min=cyan, Lightning=pink, Keynote=amber)
 - "Retired" badge if applicable
 - Expandable submission history showing:
   - State counts (selected, pending, rejected, declined)
@@ -373,6 +378,7 @@ Shows analytics for events with at least one selected submission:
   - Needs Rework: <30% acceptance rate, 3+ selections
 - Session Acceptance Rates table:
   - Columns: Session, Level, Submitted (decided only), Selected, Rejected, Rate
+  - Hover on Submitted/Selected/Rejected counts shows event names
   - Sessions with pending submissions show yellow "N pending" tag
   - Hover on pending tag shows event names
   - Retired sessions show "Retired" tag
@@ -386,7 +392,7 @@ Two sections:
 **Event Details:**
 - Name (required), Remote checkbox
 - Country (with flag emoji preview), City
-- Start Date, End Date (required)
+- Start Date, End Date (required) - date pickers, end date minimum is start date
 - Event URL
 - Call for Content URL, Login Tool, CfC Deadline (on same row)
 - Notes
@@ -398,19 +404,18 @@ Two sections:
 - Hotel bookings list with add/edit/remove
 
 #### SessionForm
-- Name (required)
-- Alternate Names (dynamic list with add/remove)
-- Level dropdown (100-500)
+- Name (required, max 80 characters), Level dropdown (100-500), Type dropdown (Session, Workshop, Short session, Lightning Talk, Keynote)
+- Alternate Names (dynamic list with add/remove, max 80 characters each)
 - Summary (one-liner)
+- Abstract (textarea, 10 rows)
 - Elevator Pitch (textarea)
-- Abstract (textarea)
-- Goals (textarea)
+- Goals (textarea, 3 rows)
 - Materials URL
 - Target Audience (checkboxes: Developer, IT Pro, Business Decision Maker, Technical Decision Maker, Student, Other)
 - Primary Technology
 - Additional Technology
 - Equipment Notes (special requirements like multiple monitors)
-- Retired checkbox
+- Retired checkbox (highlighted with orange background when checked)
 
 #### SessionPicker
 Modal for adding sessions to an event:
@@ -444,7 +449,7 @@ Features:
 
 ### Settings Modal
 
-Closes with Escape key.
+Displays version number in header. Closes with Escape key.
 
 **UI Settings:**
 - Show monthly events view (toggle)
@@ -489,6 +494,13 @@ Settings persist to server-side settings.json.
 - 300: yellow
 - 400: orange
 - 500: red
+
+**Session Type Colors:**
+- Session: blue
+- Workshop: indigo
+- Short session (20 min): cyan
+- Lightning Talk: pink
+- Keynote: amber
 
 **Submission State Colors:**
 - submitted: blue

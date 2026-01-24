@@ -15,6 +15,7 @@ interface Props {
   onDelete: (id: string) => void
   onSelect: (event: Event) => void
   onDecline: (eventId: string) => void
+  onRejectPending: (eventId: string) => void
   onToggleRemote: (eventId: string) => void
   onToggleMvpSubmission: (eventId: string) => void
   selectedEventId?: string
@@ -146,7 +147,7 @@ function formatLocation(country: string, city: string, remote: boolean): string 
   return parts.join(', ') || 'No location'
 }
 
-export function EventList({ events, submissions, sessions, onEdit, onDelete, onSelect, onDecline, onToggleRemote, onToggleMvpSubmission, selectedEventId, filters, onFiltersChange, futureOnly, onFutureOnlyChange, pastOnly, onPastOnlyChange, showMvpFeatures = true, mvpCompletedOnly, onMvpCompletedOnlyChange, notFullyBooked, onNotFullyBookedChange, cfsOpen, onCfsOpenChange, equipmentNeeded, onEquipmentNeededChange, onFilteredCountChange, dateFormat }: Props) {
+export function EventList({ events, submissions, sessions, onEdit, onDelete, onSelect, onDecline, onRejectPending, onToggleRemote, onToggleMvpSubmission, selectedEventId, filters, onFiltersChange, futureOnly, onFutureOnlyChange, pastOnly, onPastOnlyChange, showMvpFeatures = true, mvpCompletedOnly, onMvpCompletedOnlyChange, notFullyBooked, onNotFullyBookedChange, cfsOpen, onCfsOpenChange, equipmentNeeded, onEquipmentNeededChange, onFilteredCountChange, dateFormat }: Props) {
   const toggleFilter = (state: EventState) => {
     const newFilters = new Set(filters)
     if (newFilters.has(state)) {
@@ -688,6 +689,20 @@ export function EventList({ events, submissions, sessions, onEdit, onDelete, onS
               </ContextMenu.Trigger>
               <ContextMenu.Portal>
                 <ContextMenu.Content className="min-w-[160px] bg-white rounded-md shadow-lg border p-1 z-50">
+                  {submissions.filter(s => s.eventId === event.id && s.state === 'submitted').length > 0 && (
+                    <>
+                      <ContextMenu.Item
+                        className="flex items-center px-2 py-1.5 text-sm rounded hover:bg-red-50 text-red-600 cursor-pointer outline-none"
+                        onSelect={() => onRejectPending(event.id)}
+                      >
+                        <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                        Reject all pending
+                      </ContextMenu.Item>
+                      <ContextMenu.Separator className="h-px bg-gray-200 my-1" />
+                    </>
+                  )}
                   <ContextMenu.CheckboxItem
                     className="flex items-center px-2 py-1.5 text-sm rounded hover:bg-gray-100 cursor-pointer outline-none"
                     checked={event.remote}

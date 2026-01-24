@@ -2,6 +2,8 @@ import { useEffect } from 'react'
 import { UISettings, DateFormat } from '../api'
 import { DATE_FORMAT_OPTIONS } from '../utils/formatDate'
 
+const APP_VERSION = '0.4.0'
+
 interface SettingsProps {
   settings: UISettings
   onSettingsChange: (settings: UISettings) => void
@@ -24,7 +26,7 @@ export function Settings({ settings, onSettingsChange, onClose }: SettingsProps)
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg shadow-xl w-full max-w-md">
         <div className="flex justify-between items-center p-4 border-b">
-          <h2 className="text-lg font-semibold">Settings</h2>
+          <h2 className="text-lg font-semibold">Settings <span className="text-gray-400 font-normal">({APP_VERSION})</span></h2>
           <button
             onClick={onClose}
             className="text-gray-500 hover:text-gray-700"

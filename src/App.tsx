@@ -264,6 +264,21 @@ export default function App() {
     }))
   }
 
+  async function handleRejectPendingEvent(eventId: string) {
+    const pendingSubmissions = submissions.filter(s => s.eventId === eventId && s.state === 'submitted')
+    if (pendingSubmissions.length === 0) return
+    if (!confirm(`Reject ${pendingSubmissions.length} pending submission${pendingSubmissions.length > 1 ? 's' : ''} for this event?`)) return
+
+    const updatedSubmissions = await Promise.all(
+      pendingSubmissions.map(s => api.updateSubmissionState(s.id, 'rejected'))
+    )
+
+    setSubmissions(submissions.map(s => {
+      const updated = updatedSubmissions.find(u => u.id === s.id)
+      return updated || s
+    }))
+  }
+
   const eventSubmissions = selectedEvent
     ? submissions.filter(s => s.eventId === selectedEvent.id)
     : []
@@ -453,6 +468,7 @@ export default function App() {
                         onDelete={handleDeleteEvent}
                         onSelect={setSelectedEvent}
                         onDecline={handleDeclineEvent}
+                        onRejectPending={handleRejectPendingEvent}
                         onToggleRemote={handleToggleEventRemote}
                         onToggleMvpSubmission={handleToggleEventMvpSubmission}
                         selectedEventId={selectedEvent?.id}

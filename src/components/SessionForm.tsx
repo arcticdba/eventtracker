@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Session, TargetAudience } from '../types'
+import { Session, TargetAudience, SessionType } from '../types'
 
 const TARGET_AUDIENCES: TargetAudience[] = [
   'Developer',
@@ -8,6 +8,14 @@ const TARGET_AUDIENCES: TargetAudience[] = [
   'Technical Decision Maker',
   'Student',
   'Other'
+]
+
+const SESSION_TYPES: SessionType[] = [
+  'Session (45-60 min)',
+  'Workshop (full day)',
+  'Short session (20 min)',
+  'Lightning Talk (5-10 min)',
+  'Keynote'
 ]
 
 interface Props {
@@ -20,6 +28,7 @@ export function SessionForm({ session, onSave, onCancel }: Props) {
   const [name, setName] = useState(session?.name || '')
   const [alternateNames, setAlternateNames] = useState<string[]>(session?.alternateNames || [])
   const [newAlternateName, setNewAlternateName] = useState('')
+  const [sessionType, setSessionType] = useState<SessionType>(session?.sessionType || 'Session (45-60 min)')
   const [level, setLevel] = useState(session?.level || '100')
   const [summary, setSummary] = useState(session?.summary || '')
   const [elevatorPitch, setElevatorPitch] = useState(session?.elevatorPitch || '')
@@ -48,6 +57,7 @@ export function SessionForm({ session, onSave, onCancel }: Props) {
     onSave({
       name,
       alternateNames,
+      sessionType,
       level,
       abstract,
       summary,
@@ -91,8 +101,9 @@ export function SessionForm({ session, onSave, onCancel }: Props) {
             type="text"
             value={name}
             onChange={e => setName(e.target.value)}
-            maxLength={110}
-            className="mt-1 block w-full rounded border-gray-300 shadow-sm px-3 py-2 border"
+            maxLength={80}
+            size={80}
+            className="mt-1 block rounded border-gray-300 shadow-sm px-3 py-2 border"
             required
           />
         </div>
@@ -110,50 +121,55 @@ export function SessionForm({ session, onSave, onCancel }: Props) {
             <option value="500">500</option>
           </select>
         </div>
-        <div className="flex items-center gap-2 pb-2">
-          <input
-            type="checkbox"
-            id="retired"
-            checked={retired}
-            onChange={e => setRetired(e.target.checked)}
-            className="rounded border-gray-300"
-          />
-          <label htmlFor="retired" className="text-sm text-gray-700">Retired</label>
-        </div>
       </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700">Alternate Names</label>
-        <div className="mt-1 space-y-2">
-          {alternateNames.map((altName, index) => (
-            <div key={index} className="flex items-center gap-2">
-              <span className="flex-1 px-3 py-2 bg-white border rounded text-sm">{altName}</span>
+      <div className="flex gap-4 items-start">
+        <div className="flex-1">
+          <label className="block text-sm font-medium text-gray-700">Alternate Names</label>
+          <div className="mt-1 space-y-2">
+            {alternateNames.map((altName, index) => (
+              <div key={index} className="flex items-center gap-2">
+                <span className="px-3 py-2 bg-white border rounded" style={{ width: '80ch' }}>{altName}</span>
+                <button
+                  type="button"
+                  onClick={() => removeAlternateName(altName)}
+                  className="px-2 py-1 text-red-600 hover:text-red-800"
+                >
+                  Remove
+                </button>
+              </div>
+            ))}
+            <div className="flex items-center gap-2">
+              <input
+                type="text"
+                value={newAlternateName}
+                onChange={e => setNewAlternateName(e.target.value)}
+                onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addAlternateName() } }}
+                maxLength={80}
+                size={80}
+                className="rounded border-gray-300 shadow-sm px-3 py-2 border"
+                placeholder="Add alternate name..."
+              />
               <button
                 type="button"
-                onClick={() => removeAlternateName(altName)}
-                className="px-2 py-1 text-red-600 hover:text-red-800 text-sm"
+                onClick={addAlternateName}
+                className="px-3 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
               >
-                Remove
+                Add
               </button>
             </div>
-          ))}
-          <div className="flex items-center gap-2">
-            <input
-              type="text"
-              value={newAlternateName}
-              onChange={e => setNewAlternateName(e.target.value)}
-              onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addAlternateName() } }}
-              maxLength={110}
-              className="flex-1 rounded border-gray-300 shadow-sm px-3 py-2 border text-sm"
-              placeholder="Add alternate name..."
-            />
-            <button
-              type="button"
-              onClick={addAlternateName}
-              className="px-3 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 text-sm"
-            >
-              Add
-            </button>
           </div>
+        </div>
+        <div className="w-60">
+          <label className="block text-sm font-medium text-gray-700">Type</label>
+          <select
+            value={sessionType}
+            onChange={e => setSessionType(e.target.value as SessionType)}
+            className="mt-1 block w-full rounded border-gray-300 shadow-sm px-3 py-2 border"
+          >
+            {SESSION_TYPES.map(type => (
+              <option key={type} value={type}>{type}</option>
+            ))}
+          </select>
         </div>
       </div>
       <div>
@@ -253,6 +269,16 @@ export function SessionForm({ session, onSave, onCancel }: Props) {
           className="mt-1 block w-full rounded border-gray-300 shadow-sm px-3 py-2 border"
           placeholder="Special equipment requirements (e.g., multiple monitors, specific hardware)"
         />
+      </div>
+      <div className={`flex items-center gap-2 px-3 py-2 rounded ${retired ? 'bg-orange-100 border border-orange-300' : ''}`}>
+        <input
+          type="checkbox"
+          id="retired"
+          checked={retired}
+          onChange={e => setRetired(e.target.checked)}
+          className="rounded border-gray-300"
+        />
+        <label htmlFor="retired" className={`text-sm ${retired ? 'text-orange-700 font-medium' : 'text-gray-700'}`}>Retired</label>
       </div>
       <div className="flex gap-2">
         <button

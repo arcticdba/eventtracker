@@ -197,16 +197,25 @@ export function Statistics({ events, sessions, submissions, dateFormat }: Props)
     .map(session => {
       const sessionSubs = filteredSubmissions.filter(sub => sub.sessionId === session.id)
       const submitted = sessionSubs.length
-      const selected = sessionSubs.filter(s => s.state === 'selected').length
-      const rejected = sessionSubs.filter(s => s.state === 'rejected').length
+      const selectedSubs = sessionSubs.filter(s => s.state === 'selected')
+      const rejectedSubs = sessionSubs.filter(s => s.state === 'rejected')
+      const selected = selectedSubs.length
+      const rejected = rejectedSubs.length
       const declined = sessionSubs.filter(s => s.state === 'declined').length
       const pendingSubs = sessionSubs.filter(s => s.state === 'submitted')
       const pending = pendingSubs.length
       const pendingEventNames = pendingSubs
         .map(sub => events.find(e => e.id === sub.eventId)?.name)
         .filter(Boolean) as string[]
+      const selectedEventNames = selectedSubs
+        .map(sub => events.find(e => e.id === sub.eventId)?.name)
+        .filter(Boolean) as string[]
+      const rejectedEventNames = rejectedSubs
+        .map(sub => events.find(e => e.id === sub.eventId)?.name)
+        .filter(Boolean) as string[]
       // Acceptance rate: selected / (selected + rejected) - only count submissions where conference made a decision
       const decided = selected + rejected
+      const decidedEventNames = [...selectedEventNames, ...rejectedEventNames]
       const acceptanceRate = decided > 0 ? Math.round((selected / decided) * 100) : null
       return {
         session,
@@ -216,7 +225,10 @@ export function Statistics({ events, sessions, submissions, dateFormat }: Props)
         declined,
         pending,
         pendingEventNames,
+        selectedEventNames,
+        rejectedEventNames,
         decided,
+        decidedEventNames,
         acceptanceRate
       }
     })
@@ -757,9 +769,9 @@ export function Statistics({ events, sessions, submissions, dateFormat }: Props)
                           {s.session.level}
                         </span>
                       </td>
-                      <td className="py-2 text-center text-gray-600">{s.decided}</td>
-                      <td className="py-2 text-center text-green-600 font-medium">{s.selected}</td>
-                      <td className="py-2 text-center text-red-600">{s.rejected}</td>
+                      <td className="py-2 text-center text-gray-600 cursor-default" title={s.decidedEventNames.length > 0 ? s.decidedEventNames.join('\n') : undefined}>{s.decided}</td>
+                      <td className="py-2 text-center text-green-600 font-medium cursor-default" title={s.selectedEventNames.length > 0 ? s.selectedEventNames.join('\n') : undefined}>{s.selected}</td>
+                      <td className="py-2 text-center text-red-600 cursor-default" title={s.rejectedEventNames.length > 0 ? s.rejectedEventNames.join('\n') : undefined}>{s.rejected}</td>
                       <td className="py-2 text-center">
                         {s.acceptanceRate !== null ? (
                           <span className={`font-medium ${s.acceptanceRate >= 50 ? 'text-green-600' : s.acceptanceRate >= 30 ? 'text-yellow-600' : 'text-red-600'}`}>

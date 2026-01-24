@@ -248,24 +248,21 @@ export function EventForm({ event, initialData, allEvents, onSave, onCancel, sho
         <div>
           <label className="block text-sm font-medium text-gray-700">Start</label>
           <input
-            type="text"
+            type="date"
             value={dateStart}
             onChange={e => setDateStart(e.target.value)}
-            placeholder="YYYY-MM-DD"
-            pattern="\d{4}-\d{2}-\d{2}"
-            className="mt-1 block w-32 rounded border-gray-300 shadow-sm px-3 py-2 border"
+            className="mt-1 block w-36 rounded border-gray-300 shadow-sm px-3 py-2 border"
             required
           />
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700">End</label>
           <input
-            type="text"
+            type="date"
             value={dateEnd}
             onChange={e => setDateEnd(e.target.value)}
-            placeholder="YYYY-MM-DD"
-            pattern="\d{4}-\d{2}-\d{2}"
-            className="mt-1 block w-32 rounded border-gray-300 shadow-sm px-3 py-2 border"
+            min={dateStart}
+            className="mt-1 block w-36 rounded border-gray-300 shadow-sm px-3 py-2 border"
             required
           />
         </div>
