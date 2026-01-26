@@ -405,6 +405,10 @@ app.get('/api/export/events.ics', (req, res) => {
     eventsToExport = data.events.filter(e => eventIdsWithSelected.has(e.id))
   }
 
+  // Only include future events (end date >= today)
+  const today = new Date().toISOString().split('T')[0]
+  eventsToExport = eventsToExport.filter(e => e.dateEnd >= today)
+
   // Helper to format date as iCal date (YYYYMMDD)
   const formatICalDate = (dateStr: string): string => {
     return dateStr.replace(/-/g, '')

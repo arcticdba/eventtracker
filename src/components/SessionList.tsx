@@ -209,7 +209,7 @@ export function SessionList({ sessions, events, submissions, onEdit, onDelete, o
             <ContextMenu.Trigger asChild>
               <div
                 onDoubleClick={() => onEdit(session)}
-                className={`p-3 border rounded-lg cursor-pointer ${session.retired ? 'opacity-60' : ''}`}
+                className="p-3 border rounded-lg cursor-pointer"
               >
             <div className="flex justify-between items-start">
               <div className="flex-1">
