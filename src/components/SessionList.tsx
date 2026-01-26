@@ -46,9 +46,14 @@ const sessionTypeShortLabels: Record<string, string> = {
   'Keynote': 'Keynote'
 }
 
+const LEVELS = ['100', '200', '300', '400', '500']
+const SESSION_TYPES = ['Session (45-60 min)', 'Workshop (full day)', 'Short session (20 min)', 'Lightning Talk (5-10 min)', 'Keynote']
+
 export function SessionList({ sessions, events, submissions, onEdit, onDelete, onToggleRetired, showActive, onShowActiveChange, showRetired, onShowRetiredChange }: Props) {
   const [expandedSessions, setExpandedSessions] = useState<Set<string>>(new Set())
   const [searchQuery, setSearchQuery] = useState('')
+  const [selectedLevels, setSelectedLevels] = useState<Set<string>>(new Set(LEVELS))
+  const [selectedTypes, setSelectedTypes] = useState<Set<string>>(new Set(SESSION_TYPES))
 
   const toggleExpanded = (sessionId: string) => {
     const newExpanded = new Set(expandedSessions)
@@ -60,6 +65,26 @@ export function SessionList({ sessions, events, submissions, onEdit, onDelete, o
     setExpandedSessions(newExpanded)
   }
 
+  const toggleLevel = (level: string) => {
+    const newLevels = new Set(selectedLevels)
+    if (newLevels.has(level)) {
+      newLevels.delete(level)
+    } else {
+      newLevels.add(level)
+    }
+    setSelectedLevels(newLevels)
+  }
+
+  const toggleType = (type: string) => {
+    const newTypes = new Set(selectedTypes)
+    if (newTypes.has(type)) {
+      newTypes.delete(type)
+    } else {
+      newTypes.add(type)
+    }
+    setSelectedTypes(newTypes)
+  }
+
   const filteredSessions = sessions
     .filter(session => {
       // Active/Retired filter
@@ -68,6 +93,17 @@ export function SessionList({ sessions, events, submissions, onEdit, onDelete, o
         if (!showRetired) return false
       } else {
         if (!showActive) return false
+      }
+
+      // Level filter
+      if (selectedLevels.size > 0 && selectedLevels.size < LEVELS.length) {
+        if (!selectedLevels.has(session.level)) return false
+      }
+
+      // Session type filter
+      if (selectedTypes.size > 0 && selectedTypes.size < SESSION_TYPES.length) {
+        const sessionType = session.sessionType || 'Session (45-60 min)'
+        if (!selectedTypes.has(sessionType)) return false
       }
 
       // Search filter
@@ -88,50 +124,79 @@ export function SessionList({ sessions, events, submissions, onEdit, onDelete, o
 
   return (
     <div className="space-y-3">
-      <div className="flex items-center gap-3 flex-wrap">
-        <div className="relative flex-1 min-w-[200px]">
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={e => setSearchQuery(e.target.value)}
-            placeholder="Search sessions..."
-            className="w-full pl-8 pr-3 py-1.5 text-sm border rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-400 outline-none"
-          />
-          <svg className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
-          {searchQuery && (
-            <button
-              onClick={() => setSearchQuery('')}
-              className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          )}
+      <div className="space-y-2">
+        <div className="flex items-center gap-3 flex-wrap">
+          <div className="relative flex-1 min-w-[200px]">
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={e => setSearchQuery(e.target.value)}
+              placeholder="Search sessions..."
+              className="w-full pl-8 pr-3 py-1.5 text-sm border rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-400 outline-none"
+            />
+            <svg className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery('')}
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            )}
+          </div>
+          <span className="text-xs text-gray-400">
+            ({filteredSessions.length} of {sessions.length})
+          </span>
         </div>
-        <label className="flex items-center gap-1 text-sm">
-          <input
-            type="checkbox"
-            checked={showActive}
-            onChange={e => onShowActiveChange(e.target.checked)}
-            className="rounded border-gray-300"
-          />
-          <span>Active</span>
-        </label>
-        <label className="flex items-center gap-1 text-sm">
-          <input
-            type="checkbox"
-            checked={showRetired}
-            onChange={e => onShowRetiredChange(e.target.checked)}
-            className="rounded border-gray-300"
-          />
-          <span>Retired</span>
-        </label>
-        <span className="text-xs text-gray-400">
-          ({filteredSessions.length} of {sessions.length})
-        </span>
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="text-xs text-gray-500">Status:</span>
+          <button
+            onClick={() => onShowActiveChange(!showActive)}
+            className={`px-2 py-0.5 text-xs rounded-full border transition-colors ${
+              showActive ? 'bg-green-100 text-green-700 border-green-300' : 'bg-gray-50 text-gray-400 border-gray-200'
+            }`}
+          >
+            Active
+          </button>
+          <button
+            onClick={() => onShowRetiredChange(!showRetired)}
+            className={`px-2 py-0.5 text-xs rounded-full border transition-colors ${
+              showRetired ? 'bg-orange-100 text-orange-700 border-orange-300' : 'bg-gray-50 text-gray-400 border-gray-200'
+            }`}
+          >
+            Retired
+          </button>
+          <span className="text-gray-300">|</span>
+          <span className="text-xs text-gray-500">Level:</span>
+          {LEVELS.map(level => (
+            <button
+              key={level}
+              onClick={() => toggleLevel(level)}
+              className={`px-2 py-0.5 text-xs rounded-full border transition-colors ${
+                selectedLevels.has(level) ? levelColors[level] + ' border-current' : 'bg-gray-50 text-gray-400 border-gray-200'
+              }`}
+            >
+              {level}
+            </button>
+          ))}
+          <span className="text-gray-300">|</span>
+          <span className="text-xs text-gray-500">Type:</span>
+          {SESSION_TYPES.map(type => (
+            <button
+              key={type}
+              onClick={() => toggleType(type)}
+              className={`px-2 py-0.5 text-xs rounded-full border transition-colors ${
+                selectedTypes.has(type) ? sessionTypeColors[type] + ' border-current' : 'bg-gray-50 text-gray-400 border-gray-200'
+              }`}
+            >
+              {sessionTypeShortLabels[type]}
+            </button>
+          ))}
+        </div>
       </div>
 
       {sessions.length === 0 ? (

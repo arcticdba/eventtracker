@@ -324,10 +324,13 @@ Shows when event is selected:
 ### Sessions Tab
 
 **Filters:**
-- Search bar (filters by session name, including alternate names)
-- Active checkbox
-- Retired checkbox
-- Count display
+- Search bar (filters by session name, alternate names, and technology)
+- Filter pills organized in rows:
+  - Status: Active, Retired (toggleable pills)
+  - Level: 100, 200, 300, 400, 500 (multi-select toggleable pills with level colors)
+  - Type: Session, Workshop, 20 min, Lightning, Keynote (multi-select toggleable pills with type colors)
+- All filters default to selected (showing all items)
+- Count display showing "(X of Y)"
 
 **Session Cards:**
 - Session name

@@ -20,6 +20,7 @@ A React/TypeScript application for tracking speaking engagements, session submis
 - Session types: Session, Workshop, Short session, Lightning Talk, Keynote
 - Mark sessions as retired when no longer actively submitting
 - Search sessions by name (including alternate names)
+- Filter pills for quick filtering by status (active/retired), level, and session type
 
 ### Submission Tracking
 - Link sessions to events as submissions
