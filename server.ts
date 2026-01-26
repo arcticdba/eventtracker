@@ -225,12 +225,18 @@ app.post('/api/sessions', (req, res) => {
     id: uuidv4(),
     name: req.body.name,
     alternateNames: req.body.alternateNames || [],
+    sessionType: req.body.sessionType || 'Session (45-60 min)',
     level: req.body.level,
     abstract: req.body.abstract,
     summary: req.body.summary || '',
     goals: req.body.goals || '',
     elevatorPitch: req.body.elevatorPitch || '',
-    retired: req.body.retired || false
+    retired: req.body.retired || false,
+    materialsUrl: req.body.materialsUrl || '',
+    targetAudience: req.body.targetAudience || [],
+    primaryTechnology: req.body.primaryTechnology || '',
+    additionalTechnology: req.body.additionalTechnology || '',
+    equipmentNotes: req.body.equipmentNotes || ''
   }
   data.sessions.push(newSession)
   saveData(data)
