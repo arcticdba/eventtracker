@@ -84,6 +84,7 @@ function displayToIso(display: string, format: DateFormat): string {
 export function DateInput({ value, onChange, dateFormat, className, required, placeholder }: Props) {
   const { separator, lengths } = getFormatInfo(dateFormat)
   const inputRef = useRef<HTMLInputElement>(null)
+  const datePickerRef = useRef<HTMLInputElement>(null)
 
   // Display value in the user's format
   const [displayValue, setDisplayValue] = useState(() => isoToDisplay(value, dateFormat))
@@ -200,18 +201,50 @@ export function DateInput({ value, onChange, dateFormat, className, required, pl
     }
   }
 
+  const handleDatePickerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const iso = e.target.value
+    if (iso) {
+      onChange(iso)
+      setDisplayValue(isoToDisplay(iso, dateFormat))
+    }
+  }
+
+  const openDatePicker = () => {
+    datePickerRef.current?.showPicker()
+  }
+
   return (
-    <input
-      ref={inputRef}
-      type="text"
-      value={displayValue}
-      onChange={handleChange}
-      onBlur={handleBlur}
-      onKeyDown={handleKeyDown}
-      className={className}
-      required={required}
-      placeholder={formatPlaceholder}
-      autoComplete="off"
-    />
+    <div className="relative inline-flex">
+      <input
+        ref={inputRef}
+        type="text"
+        value={displayValue}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        onKeyDown={handleKeyDown}
+        className={className}
+        required={required}
+        placeholder={formatPlaceholder}
+        autoComplete="off"
+      />
+      <button
+        type="button"
+        onClick={openDatePicker}
+        className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+        tabIndex={-1}
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+      </button>
+      <input
+        ref={datePickerRef}
+        type="date"
+        value={value}
+        onChange={handleDatePickerChange}
+        className="sr-only"
+        tabIndex={-1}
+      />
+    </div>
   )
 }
