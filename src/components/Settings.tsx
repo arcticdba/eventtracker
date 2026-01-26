@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { UISettings, DateFormat } from '../api'
 import { DATE_FORMAT_OPTIONS } from '../utils/formatDate'
 
-const APP_VERSION = '0.5.0'
+const APP_VERSION = '0.6.0'
 
 interface SettingsProps {
   settings: UISettings
@@ -26,7 +26,7 @@ export function Settings({ settings, onSettingsChange, onClose }: SettingsProps)
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg shadow-xl w-full max-w-md">
         <div className="flex justify-between items-center p-4 border-b">
-          <h2 className="text-lg font-semibold">Settings <span className="text-gray-400 font-normal">({APP_VERSION})</span></h2>
+          <h2 className="text-lg font-semibold">Settings <span className="text-gray-400 font-normal">(tracker version {APP_VERSION})</span></h2>
           <button
             onClick={onClose}
             className="text-gray-500 hover:text-gray-700"
@@ -41,6 +41,21 @@ export function Settings({ settings, onSettingsChange, onClose }: SettingsProps)
           <h3 className="text-sm font-semibold text-gray-800 mb-3">UI Settings</h3>
 
           <div className="space-y-3">
+            <label className="flex items-center justify-between">
+              <span className="text-sm text-gray-700">Date format</span>
+              <select
+                value={settings.dateFormat}
+                onChange={e => onSettingsChange({ ...settings, dateFormat: e.target.value as DateFormat })}
+                className="rounded border-gray-300 text-sm px-2 py-1"
+              >
+                {DATE_FORMAT_OPTIONS.map(opt => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label} ({opt.example})
+                  </option>
+                ))}
+              </select>
+            </label>
+
             <label className="flex items-center justify-between">
               <span className="text-sm text-gray-700">Show monthly events view</span>
               <input
@@ -62,6 +77,16 @@ export function Settings({ settings, onSettingsChange, onClose }: SettingsProps)
             </label>
 
             <label className="flex items-center justify-between">
+              <span className="text-sm text-gray-700">Show session performance statistics</span>
+              <input
+                type="checkbox"
+                checked={settings.showSessionPerformance}
+                onChange={e => onSettingsChange({ ...settings, showSessionPerformance: e.target.checked })}
+                className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+              />
+            </label>
+
+            <label className="flex items-center justify-between">
               <span className="text-sm text-gray-700">Show MVP submission features</span>
               <input
                 type="checkbox"
@@ -70,6 +95,8 @@ export function Settings({ settings, onSettingsChange, onClose }: SettingsProps)
                 className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
               />
             </label>
+
+
           </div>
 
           <h3 className="text-sm font-semibold text-gray-800 mt-6 mb-3">Speaker Bandwidth</h3>
@@ -100,25 +127,6 @@ export function Settings({ settings, onSettingsChange, onClose }: SettingsProps)
                 onChange={e => onSettingsChange({ ...settings, maxEventsPerYear: parseInt(e.target.value) || 0 })}
                 className="w-20 rounded border-gray-300 text-sm px-2 py-1"
               />
-            </label>
-          </div>
-
-          <h3 className="text-sm font-semibold text-gray-800 mt-6 mb-3">Display</h3>
-
-          <div className="space-y-3">
-            <label className="flex items-center justify-between">
-              <span className="text-sm text-gray-700">Date format</span>
-              <select
-                value={settings.dateFormat}
-                onChange={e => onSettingsChange({ ...settings, dateFormat: e.target.value as DateFormat })}
-                className="rounded border-gray-300 text-sm px-2 py-1"
-              >
-                {DATE_FORMAT_OPTIONS.map(opt => (
-                  <option key={opt.value} value={opt.value}>
-                    {opt.label} ({opt.example})
-                  </option>
-                ))}
-              </select>
             </label>
           </div>
 

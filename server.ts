@@ -86,6 +86,7 @@ interface Settings {
   showMonthView: boolean
   showWeekView: boolean
   showMvpFeatures: boolean
+  showSessionPerformance: boolean
   maxEventsPerMonth: number
   maxEventsPerYear: number
   dateFormat: DateFormat
@@ -115,6 +116,7 @@ const defaultSettings: Settings = {
   showMonthView: true,
   showWeekView: true,
   showMvpFeatures: true,
+  showSessionPerformance: true,
   maxEventsPerMonth: 0,
   maxEventsPerYear: 0,
   dateFormat: 'YYYY-MM-DD'
@@ -146,6 +148,7 @@ app.put('/api/settings', (req, res) => {
     showMonthView: req.body.showMonthView ?? true,
     showWeekView: req.body.showWeekView ?? true,
     showMvpFeatures: req.body.showMvpFeatures ?? true,
+    showSessionPerformance: req.body.showSessionPerformance ?? true,
     maxEventsPerMonth: req.body.maxEventsPerMonth ?? 0,
     maxEventsPerYear: req.body.maxEventsPerYear ?? 0,
     dateFormat: req.body.dateFormat ?? 'YYYY-MM-DD'

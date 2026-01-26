@@ -102,6 +102,7 @@ export interface UISettings {
   showMonthView: boolean
   showWeekView: boolean
   showMvpFeatures: boolean
+  showSessionPerformance: boolean
   maxEventsPerMonth: number  // 0 = no limit
   maxEventsPerYear: number   // 0 = no limit
   dateFormat: DateFormat

@@ -57,6 +57,7 @@ export default function App() {
     showMonthView: true,
     showWeekView: true,
     showMvpFeatures: true,
+    showSessionPerformance: true,
     maxEventsPerMonth: 0,
     maxEventsPerYear: 0,
     dateFormat: 'YYYY-MM-DD'
@@ -406,7 +407,7 @@ export default function App() {
 
         {activeTab === 'statistics' ? (
           <div className="flex-1 overflow-y-auto">
-            <Statistics events={events} sessions={sessions} submissions={submissions} dateFormat={uiSettings.dateFormat} />
+            <Statistics events={events} sessions={sessions} submissions={submissions} dateFormat={uiSettings.dateFormat} showSessionPerformance={uiSettings.showSessionPerformance} />
           </div>
         ) : (
           <div className={`flex-1 grid gap-4 ${activeTab === 'events' && !showEventForm ? 'grid-cols-1 lg:grid-cols-2' : 'grid-cols-1'} overflow-hidden`}>

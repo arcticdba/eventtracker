@@ -9,6 +9,7 @@ interface Props {
   sessions: Session[]
   submissions: Submission[]
   dateFormat: DateFormat
+  showSessionPerformance: boolean
 }
 
 // Map country names to regions
@@ -65,7 +66,7 @@ function getMonth(dateStr: string): number {
 
 const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
-export function Statistics({ events, sessions, submissions, dateFormat }: Props) {
+export function Statistics({ events, sessions, submissions, dateFormat, showSessionPerformance }: Props) {
   const [selectedYear, setSelectedYear] = useState<number | null>(null)
   const [showRetiredSessions, setShowRetiredSessions] = useState(false)
   const [compareYear1, setCompareYear1] = useState<number | null>(null)
@@ -105,18 +106,36 @@ export function Statistics({ events, sessions, submissions, dateFormat }: Props)
       })
     : selectedSubmissions
 
-  // Events by region
-  const eventsByRegion: Record<string, number> = {}
+  // Events by region (with event details for tooltip)
+  const eventsByRegion: Record<string, { count: number; events: { name: string; date: string }[] }> = {}
   eventsWithSelected.forEach(e => {
     const region = getRegion(e.country)
-    eventsByRegion[region] = (eventsByRegion[region] || 0) + 1
+    if (!eventsByRegion[region]) {
+      eventsByRegion[region] = { count: 0, events: [] }
+    }
+    eventsByRegion[region].count++
+    eventsByRegion[region].events.push({ name: e.name, date: e.dateStart })
+  })
+  // Sort events within each region by date
+  Object.values(eventsByRegion).forEach(data => {
+    data.events.sort((a, b) => a.date.localeCompare(b.date))
   })
 
-  // Events by season
-  const eventsBySeason: Record<string, number> = { Spring: 0, Summer: 0, Fall: 0, Winter: 0 }
+  // Events by season (with event details for tooltip)
+  const eventsBySeason: Record<string, { count: number; events: { name: string; date: string }[] }> = {
+    Spring: { count: 0, events: [] },
+    Summer: { count: 0, events: [] },
+    Fall: { count: 0, events: [] },
+    Winter: { count: 0, events: [] }
+  }
   eventsWithSelected.forEach(e => {
     const season = getSeason(e.dateStart)
-    eventsBySeason[season] = (eventsBySeason[season] || 0) + 1
+    eventsBySeason[season].count++
+    eventsBySeason[season].events.push({ name: e.name, date: e.dateStart })
+  })
+  // Sort events within each season by date
+  Object.values(eventsBySeason).forEach(data => {
+    data.events.sort((a, b) => a.date.localeCompare(b.date))
   })
 
   // Events by country (with event details for tooltip)
@@ -188,8 +207,18 @@ export function Statistics({ events, sessions, submissions, dateFormat }: Props)
   const maxByMonth = Math.max(...Object.values(eventsByMonth).map(d => d.count), 1)
 
   const maxByYear = Math.max(...Object.values(eventsByYear), 1)
-  const maxByRegion = Math.max(...Object.values(eventsByRegion), 1)
-  const maxBySeason = Math.max(...Object.values(eventsBySeason), 1)
+  const maxByRegion = Math.max(...Object.values(eventsByRegion).map(d => d.count), 1)
+  const maxBySeason = Math.max(...Object.values(eventsBySeason).map(d => d.count), 1)
+
+  // Event lists for format tooltips
+  const inPersonEventsList = eventsWithSelected
+    .filter(e => !e.remote)
+    .map(e => `${e.name} (${formatDate(e.dateStart, dateFormat)})`)
+    .sort()
+  const remoteEventsList = eventsWithSelected
+    .filter(e => e.remote)
+    .map(e => `${e.name} (${formatDate(e.dateStart, dateFormat)})`)
+    .sort()
 
   // Session performance statistics
   const sessionStats = sessions
@@ -243,10 +272,10 @@ export function Statistics({ events, sessions, submissions, dateFormat }: Props)
     })
 
   // Acceptance rate by level
-  const levelStats: Record<string, { submitted: number; selected: number; rejected: number; declined: number }> = {}
+  const levelStats: Record<string, { submitted: number; selected: number; rejected: number; declined: number; selectedEventNames: string[] }> = {}
   const levels = ['100', '200', '300', '400', '500']
   levels.forEach(level => {
-    levelStats[level] = { submitted: 0, selected: 0, rejected: 0, declined: 0 }
+    levelStats[level] = { submitted: 0, selected: 0, rejected: 0, declined: 0, selectedEventNames: [] }
   })
 
   sessions.filter(s => showRetiredSessions || !s.retired).forEach(session => {
@@ -254,9 +283,17 @@ export function Statistics({ events, sessions, submissions, dateFormat }: Props)
     if (!levels.includes(level)) return
     const sessionSubs = filteredSubmissions.filter(sub => sub.sessionId === session.id)
     levelStats[level].submitted += sessionSubs.length
-    levelStats[level].selected += sessionSubs.filter(s => s.state === 'selected').length
-    levelStats[level].rejected += sessionSubs.filter(s => s.state === 'rejected').length
-    levelStats[level].declined += sessionSubs.filter(s => s.state === 'declined').length
+    sessionSubs.forEach(sub => {
+      if (sub.state === 'selected') {
+        levelStats[level].selected++
+        const event = events.find(e => e.id === sub.eventId)
+        if (event) levelStats[level].selectedEventNames.push(event.name)
+      } else if (sub.state === 'rejected') {
+        levelStats[level].rejected++
+      } else if (sub.state === 'declined') {
+        levelStats[level].declined++
+      }
+    })
   })
 
   // Categorize sessions by performance (using selected + rejected as the denominator)
@@ -267,16 +304,69 @@ export function Statistics({ events, sessions, submissions, dateFormat }: Props)
     <div className="space-y-6">
       {/* Year Filter Indicator */}
       {selectedYear && (
-        <div className="bg-blue-50 border border-blue-200 rounded-lg px-4 py-2 flex items-center justify-between">
-          <span className="text-sm text-blue-700">
-            Showing statistics for <strong>{selectedYear}</strong>
-          </span>
-          <button
-            onClick={() => setSelectedYear(null)}
-            className="text-sm text-blue-600 hover:text-blue-800 underline"
-          >
-            Show all years
-          </button>
+        <div className="bg-blue-50 border border-blue-200 rounded-lg px-4 py-3 space-y-3">
+          <div className="flex items-center justify-between">
+            <span className="text-sm text-blue-700">
+              Showing statistics for <strong>{selectedYear}</strong>
+            </span>
+            <button
+              onClick={() => setSelectedYear(null)}
+              className="text-sm text-blue-600 hover:text-blue-800 underline"
+            >
+              Show all years
+            </button>
+          </div>
+          {/* Accepted Sessions for Selected Year */}
+          {(() => {
+            // Get unique sessions that were accepted this year with their events
+            const uniqueSessions = new Map<string, { session: Session; eventNames: string[] }>()
+            filteredSelectedSubmissions.forEach(sub => {
+              const session = sessions.find(s => s.id === sub.sessionId)
+              const event = events.find(e => e.id === sub.eventId)
+              if (session && event) {
+                if (!uniqueSessions.has(session.id)) {
+                  uniqueSessions.set(session.id, { session, eventNames: [] })
+                }
+                uniqueSessions.get(session.id)!.eventNames.push(event.name)
+              }
+            })
+
+            const sortedSessions = [...uniqueSessions.values()].sort((a, b) =>
+              a.session.name.localeCompare(b.session.name)
+            )
+
+            if (sortedSessions.length === 0) return null
+
+            return (
+              <div className="border-t border-blue-200 pt-3">
+                <div className="text-sm font-medium text-blue-800 mb-2">
+                  Accepted Sessions ({sortedSessions.length})
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {sortedSessions.map(({ session, eventNames }) => (
+                    <span
+                      key={session.id}
+                      className="inline-flex items-center gap-1.5 px-2 py-1 bg-white rounded border border-blue-200 text-sm cursor-default"
+                      title={eventNames.join('\n')}
+                    >
+                      <span className={`px-1.5 py-0.5 text-xs rounded ${
+                        session.level === '100' ? 'bg-green-100 text-green-700' :
+                        session.level === '200' ? 'bg-teal-100 text-teal-700' :
+                        session.level === '300' ? 'bg-yellow-100 text-yellow-700' :
+                        session.level === '400' ? 'bg-orange-100 text-orange-700' : 'bg-red-100 text-red-700'
+                      }`}>
+                        {session.level}
+                      </span>
+                      <span className="text-blue-900">{session.name}</span>
+                      {eventNames.length > 1 && (
+                        <span className="text-blue-500 text-xs">×{eventNames.length}</span>
+                      )}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )
+          })()}
         </div>
       )}
 
@@ -475,21 +565,30 @@ export function Statistics({ events, sessions, submissions, dateFormat }: Props)
                   // Sort "Remote" last
                   if (a[0] === 'Remote') return 1
                   if (b[0] === 'Remote') return -1
-                  return b[1] - a[1]
+                  return b[1].count - a[1].count
                 })
-                .map(([region, count]) => (
-                  <div key={region} className="flex items-center gap-2">
-                    <span className="w-28 text-sm text-gray-600 truncate">{region}</span>
-                    <div className="flex-1 bg-gray-200 rounded-full h-6 overflow-hidden">
-                      <div
-                        className="bg-purple-500 h-full rounded-full flex items-center justify-end pr-2"
-                        style={{ width: `${(count / maxByRegion) * 100}%` }}
-                      >
-                        <span className="text-xs text-white font-medium">{count}</span>
+                .map(([region, data]) => {
+                  const tooltip = data.events.length > 0
+                    ? data.events.map(e => `${e.name} (${formatDate(e.date, dateFormat)})`).join('\n')
+                    : undefined
+                  return (
+                    <div
+                      key={region}
+                      className="flex items-center gap-2 cursor-default"
+                      title={tooltip}
+                    >
+                      <span className="w-28 text-sm text-gray-600 truncate">{region}</span>
+                      <div className="flex-1 bg-gray-200 rounded-full h-6 overflow-hidden">
+                        <div
+                          className="bg-purple-500 h-full rounded-full flex items-center justify-end pr-2"
+                          style={{ width: `${(data.count / maxByRegion) * 100}%` }}
+                        >
+                          <span className="text-xs text-white font-medium">{data.count}</span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  )
+                })}
             </div>
           ) : (
             <p className="text-gray-400 text-sm">No selected events yet</p>
@@ -500,25 +599,35 @@ export function Statistics({ events, sessions, submissions, dateFormat }: Props)
         <div className="bg-white rounded-lg shadow p-4">
           <h3 className="text-lg font-semibold mb-4">Events by Season</h3>
           <div className="space-y-2">
-            {['Spring', 'Summer', 'Fall', 'Winter'].map(season => (
-              <div key={season} className="flex items-center gap-2">
-                <span className="w-16 text-sm text-gray-600">{season}</span>
-                <div className="flex-1 bg-gray-200 rounded-full h-6 overflow-hidden">
-                  <div
-                    className={`h-full rounded-full flex items-center justify-end pr-2 ${
-                      season === 'Spring' ? 'bg-green-500' :
-                      season === 'Summer' ? 'bg-yellow-500' :
-                      season === 'Fall' ? 'bg-orange-500' : 'bg-blue-400'
-                    }`}
-                    style={{ width: maxBySeason > 0 ? `${(eventsBySeason[season] / maxBySeason) * 100}%` : '0%' }}
-                  >
-                    {eventsBySeason[season] > 0 && (
-                      <span className="text-xs text-white font-medium">{eventsBySeason[season]}</span>
-                    )}
+            {['Spring', 'Summer', 'Fall', 'Winter'].map(season => {
+              const data = eventsBySeason[season]
+              const tooltip = data.events.length > 0
+                ? data.events.map(e => `${e.name} (${formatDate(e.date, dateFormat)})`).join('\n')
+                : undefined
+              return (
+                <div
+                  key={season}
+                  className="flex items-center gap-2 cursor-default"
+                  title={tooltip}
+                >
+                  <span className="w-16 text-sm text-gray-600">{season}</span>
+                  <div className="flex-1 bg-gray-200 rounded-full h-6 overflow-hidden">
+                    <div
+                      className={`h-full rounded-full flex items-center justify-end pr-2 ${
+                        season === 'Spring' ? 'bg-green-500' :
+                        season === 'Summer' ? 'bg-yellow-500' :
+                        season === 'Fall' ? 'bg-orange-500' : 'bg-blue-400'
+                      }`}
+                      style={{ width: maxBySeason > 0 ? `${(data.count / maxBySeason) * 100}%` : '0%' }}
+                    >
+                      {data.count > 0 && (
+                        <span className="text-xs text-white font-medium">{data.count}</span>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
         </div>
 
@@ -526,19 +635,33 @@ export function Statistics({ events, sessions, submissions, dateFormat }: Props)
         <div className="bg-white rounded-lg shadow p-4">
           <h3 className="text-lg font-semibold mb-4">Event Format</h3>
           <div className="flex gap-8">
-            <div className="text-center">
+            <div
+              className="text-center cursor-default"
+              title={inPersonEventsList.length > 0 ? inPersonEventsList.join('\n') : undefined}
+            >
               <div className="text-2xl font-bold text-blue-600">{inPersonEvents}</div>
               <div className="text-sm text-gray-500">In-Person</div>
             </div>
-            <div className="text-center">
+            <div
+              className="text-center cursor-default"
+              title={remoteEventsList.length > 0 ? remoteEventsList.join('\n') : undefined}
+            >
               <div className="text-2xl font-bold text-purple-600">{remoteEvents}</div>
               <div className="text-sm text-gray-500">Remote</div>
             </div>
           </div>
           {totalEventsWithSelected > 0 && (
             <div className="mt-3 h-4 bg-gray-200 rounded-full overflow-hidden flex">
-              <div className="bg-blue-500" style={{ width: `${(inPersonEvents / totalEventsWithSelected) * 100}%` }}></div>
-              <div className="bg-purple-500" style={{ width: `${(remoteEvents / totalEventsWithSelected) * 100}%` }}></div>
+              <div
+                className="bg-blue-500"
+                style={{ width: `${(inPersonEvents / totalEventsWithSelected) * 100}%` }}
+                title={inPersonEventsList.length > 0 ? inPersonEventsList.join('\n') : undefined}
+              ></div>
+              <div
+                className="bg-purple-500"
+                style={{ width: `${(remoteEvents / totalEventsWithSelected) * 100}%` }}
+                title={remoteEventsList.length > 0 ? remoteEventsList.join('\n') : undefined}
+              ></div>
             </div>
           )}
         </div>
@@ -608,11 +731,21 @@ export function Statistics({ events, sessions, submissions, dateFormat }: Props)
         <h3 className="text-lg font-semibold mb-4">Countries Visited ({uniqueCountries})</h3>
         {countriesVisited.length > 0 ? (
           <div className="flex flex-wrap gap-2">
-            {countriesVisited.map(country => (
-              <span key={country} className="px-3 py-1 bg-gray-100 rounded-full text-sm">
-                {getCountryFlagOrEmpty(country)}{getCountryFlagOrEmpty(country) && ' '}{country}
-              </span>
-            ))}
+            {countriesVisited.map(country => {
+              const countryEvents = eventsWithSelected
+                .filter(e => !e.remote && e.country === country)
+                .map(e => `${e.name} (${formatDate(e.dateStart, dateFormat)})`)
+                .sort()
+              return (
+                <span
+                  key={country}
+                  className="px-3 py-1 bg-gray-100 rounded-full text-sm cursor-default"
+                  title={countryEvents.join('\n')}
+                >
+                  {getCountryFlagOrEmpty(country)}{getCountryFlagOrEmpty(country) && ' '}{country}
+                </span>
+              )
+            })}
           </div>
         ) : (
           <p className="text-gray-400 text-sm">No countries visited yet</p>
@@ -620,6 +753,7 @@ export function Statistics({ events, sessions, submissions, dateFormat }: Props)
       </div>
 
       {/* Session Performance Section */}
+      {showSessionPerformance && (
       <div className="border-t pt-6 mt-6">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl font-bold">Session Performance</h2>
@@ -643,9 +777,16 @@ export function Statistics({ events, sessions, submissions, dateFormat }: Props)
                 const stats = levelStats[level]
                 const decided = stats.selected + stats.rejected
                 const rate = decided > 0 ? Math.round((stats.selected / decided) * 100) : null
+                const tooltip = stats.selectedEventNames.length > 0
+                  ? `Accepted at:\n${stats.selectedEventNames.join('\n')}`
+                  : undefined
 
                 return (
-                  <div key={level} className="flex items-center gap-3">
+                  <div
+                    key={level}
+                    className="flex items-center gap-3 cursor-default"
+                    title={tooltip}
+                  >
                     <span className={`w-20 text-sm font-medium px-2 py-0.5 rounded ${
                       level === '100' ? 'bg-green-100 text-green-700' :
                       level === '200' ? 'bg-teal-100 text-teal-700' :
@@ -791,6 +932,7 @@ export function Statistics({ events, sessions, submissions, dateFormat }: Props)
           )}
         </div>
       </div>
+      )}
 
       {/* Cities List */}
       <div className="bg-white rounded-lg shadow p-4">
