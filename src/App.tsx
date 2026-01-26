@@ -459,6 +459,7 @@ export default function App() {
                         onSave={handleSaveEvent}
                         onCancel={() => { setShowEventForm(false); setEditingEvent(null); setImportedEventData(null) }}
                         showMvpFeatures={uiSettings.showMvpFeatures}
+                        dateFormat={uiSettings.dateFormat}
                       />
                     ) : (
                       <EventList

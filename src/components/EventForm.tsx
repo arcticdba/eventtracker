@@ -1,8 +1,10 @@
 import { useState, useEffect, useMemo } from 'react'
 import { Event, TravelBooking, HotelBooking, TravelType } from '../types'
+import { DateFormat } from '../api'
 import { v4 as uuidv4 } from 'uuid'
 import { getOverlappingEvents } from '../utils/getOverlappingEvents'
 import { getCountryFlagOrEmpty, normalizeCountryName } from '../utils/countryFlags'
+import { DateInput } from './DateInput'
 
 interface Props {
   event?: Event
@@ -11,6 +13,7 @@ interface Props {
   onSave: (data: Omit<Event, 'id'>) => void
   onCancel: () => void
   showMvpFeatures?: boolean
+  dateFormat: DateFormat
 }
 
 const travelTypeLabels: Record<TravelType, string> = {
@@ -21,7 +24,7 @@ const travelTypeLabels: Record<TravelType, string> = {
   other: 'Other'
 }
 
-export function EventForm({ event, initialData, allEvents, onSave, onCancel, showMvpFeatures = true }: Props) {
+export function EventForm({ event, initialData, allEvents, onSave, onCancel, showMvpFeatures = true, dateFormat }: Props) {
   // Use event first (for editing), then initialData (for import), then empty
   const source = event || initialData
   const [name, setName] = useState(source?.name || '')
@@ -247,21 +250,20 @@ export function EventForm({ event, initialData, allEvents, onSave, onCancel, sho
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700">Start</label>
-          <input
-            type="date"
+          <DateInput
             value={dateStart}
-            onChange={e => setDateStart(e.target.value)}
+            onChange={setDateStart}
+            dateFormat={dateFormat}
             className="mt-1 block w-36 rounded border-gray-300 shadow-sm px-3 py-2 border"
             required
           />
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700">End</label>
-          <input
-            type="date"
+          <DateInput
             value={dateEnd}
-            onChange={e => setDateEnd(e.target.value)}
-            min={dateStart}
+            onChange={setDateEnd}
+            dateFormat={dateFormat}
             className="mt-1 block w-36 rounded border-gray-300 shadow-sm px-3 py-2 border"
             required
           />
@@ -323,10 +325,10 @@ export function EventForm({ event, initialData, allEvents, onSave, onCancel, sho
         </div>
         <div className="w-40">
           <label className="block text-sm font-medium text-gray-700">CfC Deadline</label>
-          <input
-            type="date"
+          <DateInput
             value={callForContentLastDate}
-            onChange={e => setCallForContentLastDate(e.target.value)}
+            onChange={setCallForContentLastDate}
+            dateFormat={dateFormat}
             className="mt-1 block w-full rounded border-gray-300 shadow-sm px-3 py-2 border"
           />
         </div>
