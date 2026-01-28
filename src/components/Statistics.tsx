@@ -231,6 +231,7 @@ export function Statistics({ events, sessions, submissions, dateFormat, showSess
       const selected = selectedSubs.length
       const rejected = rejectedSubs.length
       const declined = sessionSubs.filter(s => s.state === 'declined').length
+      const cancelled = sessionSubs.filter(s => s.state === 'cancelled').length
       const pendingSubs = sessionSubs.filter(s => s.state === 'submitted')
       const pending = pendingSubs.length
       const pendingEventNames = pendingSubs
@@ -252,6 +253,7 @@ export function Statistics({ events, sessions, submissions, dateFormat, showSess
         selected,
         rejected,
         declined,
+        cancelled,
         pending,
         pendingEventNames,
         selectedEventNames,
@@ -272,10 +274,10 @@ export function Statistics({ events, sessions, submissions, dateFormat, showSess
     })
 
   // Acceptance rate by level
-  const levelStats: Record<string, { submitted: number; selected: number; rejected: number; declined: number; selectedEventNames: string[] }> = {}
+  const levelStats: Record<string, { submitted: number; selected: number; rejected: number; declined: number; cancelled: number; selectedEventNames: string[] }> = {}
   const levels = ['100', '200', '300', '400', '500']
   levels.forEach(level => {
-    levelStats[level] = { submitted: 0, selected: 0, rejected: 0, declined: 0, selectedEventNames: [] }
+    levelStats[level] = { submitted: 0, selected: 0, rejected: 0, declined: 0, cancelled: 0, selectedEventNames: [] }
   })
 
   sessions.filter(s => showRetiredSessions || !s.retired).forEach(session => {
@@ -292,6 +294,8 @@ export function Statistics({ events, sessions, submissions, dateFormat, showSess
         levelStats[level].rejected++
       } else if (sub.state === 'declined') {
         levelStats[level].declined++
+      } else if (sub.state === 'cancelled') {
+        levelStats[level].cancelled++
       }
     })
   })

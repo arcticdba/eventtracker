@@ -15,6 +15,7 @@ interface Props {
   onDelete: (id: string) => void
   onSelect: (event: Event) => void
   onDecline: (eventId: string) => void
+  onCancel: (eventId: string) => void
   onRejectPending: (eventId: string) => void
   onToggleRemote: (eventId: string) => void
   onToggleMvpSubmission: (eventId: string) => void
@@ -38,12 +39,13 @@ interface Props {
   dateFormat: DateFormat
 }
 
-const allStates: EventState[] = ['pending', 'selected', 'rejected', 'declined', 'none']
+const allStates: EventState[] = ['pending', 'selected', 'rejected', 'declined', 'cancelled', 'none']
 
 const stateBackgrounds: Record<EventState, string> = {
   selected: 'bg-green-50 border-green-200',
   rejected: 'bg-red-50 border-red-200',
   declined: 'bg-orange-50 border-orange-200',
+  cancelled: 'bg-gray-100 border-gray-300',
   pending: 'bg-yellow-50 border-yellow-200',
   none: 'bg-white border-gray-200'
 }
@@ -52,6 +54,7 @@ const stateLabels: Record<EventState, string> = {
   selected: 'Selected',
   rejected: 'Rejected',
   declined: 'Declined',
+  cancelled: 'Cancelled',
   pending: 'Pending',
   none: 'No submissions'
 }
@@ -147,7 +150,7 @@ function formatLocation(country: string, city: string, remote: boolean): string 
   return parts.join(', ') || 'No location'
 }
 
-export function EventList({ events, submissions, sessions, onEdit, onDelete, onSelect, onDecline, onRejectPending, onToggleRemote, onToggleMvpSubmission, selectedEventId, filters, onFiltersChange, futureOnly, onFutureOnlyChange, pastOnly, onPastOnlyChange, showMvpFeatures = true, mvpCompletedOnly, onMvpCompletedOnlyChange, notFullyBooked, onNotFullyBookedChange, cfsOpen, onCfsOpenChange, equipmentNeeded, onEquipmentNeededChange, onFilteredCountChange, dateFormat }: Props) {
+export function EventList({ events, submissions, sessions, onEdit, onDelete, onSelect, onDecline, onCancel, onRejectPending, onToggleRemote, onToggleMvpSubmission, selectedEventId, filters, onFiltersChange, futureOnly, onFutureOnlyChange, pastOnly, onPastOnlyChange, showMvpFeatures = true, mvpCompletedOnly, onMvpCompletedOnlyChange, notFullyBooked, onNotFullyBookedChange, cfsOpen, onCfsOpenChange, equipmentNeeded, onEquipmentNeededChange, onFilteredCountChange, dateFormat }: Props) {
   const toggleFilter = (state: EventState) => {
     const newFilters = new Set(filters)
     if (newFilters.has(state)) {
@@ -375,7 +378,7 @@ export function EventList({ events, submissions, sessions, onEdit, onDelete, onS
       id: 'history',
       label: 'History',
       description: 'Past events',
-      filters: new Set(['selected', 'rejected', 'declined'] as EventState[]),
+      filters: new Set(['selected', 'rejected', 'declined', 'cancelled'] as EventState[]),
       futureOnly: false,
       pastOnly: true,
       notFullyBooked: false,
@@ -562,10 +565,15 @@ export function EventList({ events, submissions, sessions, onEdit, onDelete, onS
               <div className="flex justify-between items-start">
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
-                    <h3 className="font-medium text-gray-900">{event.name}</h3>
+                    <h3 className={`font-medium text-gray-900 ${state === 'cancelled' ? 'line-through' : ''}`}>{event.name}</h3>
                     {event.remote && (
                       <span className="px-1.5 py-0.5 text-xs rounded bg-purple-100 text-purple-700">
                         Remote
+                      </span>
+                    )}
+                    {state === 'cancelled' && (
+                      <span className="px-1.5 py-0.5 text-xs rounded bg-gray-200 text-gray-600">
+                        Cancelled
                       </span>
                     )}
                   </div>
@@ -660,13 +668,22 @@ export function EventList({ events, submissions, sessions, onEdit, onDelete, onS
                   )}
                 </div>
                 <div className="flex flex-col items-end gap-1 text-xs">
-                  {submissionCount > 0 && state !== 'declined' && state !== 'rejected' && (
+                  {submissionCount > 0 && state !== 'declined' && state !== 'rejected' && state !== 'cancelled' && (
                     <button
                       onClick={e => { e.stopPropagation(); onDecline(event.id) }}
                       className="text-gray-400 hover:text-orange-600"
                       title="Decline all submissions"
                     >
                       Decline
+                    </button>
+                  )}
+                  {submissionCount > 0 && state !== 'cancelled' && (
+                    <button
+                      onClick={e => { e.stopPropagation(); onCancel(event.id) }}
+                      className="text-gray-400 hover:text-gray-600"
+                      title="Event cancelled"
+                    >
+                      Cancel
                     </button>
                   )}
                   <button

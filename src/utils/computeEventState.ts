@@ -7,8 +7,14 @@ export function computeEventState(eventId: string, submissions: Submission[]): E
     return 'none'
   }
 
+  // Cancelled: all submissions are cancelled
+  const allCancelled = eventSubmissions.every(s => s.state === 'cancelled')
+  if (allCancelled) {
+    return 'cancelled'
+  }
+
   const allFinal = eventSubmissions.every(s =>
-    s.state === 'selected' || s.state === 'rejected' || s.state === 'declined'
+    s.state === 'selected' || s.state === 'rejected' || s.state === 'declined' || s.state === 'cancelled'
   )
   const hasSelected = eventSubmissions.some(s => s.state === 'selected')
   const allRejected = eventSubmissions.every(s => s.state === 'rejected')
@@ -16,7 +22,7 @@ export function computeEventState(eventId: string, submissions: Submission[]): E
     s.state === 'rejected' || s.state === 'declined'
   )
 
-  // Selected: all submissions are final (selected/rejected/declined) and at least one is selected
+  // Selected: all submissions are final (selected/rejected/declined/cancelled) and at least one is selected
   if (allFinal && hasSelected) {
     return 'selected'
   }

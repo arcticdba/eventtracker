@@ -1,4 +1,4 @@
-export type SubmissionState = 'submitted' | 'selected' | 'rejected' | 'declined'
+export type SubmissionState = 'submitted' | 'selected' | 'rejected' | 'declined' | 'cancelled'
 
 export type TravelType = 'flight' | 'train' | 'bus' | 'car' | 'other'
 
@@ -63,4 +63,4 @@ export interface Submission {
   notes: string
 }
 
-export type EventState = 'selected' | 'rejected' | 'declined' | 'pending' | 'none'
+export type EventState = 'selected' | 'rejected' | 'declined' | 'cancelled' | 'pending' | 'none'

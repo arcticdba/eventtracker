@@ -265,6 +265,20 @@ export default function App() {
     }))
   }
 
+  async function handleCancelEvent(eventId: string) {
+    if (!confirm('Mark this event as cancelled? All submissions will be set to cancelled.')) return
+
+    const eventSubmissions = submissions.filter(s => s.eventId === eventId)
+    const updatedSubmissions = await Promise.all(
+      eventSubmissions.map(s => api.updateSubmissionState(s.id, 'cancelled'))
+    )
+
+    setSubmissions(submissions.map(s => {
+      const updated = updatedSubmissions.find(u => u.id === s.id)
+      return updated || s
+    }))
+  }
+
   async function handleRejectPendingEvent(eventId: string) {
     const pendingSubmissions = submissions.filter(s => s.eventId === eventId && s.state === 'submitted')
     if (pendingSubmissions.length === 0) return
@@ -470,6 +484,7 @@ export default function App() {
                         onDelete={handleDeleteEvent}
                         onSelect={setSelectedEvent}
                         onDecline={handleDeclineEvent}
+                        onCancel={handleCancelEvent}
                         onRejectPending={handleRejectPendingEvent}
                         onToggleRemote={handleToggleEventRemote}
                         onToggleMvpSubmission={handleToggleEventMvpSubmission}
