@@ -44,7 +44,7 @@ const allStates: EventState[] = ['pending', 'selected', 'rejected', 'declined', 
 const stateBackgrounds: Record<EventState, string> = {
   selected: 'bg-green-50 border-green-200',
   rejected: 'bg-red-50 border-red-200',
-  declined: 'bg-orange-50 border-orange-200',
+  declined: 'bg-gray-50 border-gray-200',
   cancelled: 'bg-gray-100 border-gray-300',
   pending: 'bg-yellow-50 border-yellow-200',
   none: 'bg-white border-gray-200'
