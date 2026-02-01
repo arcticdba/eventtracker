@@ -191,8 +191,8 @@ export function EventList({ events, submissions, sessions, onEdit, onDelete, onS
         startDate.setHours(0, 0, 0, 0)
         const isUpcoming = startDate > today
         const isInPerson = !event.remote
-        const hasTravel = (event.travel?.length ?? 0) > 0
-        const hasHotel = (event.hotels?.length ?? 0) > 0
+        const hasTravel = (event.travel?.length ?? 0) > 0 || event.eventHandlesTravel
+        const hasHotel = (event.hotels?.length ?? 0) > 0 || event.eventHandlesHotel
         const isFullyBooked = hasTravel && hasHotel
         return eventState === 'selected' && isInPerson && isUpcoming && !isFullyBooked
       }
@@ -621,16 +621,16 @@ export function EventList({ events, submissions, sessions, onEdit, onDelete, onS
                       </span>
                     )}
                     <span
-                      className={event.travel?.length ? 'text-green-600' : 'text-gray-300'}
-                      title={event.travel?.length ? `${event.travel.length} travel booking(s)` : 'No travel booked'}
+                      className={(event.travel?.length || event.eventHandlesTravel) ? 'text-green-600' : 'text-gray-300'}
+                      title={event.eventHandlesTravel ? 'Event handles travel' : event.travel?.length ? `${event.travel.length} travel booking(s)` : 'No travel booked'}
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                       </svg>
                     </span>
                     <span
-                      className={event.hotels?.length ? 'text-green-600' : 'text-gray-300'}
-                      title={event.hotels?.length ? `${event.hotels.length} hotel booking(s)` : 'No hotel booked'}
+                      className={(event.hotels?.length || event.eventHandlesHotel) ? 'text-green-600' : 'text-gray-300'}
+                      title={event.eventHandlesHotel ? 'Event handles hotel' : event.hotels?.length ? `${event.hotels.length} hotel booking(s)` : 'No hotel booked'}
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />

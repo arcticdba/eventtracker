@@ -51,6 +51,8 @@ export function EventForm({ event, initialData, allEvents, onSave, onCancel, sho
       loginTool: '',
       travel: [],
       hotels: [],
+      eventHandlesTravel: false,
+      eventHandlesHotel: false,
       mvpSubmission: false,
       notes: ''
     }
@@ -63,6 +65,8 @@ export function EventForm({ event, initialData, allEvents, onSave, onCancel, sho
   const [loginTool, setLoginTool] = useState(source?.loginTool || '')
   const [travel, setTravel] = useState<TravelBooking[]>(source?.travel || [])
   const [hotels, setHotels] = useState<HotelBooking[]>(source?.hotels || [])
+  const [eventHandlesTravel, setEventHandlesTravel] = useState(source?.eventHandlesTravel || false)
+  const [eventHandlesHotel, setEventHandlesHotel] = useState(source?.eventHandlesHotel || false)
   // Default mvpSubmission to true when MVP features are hidden, so events created
   // during that time won't suddenly need MVP submission when re-enabled
   const [mvpSubmission, setMvpSubmission] = useState(source?.mvpSubmission ?? !showMvpFeatures)
@@ -98,6 +102,8 @@ export function EventForm({ event, initialData, allEvents, onSave, onCancel, sho
       setLoginTool(initialData.loginTool || '')
       setTravel(initialData.travel || [])
       setHotels(initialData.hotels || [])
+      setEventHandlesTravel(initialData.eventHandlesTravel || false)
+      setEventHandlesHotel(initialData.eventHandlesHotel || false)
       setMvpSubmission(initialData.mvpSubmission ?? !showMvpFeatures)
       setNotes(initialData.notes || '')
     }
@@ -194,6 +200,8 @@ export function EventForm({ event, initialData, allEvents, onSave, onCancel, sho
       loginTool,
       travel,
       hotels,
+      eventHandlesTravel,
+      eventHandlesHotel,
       mvpSubmission,
       notes
     })
@@ -485,9 +493,19 @@ export function EventForm({ event, initialData, allEvents, onSave, onCancel, sho
             </button>
           </div>
         )}
-        {travel.length === 0 && !showAddTravel && (
+        {travel.length === 0 && !showAddTravel && !eventHandlesTravel && (
           <p className="text-sm text-gray-400">No travel booked</p>
         )}
+        <div className="flex items-center gap-2 mt-2">
+          <input
+            type="checkbox"
+            id="eventHandlesTravel"
+            checked={eventHandlesTravel}
+            onChange={e => setEventHandlesTravel(e.target.checked)}
+            className="rounded border-gray-300"
+          />
+          <label htmlFor="eventHandlesTravel" className="text-sm text-gray-700">Event handles travel</label>
+        </div>
         </div>
 
         {/* Hotel Bookings */}
@@ -616,9 +634,19 @@ export function EventForm({ event, initialData, allEvents, onSave, onCancel, sho
             </button>
           </div>
         )}
-        {hotels.length === 0 && !showAddHotel && (
+        {hotels.length === 0 && !showAddHotel && !eventHandlesHotel && (
           <p className="text-sm text-gray-400">No hotel booked</p>
         )}
+        <div className="flex items-center gap-2 mt-2">
+          <input
+            type="checkbox"
+            id="eventHandlesHotel"
+            checked={eventHandlesHotel}
+            onChange={e => setEventHandlesHotel(e.target.checked)}
+            className="rounded border-gray-300"
+          />
+          <label htmlFor="eventHandlesHotel" className="text-sm text-gray-700">Event handles hotel</label>
+        </div>
         </div>
       </div>
 

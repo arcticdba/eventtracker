@@ -43,6 +43,8 @@ interface Event {
   loginTool: string
   travel: TravelBooking[]
   hotels: HotelBooking[]
+  eventHandlesTravel: boolean
+  eventHandlesHotel: boolean
   mvpSubmission: boolean
   notes: string
 }
