@@ -181,6 +181,8 @@ app.post('/api/events', (req, res) => {
     loginTool: req.body.loginTool || '',
     travel: req.body.travel || [],
     hotels: req.body.hotels || [],
+    eventHandlesTravel: req.body.eventHandlesTravel || false,
+    eventHandlesHotel: req.body.eventHandlesHotel || false,
     mvpSubmission: req.body.mvpSubmission || false,
     notes: req.body.notes || ''
   }
