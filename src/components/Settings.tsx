@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { UISettings, DateFormat } from '../api'
 import { DATE_FORMAT_OPTIONS } from '../utils/formatDate'
 
-const APP_VERSION = '0.6.3'
+const APP_VERSION = '1.0.0'
 
 interface SettingsProps {
   settings: UISettings
