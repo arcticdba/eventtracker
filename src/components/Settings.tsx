@@ -26,7 +26,10 @@ export function Settings({ settings, onSettingsChange, onClose }: SettingsProps)
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg shadow-xl w-full max-w-md">
         <div className="flex justify-between items-center p-4 border-b">
-          <h2 className="text-lg font-semibold">Settings <span className="text-gray-400 font-normal">(tracker version {APP_VERSION})</span></h2>
+          <div>
+            <h2 className="text-lg font-semibold">Settings <span className="text-gray-400 font-normal">(tracker version {APP_VERSION})</span></h2>
+            <p className="text-xs text-gray-400">Created by: Alexander Arvidsson</p>
+          </div>
           <button
             onClick={onClose}
             className="text-gray-500 hover:text-gray-700"
