@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { UISettings, DateFormat } from '../api'
 import { DATE_FORMAT_OPTIONS } from '../utils/formatDate'
 
-const APP_VERSION = '1.0.0'
+const APP_VERSION = '1.0.1'
 
 interface SettingsProps {
   settings: UISettings
@@ -205,3 +205,4 @@ export function Settings({ settings, onSettingsChange, onClose }: SettingsProps)
     </div>
   )
 }
+
