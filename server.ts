@@ -71,7 +71,7 @@ interface Submission {
   id: string
   sessionId: string
   eventId: string
-  state: 'submitted' | 'selected' | 'rejected' | 'declined'
+  state: 'submitted' | 'selected' | 'rejected' | 'declined' | 'cancelled'
   nameUsed: string
   notes: string
 }
@@ -340,7 +340,7 @@ app.get('/api/export/events.csv', (_req, res) => {
     e.callForContentLastDate,
     `"${(e.loginTool || '').replace(/"/g, '""')}"`,
     e.mvpSubmission ? 'true' : 'false',
-    `"${((e as any).notes || '').replace(/"/g, '""')}"`
+    `"${(e.notes || '').replace(/"/g, '""')}"`
   ].join(','))
 
   res.setHeader('Content-Type', 'text/csv')
@@ -479,8 +479,8 @@ app.get('/api/export/events.ics', (req, res) => {
     if (description) {
       lines.push(`DESCRIPTION:${escapeICalText(description)}`)
     }
-    if ((event as any).url) {
-      lines.push(`URL:${(event as any).url}`)
+    if (event.url) {
+      lines.push(`URL:${event.url}`)
     }
     lines.push('END:VEVENT')
   }
@@ -496,7 +496,17 @@ app.get('/api/export/events.ics', (req, res) => {
 app.post('/api/import/sessionize', async (req, res) => {
   const { url } = req.body
 
-  if (!url || !url.includes('sessionize.com')) {
+  if (!url) {
+    return res.status(400).json({ error: 'Invalid Sessionize URL' })
+  }
+
+  // Validate URL hostname to prevent SSRF
+  try {
+    const parsedUrl = new URL(url)
+    if (parsedUrl.hostname !== 'sessionize.com' && !parsedUrl.hostname.endsWith('.sessionize.com')) {
+      return res.status(400).json({ error: 'Invalid Sessionize URL' })
+    }
+  } catch {
     return res.status(400).json({ error: 'Invalid Sessionize URL' })
   }
 
