@@ -80,12 +80,16 @@ export function MonthlyEventsBar({ events, submissions, selectedMonth, onMonthSe
         {MONTHS.map((month, index) => {
           const monthEvents = eventsByMonth[index]
           const count = monthEvents.length
+          const bandwidthCount = monthEvents.filter(e => {
+            const state = computeEventState(e.id, submissions)
+            return state === 'pending' || state === 'selected'
+          }).length
           const isCurrentMonth = index === currentMonth
           const isPast = index < currentMonth
           const isHovered = hoveredMonth === index
           const isSelected = selectedMonth === index
-          const exceedsLimit = maxEventsPerMonth > 0 && count > maxEventsPerMonth
-          const atLimit = maxEventsPerMonth > 0 && count === maxEventsPerMonth
+          const exceedsLimit = maxEventsPerMonth > 0 && bandwidthCount > maxEventsPerMonth
+          const atLimit = maxEventsPerMonth > 0 && bandwidthCount === maxEventsPerMonth
 
           return (
             <div
@@ -142,12 +146,12 @@ export function MonthlyEventsBar({ events, submissions, selectedMonth, onMonthSe
                       {MONTHS[index]} {currentYear}
                       <span className="text-gray-400 font-normal ml-2">
                         {count} event{count !== 1 ? 's' : ''}
-                        {maxEventsPerMonth > 0 && ` / ${maxEventsPerMonth} max`}
+                        {maxEventsPerMonth > 0 && ` (${bandwidthCount} pending/accepted / ${maxEventsPerMonth} max)`}
                       </span>
                     </div>
                     {exceedsLimit && (
                       <div className="mb-2 px-2 py-1 bg-red-500/20 rounded text-xs text-red-300">
-                        Exceeds monthly limit by {count - maxEventsPerMonth}
+                        Exceeds monthly limit by {bandwidthCount - maxEventsPerMonth}
                       </div>
                     )}
                     {count > 0 ? (

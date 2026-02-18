@@ -14,6 +14,7 @@ import { WeeklyEventsBar } from './components/WeeklyEventsBar'
 import { Settings } from './components/Settings'
 import { CommandPalette } from './components/CommandPalette'
 import { UISettings } from './api'
+import { computeEventState } from './utils/computeEventState'
 
 type Tab = 'events' | 'sessions' | 'statistics'
 
@@ -396,7 +397,11 @@ export default function App() {
             )}
             {/* Year bandwidth warning */}
             {uiSettings.maxEventsPerYear > 0 && (() => {
-              const eventsThisYear = events.filter(e => new Date(e.dateStart).getFullYear() === currentYear).length
+              const eventsThisYear = events.filter(e => {
+                if (new Date(e.dateStart).getFullYear() !== currentYear) return false
+                const state = computeEventState(e.id, submissions)
+                return state === 'pending' || state === 'selected'
+              }).length
               if (eventsThisYear > uiSettings.maxEventsPerYear) {
                 return (
                   <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-2 mb-4 flex-shrink-0">

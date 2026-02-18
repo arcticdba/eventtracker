@@ -62,7 +62,10 @@ export function WeeklyEventsBar({ events, submissions, maxEventsPerMonth, select
       if (week >= 1 && week <= 53) {
         eventsByWeek[week - 1].push(event)
       }
-      eventsByMonth[date.getMonth()]++
+      const state = computeEventState(event.id, submissions)
+      if (state === 'pending' || state === 'selected') {
+        eventsByMonth[date.getMonth()]++
+      }
     }
   })
 
@@ -159,7 +162,7 @@ export function WeeklyEventsBar({ events, submissions, maxEventsPerMonth, select
                     </div>
                     {exceedsLimit && (
                       <div className="mb-1 px-2 py-0.5 bg-red-500/20 rounded text-[10px] text-red-300">
-                        Month exceeds limit ({monthEventCount}/{maxEventsPerMonth})
+                        Month exceeds limit ({monthEventCount} pending/accepted/{maxEventsPerMonth} max)
                       </div>
                     )}
                     {count > 0 ? (
