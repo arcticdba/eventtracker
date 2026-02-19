@@ -233,7 +233,7 @@ export function EventForm({ event, initialData, allEvents, onSave, onCancel, sho
         </div>
       </div>
       <div className="flex gap-3 items-end">
-        <div className="flex-1">
+        {!remote && <div className="flex-1">
           <label className="block text-sm font-medium text-gray-700">Country</label>
           <div className="mt-1 flex items-center gap-2">
             <input
@@ -246,8 +246,8 @@ export function EventForm({ event, initialData, allEvents, onSave, onCancel, sho
               <span className="text-2xl">{getCountryFlagOrEmpty(country)}</span>
             )}
           </div>
-        </div>
-        <div className="flex-1">
+        </div>}
+        {!remote && <div className="flex-1">
           <label className="block text-sm font-medium text-gray-700">City</label>
           <input
             type="text"
@@ -255,7 +255,7 @@ export function EventForm({ event, initialData, allEvents, onSave, onCancel, sho
             onChange={e => setCity(e.target.value)}
             className="mt-1 block w-full rounded border-gray-300 shadow-sm px-3 py-2 border"
           />
-        </div>
+        </div>}
         <div>
           <label className="block text-sm font-medium text-gray-700">Start</label>
           <DateInput
@@ -368,7 +368,7 @@ export function EventForm({ event, initialData, allEvents, onSave, onCancel, sho
         )}
 
         {/* Travel Bookings */}
-        <div className="mb-4">
+        {!remote && <div className="mb-4">
         <div className="flex justify-between items-center mb-2">
           <label className="block text-sm font-medium text-gray-700">Travel</label>
           {!showAddTravel && (
@@ -506,10 +506,10 @@ export function EventForm({ event, initialData, allEvents, onSave, onCancel, sho
           />
           <label htmlFor="eventHandlesTravel" className="text-sm text-gray-700">Event handles travel</label>
         </div>
-        </div>
+        </div>}
 
         {/* Hotel Bookings */}
-        <div>
+        {!remote && <div>
         <div className="flex justify-between items-center mb-2">
           <label className="block text-sm font-medium text-gray-700">Hotels</label>
           {!showAddHotel && (
@@ -647,7 +647,7 @@ export function EventForm({ event, initialData, allEvents, onSave, onCancel, sho
           />
           <label htmlFor="eventHandlesHotel" className="text-sm text-gray-700">Event handles hotel</label>
         </div>
-        </div>
+        </div>}
       </div>
 
       <div className="flex gap-2 border-t pt-4">
