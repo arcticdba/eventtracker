@@ -1,8 +1,7 @@
 import { useEffect } from 'react'
 import { UISettings, DateFormat } from '../api'
 import { DATE_FORMAT_OPTIONS } from '../utils/formatDate'
-
-const APP_VERSION = '1.0.2'
+import { version } from '../../package.json'
 
 interface SettingsProps {
   settings: UISettings
@@ -27,7 +26,7 @@ export function Settings({ settings, onSettingsChange, onClose }: SettingsProps)
       <div className="bg-white rounded-lg shadow-xl w-full max-w-md">
         <div className="flex justify-between items-center p-4 border-b">
           <div>
-            <h2 className="text-lg font-semibold">Settings <span className="text-gray-400 font-normal">(tracker version {APP_VERSION})</span></h2>
+            <h2 className="text-lg font-semibold">Settings <span className="text-gray-400 font-normal">(tracker version {version})</span></h2>
             <p className="text-xs text-gray-400">Created by: Alexander Arvidsson</p>
           </div>
           <button
