@@ -76,7 +76,8 @@ export function MonthlyEventsBar({ events, submissions, selectedMonth, onMonthSe
         </span>
       </div>
 
-      <div className="flex">
+      <div className="overflow-x-auto">
+      <div className="flex min-w-[480px]">
         {MONTHS.map((month, index) => {
           const monthEvents = eventsByMonth[index]
           const count = monthEvents.length
@@ -180,6 +181,7 @@ export function MonthlyEventsBar({ events, submissions, selectedMonth, onMonthSe
             </div>
           )
         })}
+      </div>
       </div>
     </div>
   )

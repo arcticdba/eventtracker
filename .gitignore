@@ -28,3 +28,13 @@ npm-debug.log*
 # Data files (user-specific)
 data.json
 settings.json
+.dual-graph/
+.claude/
+
+# Import source data
+Sessions.txt
+Sessions.xml
+tblEvents.xml
+tblEvents.xsd
+tblSessionEvents.xml
+tblSessionEvents.xsd

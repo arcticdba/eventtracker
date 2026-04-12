@@ -309,10 +309,10 @@ export default function App() {
     : events
 
   return (
-    <div className="h-screen flex flex-col bg-gray-100 overflow-hidden">
+    <div className="h-[100dvh] flex flex-col bg-gray-100 overflow-hidden">
       <header className="bg-white shadow flex-shrink-0">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-gray-900">Speaking Event Tracker</h1>
+        <div className="max-w-6xl mx-auto px-3 sm:px-4 py-3 sm:py-4 flex justify-between items-center gap-2">
+          <h1 className="text-lg sm:text-2xl font-bold text-gray-900 truncate">Speaking Event Tracker</h1>
           <button
             onClick={() => setShowCommandPalette(true)}
             className="flex items-center gap-2 px-3 py-1.5 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg border border-gray-200"
@@ -321,7 +321,7 @@ export default function App() {
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
-            <span className="text-sm text-gray-400">⌘K</span>
+            <span className="text-sm text-gray-400 hidden sm:inline">⌘K</span>
           </button>
           <button
             onClick={() => setShowSettings(true)}
@@ -336,7 +336,7 @@ export default function App() {
         </div>
       </header>
 
-      <main className="flex-1 flex flex-col max-w-6xl w-full mx-auto px-4 py-4 overflow-hidden">
+      <main className="flex-1 flex flex-col max-w-6xl w-full mx-auto px-3 py-3 sm:px-4 sm:py-4 overflow-y-auto lg:overflow-hidden">
         {/* Tabs */}
         <div className="flex items-center gap-4 mb-4 flex-shrink-0">
           <div className="flex gap-2">
@@ -425,13 +425,13 @@ export default function App() {
         )}
 
         {activeTab === 'statistics' ? (
-          <div className="flex-1 overflow-y-auto">
+          <div className="overflow-y-auto lg:flex-1">
             <Statistics events={events} sessions={sessions} submissions={submissions} dateFormat={uiSettings.dateFormat} showSessionPerformance={uiSettings.showSessionPerformance} />
           </div>
         ) : (
-          <div className={`flex-1 grid gap-4 ${activeTab === 'events' && !showEventForm ? 'grid-cols-1 lg:grid-cols-2' : 'grid-cols-1'} overflow-hidden`}>
+          <div className={`grid gap-3 ${activeTab === 'events' && !showEventForm ? 'grid-cols-1 lg:grid-cols-2' : 'grid-cols-1'} lg:flex-1 lg:overflow-hidden`}>
             {/* Left Panel */}
-            <div className="bg-white rounded-lg shadow p-4 flex flex-col overflow-hidden">
+            <div className="bg-white rounded-lg shadow p-3 sm:p-4 flex flex-col lg:overflow-hidden">
               {activeTab === 'events' ? (
                 <>
                   <div className="flex justify-between items-center mb-4 flex-shrink-0">
@@ -469,7 +469,7 @@ export default function App() {
                       </button>
                     </div>
                   </div>
-                  <div className="flex-1 overflow-y-auto">
+                  <div className="overflow-y-auto min-h-[280px] lg:flex-1 lg:min-h-0">
                     {showEventForm ? (
                       <EventForm
                         event={editingEvent || undefined}
@@ -526,7 +526,7 @@ export default function App() {
                       + New Session
                     </button>
                   </div>
-                  <div className="flex-1 overflow-y-auto">
+                  <div className="overflow-y-auto min-h-[280px] lg:flex-1 lg:min-h-0">
                     {showSessionForm ? (
                       <SessionForm
                         session={editingSession || undefined}
@@ -554,7 +554,7 @@ export default function App() {
 
             {/* Right Panel - Submissions for selected event (only show on events tab when not editing) */}
             {activeTab === 'events' && !showEventForm && (
-              <div className="bg-white rounded-lg shadow p-4 flex flex-col overflow-hidden">
+              <div className="bg-white rounded-lg shadow p-3 sm:p-4 flex flex-col lg:overflow-hidden">
                 <div className="flex justify-between items-center mb-4 flex-shrink-0">
                   <h2 className="text-lg font-semibold">
                     {selectedEvent
@@ -570,7 +570,7 @@ export default function App() {
                     </button>
                   )}
                 </div>
-                <div className="flex-1 overflow-y-auto">
+                <div className="overflow-y-auto min-h-[280px] lg:flex-1 lg:min-h-0">
                   {selectedEvent ? (
                     showSessionPicker ? (
                       <SessionPicker

@@ -91,6 +91,8 @@ export function WeeklyEventsBar({ events, submissions, maxEventsPerMonth, select
         <span className="text-xs text-gray-500">Week {currentWeek}</span>
       </div>
 
+      <div className="overflow-x-auto">
+      <div className="min-w-[480px]">
       <div className="flex gap-px">
         {Array.from({ length: 52 }, (_, i) => i + 1).map(week => {
           const weekEvents = eventsByWeek[week - 1]
@@ -206,6 +208,8 @@ export function WeeklyEventsBar({ events, submissions, maxEventsPerMonth, select
             </span>
           )
         })}
+      </div>
+      </div>
       </div>
     </div>
   )
