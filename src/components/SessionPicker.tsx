@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { Session, Submission } from '../types'
 
 interface SessionSelection {
@@ -16,6 +16,9 @@ interface Props {
   onClose: () => void
 }
 
+const LEVELS = ['100', '200', '300', '400', '500']
+const SESSION_TYPES = ['Session (45-60 min)', 'Workshop (full day)', 'Short session (20 min)', 'Lightning Talk (5-10 min)', 'Keynote']
+
 const levelColors: Record<string, string> = {
   '100': 'bg-green-100 text-green-700',
   '200': 'bg-teal-100 text-teal-700',
@@ -24,25 +27,64 @@ const levelColors: Record<string, string> = {
   '500': 'bg-red-100 text-red-700'
 }
 
-export function SessionPicker({ sessions, submissions, eventId, onAdd, onClose }: Props) {
-  // Map of sessionId -> nameUsed (if selected)
-  const [selections, setSelections] = useState<Map<string, string>>(new Map())
-  // Map of sessionId -> newly created alternate names (not yet saved to session)
-  const [newNames, setNewNames] = useState<Map<string, string[]>>(new Map())
-  // Map of sessionId -> notes
-  const [notes, setNotes] = useState<Map<string, string>>(new Map())
-  // Map of sessionId -> input value for new name being typed
-  const [newNameInputs, setNewNameInputs] = useState<Map<string, string>>(new Map())
-  // Set of sessionIds currently showing the "add new name" input
-  const [showingNewNameInput, setShowingNewNameInput] = useState<Set<string>>(new Set())
+const sessionTypeColors: Record<string, string> = {
+  'Session (45-60 min)': 'bg-blue-100 text-blue-700',
+  'Workshop (full day)': 'bg-indigo-100 text-indigo-700',
+  'Short session (20 min)': 'bg-cyan-100 text-cyan-700',
+  'Lightning Talk (5-10 min)': 'bg-pink-100 text-pink-700',
+  'Keynote': 'bg-amber-100 text-amber-700'
+}
 
-  // Filter out sessions already submitted to this event and retired sessions, sort alphabetically
-  const availableSessions = sessions
+const sessionTypeShortLabels: Record<string, string> = {
+  'Session (45-60 min)': 'Session',
+  'Workshop (full day)': 'Workshop',
+  'Short session (20 min)': '20 min',
+  'Lightning Talk (5-10 min)': 'Lightning',
+  'Keynote': 'Keynote'
+}
+
+export function SessionPicker({ sessions, submissions, eventId, onAdd, onClose }: Props) {
+  const [selections, setSelections] = useState<Map<string, string>>(new Map())
+  const [newNames, setNewNames] = useState<Map<string, string[]>>(new Map())
+  const [notes, setNotes] = useState<Map<string, string>>(new Map())
+  const [newNameInputs, setNewNameInputs] = useState<Map<string, string>>(new Map())
+  const [showingNewNameInput, setShowingNewNameInput] = useState<Set<string>>(new Set())
+  const [searchQuery, setSearchQuery] = useState('')
+  const [selectedLevels, setSelectedLevels] = useState<Set<string>>(new Set(LEVELS))
+  const [selectedTypes, setSelectedTypes] = useState<Set<string>>(new Set(SESSION_TYPES))
+
+  const toggleLevel = (level: string) => {
+    const next = new Set(selectedLevels)
+    next.has(level) ? next.delete(level) : next.add(level)
+    setSelectedLevels(next)
+  }
+
+  const toggleType = (type: string) => {
+    const next = new Set(selectedTypes)
+    next.has(type) ? next.delete(type) : next.add(type)
+    setSelectedTypes(next)
+  }
+
+  const availableSessions = useMemo(() => sessions
     .filter(session => {
       if (session.retired) return false
-      return !submissions.some(s => s.sessionId === session.id && s.eventId === eventId)
+      if (submissions.some(s => s.sessionId === session.id && s.eventId === eventId)) return false
+      if (selectedLevels.size < LEVELS.length && !selectedLevels.has(session.level)) return false
+      const type = session.sessionType || 'Session (45-60 min)'
+      if (selectedTypes.size < SESSION_TYPES.length && !selectedTypes.has(type)) return false
+      if (searchQuery.trim()) {
+        const q = searchQuery.toLowerCase()
+        if (
+          !session.name.toLowerCase().includes(q) &&
+          !session.alternateNames?.some(n => n.toLowerCase().includes(q)) &&
+          !session.primaryTechnology?.toLowerCase().includes(q) &&
+          !session.additionalTechnology?.toLowerCase().includes(q)
+        ) return false
+      }
+      return true
     })
-    .sort((a, b) => a.name.localeCompare(b.name))
+    .sort((a, b) => a.name.localeCompare(b.name)),
+  [sessions, submissions, eventId, searchQuery, selectedLevels, selectedTypes])
 
   const toggleSession = (session: Session) => {
     const newSelections = new Map(selections)
@@ -139,10 +181,64 @@ export function SessionPicker({ sessions, submissions, eventId, onAdd, onClose }
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       <div className="flex justify-between items-center">
         <h3 className="font-medium text-gray-900">Add Sessions</h3>
         <span className="text-sm text-gray-500">{selections.size} selected</span>
+      </div>
+
+      <div className="space-y-2">
+        <div className="flex items-center gap-3 flex-wrap">
+          <div className="relative flex-1 min-w-[200px]">
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={e => setSearchQuery(e.target.value)}
+              placeholder="Search sessions..."
+              className="w-full pl-8 pr-3 py-1.5 text-sm border rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-400 outline-none"
+            />
+            <svg className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            {searchQuery && (
+              <button onClick={() => setSearchQuery('')} className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            )}
+          </div>
+          <span className="text-xs text-gray-400">({availableSessions.length} of {sessions.filter(s => !s.retired && !submissions.some(sub => sub.sessionId === s.id && sub.eventId === eventId)).length})</span>
+        </div>
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="text-xs text-gray-500">Level:</span>
+          {LEVELS.map(level => (
+            <button
+              key={level}
+              type="button"
+              onClick={() => toggleLevel(level)}
+              className={`px-2 py-0.5 text-xs rounded-full border transition-colors ${
+                selectedLevels.has(level) ? levelColors[level] + ' border-current' : 'bg-gray-50 text-gray-400 border-gray-200'
+              }`}
+            >
+              {level}
+            </button>
+          ))}
+          <span className="text-gray-300">|</span>
+          <span className="text-xs text-gray-500">Type:</span>
+          {SESSION_TYPES.map(type => (
+            <button
+              key={type}
+              type="button"
+              onClick={() => toggleType(type)}
+              className={`px-2 py-0.5 text-xs rounded-full border transition-colors ${
+                selectedTypes.has(type) ? sessionTypeColors[type] + ' border-current' : 'bg-gray-50 text-gray-400 border-gray-200'
+              }`}
+            >
+              {sessionTypeShortLabels[type]}
+            </button>
+          ))}
+        </div>
       </div>
 
       {availableSessions.length === 0 ? (

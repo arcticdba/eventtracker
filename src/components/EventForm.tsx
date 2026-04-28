@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
-import { Event, TravelBooking, HotelBooking, TravelType } from '../types'
+import { Event, TravelBooking, HotelBooking, TravelType, Submission } from '../types'
 import { DateFormat } from '../api'
 import { v4 as uuidv4 } from 'uuid'
 import { getOverlappingEvents } from '../utils/getOverlappingEvents'
@@ -9,7 +9,8 @@ import { DateInput } from './DateInput'
 interface Props {
   event?: Event
   initialData?: Omit<Event, 'id'>
-  allEvents: Event[]  // All events for overlap detection
+  allEvents: Event[]
+  submissions: Submission[]
   onSave: (data: Omit<Event, 'id'>) => void
   onCancel: () => void
   showMvpFeatures?: boolean
@@ -24,7 +25,7 @@ const travelTypeLabels: Record<TravelType, string> = {
   other: 'Other'
 }
 
-export function EventForm({ event, initialData, allEvents, onSave, onCancel, showMvpFeatures = true, dateFormat }: Props) {
+export function EventForm({ event, initialData, allEvents, submissions, onSave, onCancel, showMvpFeatures = true, dateFormat }: Props) {
   // Use event first (for editing), then initialData (for import), then empty
   const source = event || initialData
   const [name, setName] = useState(source?.name || '')
@@ -56,8 +57,8 @@ export function EventForm({ event, initialData, allEvents, onSave, onCancel, sho
       mvpSubmission: false,
       notes: ''
     }
-    return getOverlappingEvents(tempEvent, allEvents)
-  }, [dateStart, dateEnd, event?.id, allEvents, name, country, city])
+    return getOverlappingEvents(tempEvent, allEvents, submissions)
+  }, [dateStart, dateEnd, event?.id, allEvents, submissions, name, country, city])
   const [remote, setRemote] = useState(source?.remote || false)
   const [url, setUrl] = useState(source?.url || '')
   const [callForContentUrl, setCallForContentUrl] = useState(source?.callForContentUrl || '')

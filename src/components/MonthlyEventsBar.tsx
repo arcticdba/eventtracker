@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { Event, Submission } from '../types'
 import { computeEventState } from '../utils/computeEventState'
+import { getOverlappingEvents } from '../utils/getOverlappingEvents'
 import { formatDate } from '../utils/formatDate'
 import { DateFormat } from '../api'
 
@@ -41,8 +42,23 @@ function getEventDotColor(event: Event, submissions: Submission[], isPast: boole
 
 export function MonthlyEventsBar({ events, submissions, selectedMonth, onMonthSelect, maxEventsPerMonth, dateFormat }: MonthlyEventsBarProps) {
   const [hoveredMonth, setHoveredMonth] = useState<number | null>(null)
+  const [hoveredRect, setHoveredRect] = useState<DOMRect | null>(null)
   const currentYear = new Date().getFullYear()
   const currentMonth = new Date().getMonth()
+
+  const monthsWithOverlap = useMemo(() => {
+    const months = new Set<number>()
+    for (const event of events) {
+      const date = new Date(event.dateStart)
+      if (date.getFullYear() !== currentYear) continue
+      const month = date.getMonth()
+      if (months.has(month)) continue
+      const state = computeEventState(event.id, submissions)
+      if (state === 'rejected' || state === 'declined' || state === 'cancelled') continue
+      if (getOverlappingEvents(event, events, submissions).length > 0) months.add(month)
+    }
+    return months
+  }, [events, submissions, currentYear])
 
   const handleMonthClick = (month: number) => {
     if (selectedMonth === month) {
@@ -91,20 +107,21 @@ export function MonthlyEventsBar({ events, submissions, selectedMonth, onMonthSe
           const isSelected = selectedMonth === index
           const exceedsLimit = maxEventsPerMonth > 0 && bandwidthCount > maxEventsPerMonth
           const atLimit = maxEventsPerMonth > 0 && bandwidthCount === maxEventsPerMonth
+          const hasOverlap = monthsWithOverlap.has(index)
 
           return (
             <div
               key={month}
               className="flex-1 relative"
-              onMouseEnter={() => setHoveredMonth(index)}
-              onMouseLeave={() => setHoveredMonth(null)}
+              onMouseEnter={(e) => { setHoveredMonth(index); setHoveredRect(e.currentTarget.getBoundingClientRect()) }}
+              onMouseLeave={() => { setHoveredMonth(null); setHoveredRect(null) }}
               onClick={() => handleMonthClick(index)}
             >
               {/* Month cell */}
               <div
                 className={`
                   h-12 border-r border-gray-200 last:border-r-0 flex items-center justify-center cursor-pointer
-                  transition-colors
+                  transition-colors relative
                   ${isSelected ? 'bg-blue-100 ring-2 ring-blue-500 ring-inset' : ''}
                   ${!isSelected && exceedsLimit ? 'bg-red-100' : ''}
                   ${!isSelected && !exceedsLimit && atLimit ? 'bg-amber-50' : ''}
@@ -112,6 +129,9 @@ export function MonthlyEventsBar({ events, submissions, selectedMonth, onMonthSe
                   ${!isSelected && !exceedsLimit && !atLimit && !isCurrentMonth && isHovered ? 'bg-gray-100' : ''}
                 `}
               >
+                {hasOverlap && (
+                  <div className="absolute top-1 right-1 w-2 h-2 rounded-full bg-amber-400 ring-1 ring-white" title="Overlapping events" />
+                )}
                 {/* Event dots/indicators */}
                 <div className="flex flex-col gap-0.5 items-center">
                   {count > 0 ? (
@@ -140,8 +160,17 @@ export function MonthlyEventsBar({ events, submissions, selectedMonth, onMonthSe
               </div>
 
               {/* Hover popover */}
-              {isHovered && (
-                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 z-50">
+              {isHovered && hoveredRect && (
+                <div
+                  className="fixed z-50 pointer-events-none"
+                  style={{
+                    top: hoveredRect.bottom + 8,
+                    left: Math.max(8, Math.min(
+                      window.innerWidth - 288,
+                      hoveredRect.left + hoveredRect.width / 2 - 140
+                    ))
+                  }}
+                >
                   <div className="bg-gray-900 text-white rounded-lg shadow-lg p-3 min-w-[200px] max-w-[280px]">
                     <div className="text-sm font-medium mb-2">
                       {MONTHS[index]} {currentYear}
@@ -153,6 +182,11 @@ export function MonthlyEventsBar({ events, submissions, selectedMonth, onMonthSe
                     {exceedsLimit && (
                       <div className="mb-2 px-2 py-1 bg-red-500/20 rounded text-xs text-red-300">
                         Exceeds monthly limit by {bandwidthCount - maxEventsPerMonth}
+                      </div>
+                    )}
+                    {hasOverlap && (
+                      <div className="mb-2 px-2 py-1 bg-amber-500/20 rounded text-xs text-amber-300">
+                        Contains overlapping events
                       </div>
                     )}
                     {count > 0 ? (

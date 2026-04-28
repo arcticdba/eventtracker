@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
-import { Event, Submission } from '../types'
-import { computeEventState } from '../utils/computeEventState'
+import { Event } from '../types'
 
 interface Command {
   id: string
@@ -14,7 +13,6 @@ interface CommandPaletteProps {
   isOpen: boolean
   onClose: () => void
   events: Event[]
-  submissions: Submission[]
   selectedEvent: Event | null
   onNewEvent: () => void
   onNewSession: () => void
@@ -28,7 +26,6 @@ export function CommandPalette({
   isOpen,
   onClose,
   events,
-  submissions,
   selectedEvent,
   onNewEvent,
   onNewSession,
@@ -41,19 +38,6 @@ export function CommandPalette({
   const [selectedIndex, setSelectedIndex] = useState(0)
   const inputRef = useRef<HTMLInputElement>(null)
   const listRef = useRef<HTMLDivElement>(null)
-
-  // Get events by state for quick navigation
-  const pendingEvents = events.filter(e => computeEventState(e.id, submissions) === 'pending')
-  const selectedEvents = events.filter(e => computeEventState(e.id, submissions) === 'selected')
-  const upcomingEvents = events
-    .filter(e => {
-      const date = new Date(e.dateStart)
-      date.setHours(0, 0, 0, 0)
-      const today = new Date()
-      today.setHours(0, 0, 0, 0)
-      return date >= today
-    })
-    .sort((a, b) => a.dateStart.localeCompare(b.dateStart))
 
   // Build commands list
   const commands: Command[] = [
@@ -74,38 +58,6 @@ export function CommandPalette({
     { id: 'tab-events', label: 'Go to Events', category: 'navigation', action: () => { onTabChange('events'); onClose() } },
     { id: 'tab-sessions', label: 'Go to Sessions', category: 'navigation', action: () => { onTabChange('sessions'); onClose() } },
     { id: 'tab-stats', label: 'Go to Statistics', category: 'navigation', action: () => { onTabChange('statistics'); onClose() } },
-
-    // Quick jumps
-    ...(pendingEvents.length > 0 ? [{
-      id: 'next-pending',
-      label: `Jump to Pending Event (${pendingEvents.length})`,
-      category: 'navigation' as const,
-      action: () => {
-        onTabChange('events')
-        onSelectEvent(pendingEvents[0])
-        onClose()
-      }
-    }] : []),
-    ...(selectedEvents.length > 0 ? [{
-      id: 'next-selected',
-      label: `Jump to Selected Event (${selectedEvents.length})`,
-      category: 'navigation' as const,
-      action: () => {
-        onTabChange('events')
-        onSelectEvent(selectedEvents[0])
-        onClose()
-      }
-    }] : []),
-    ...(upcomingEvents.length > 0 ? [{
-      id: 'next-upcoming',
-      label: `Jump to Next Upcoming Event`,
-      category: 'navigation' as const,
-      action: () => {
-        onTabChange('events')
-        onSelectEvent(upcomingEvents[0])
-        onClose()
-      }
-    }] : []),
 
     // Event quick access (first 5 events matching search)
     ...events

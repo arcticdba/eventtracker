@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { Event, Submission } from '../types'
 import { computeEventState } from '../utils/computeEventState'
+import { getOverlappingEvents } from '../utils/getOverlappingEvents'
 import { formatDate } from '../utils/formatDate'
 import { DateFormat } from '../api'
 
@@ -38,8 +39,23 @@ function getEventDotColor(event: Event, submissions: Submission[]): string {
 
 export function WeeklyEventsBar({ events, submissions, maxEventsPerMonth, selectedMonth, onMonthSelect, dateFormat }: WeeklyEventsBarProps) {
   const [hoveredWeek, setHoveredWeek] = useState<number | null>(null)
+  const [hoveredRect, setHoveredRect] = useState<DOMRect | null>(null)
   const currentYear = new Date().getFullYear()
   const currentWeek = getWeekNumber(new Date())
+
+  const weeksWithOverlap = useMemo(() => {
+    const weeks = new Set<number>()
+    for (const event of events) {
+      const date = new Date(event.dateStart)
+      if (date.getFullYear() !== currentYear) continue
+      const week = getWeekNumber(date)
+      if (weeks.has(week)) continue
+      const state = computeEventState(event.id, submissions)
+      if (state === 'rejected' || state === 'declined' || state === 'cancelled') continue
+      if (getOverlappingEvents(event, events, submissions).length > 0) weeks.add(week)
+    }
+    return weeks
+  }, [events, submissions, currentYear])
 
   const handleWeekClick = (weekMonth: number) => {
     if (selectedMonth === weekMonth) {
@@ -103,6 +119,7 @@ export function WeeklyEventsBar({ events, submissions, maxEventsPerMonth, select
           const monthEventCount = eventsByMonth[weekMonth]
           const exceedsLimit = maxEventsPerMonth > 0 && monthEventCount > maxEventsPerMonth
           const atLimit = maxEventsPerMonth > 0 && monthEventCount === maxEventsPerMonth
+          const hasOverlap = weeksWithOverlap.has(week)
           // Check if this week starts a new month (compare with previous week)
           const prevWeekMonth = week > 1 ? getWeekMonth(week - 1) : -1
           const nextWeekMonth = week < 52 ? getWeekMonth(week + 1) : -1
@@ -116,14 +133,14 @@ export function WeeklyEventsBar({ events, submissions, maxEventsPerMonth, select
             <div
               key={week}
               className="flex-1 relative"
-              onMouseEnter={() => setHoveredWeek(week)}
-              onMouseLeave={() => setHoveredWeek(null)}
+              onMouseEnter={(e) => { setHoveredWeek(week); setHoveredRect(e.currentTarget.getBoundingClientRect()) }}
+              onMouseLeave={() => { setHoveredWeek(null); setHoveredRect(null) }}
               onClick={() => handleWeekClick(weekMonth)}
             >
               {/* Week cell */}
               <div
                 className={`
-                  h-6 flex items-center justify-center cursor-pointer transition-colors
+                  h-6 flex items-center justify-center cursor-pointer transition-colors relative
                   ${!isSelected ? 'border-r border-gray-100 last:border-r-0' : ''}
                   ${isMonthStart && !isSelected ? 'border-l-2 border-l-gray-300' : ''}
                   ${isSelected ? 'bg-blue-100 border-t-2 border-b-2 border-t-blue-500 border-b-blue-500' : ''}
@@ -135,6 +152,9 @@ export function WeeklyEventsBar({ events, submissions, maxEventsPerMonth, select
                   ${!isSelected && !exceedsLimit && !atLimit && !isCurrentWeek && isHovered ? 'bg-gray-100' : ''}
                 `}
               >
+                {hasOverlap && (
+                  <div className="absolute top-0.5 right-0.5 w-1.5 h-1.5 rounded-full bg-amber-400 ring-1 ring-white" />
+                )}
                 {count > 0 && (
                   <div className="flex gap-px">
                     {weekEvents.slice(0, 2).map(event => (
@@ -151,10 +171,17 @@ export function WeeklyEventsBar({ events, submissions, maxEventsPerMonth, select
               </div>
 
               {/* Hover popover */}
-              {isHovered && (
-                <div className={`absolute top-full mt-1 z-50 ${
-                  week <= 8 ? 'left-0' : week >= 45 ? 'right-0' : 'left-1/2 -translate-x-1/2'
-                }`}>
+              {isHovered && hoveredRect && (
+                <div
+                  className="fixed z-50 pointer-events-none"
+                  style={{
+                    top: hoveredRect.bottom + 4,
+                    left: Math.max(8, Math.min(
+                      window.innerWidth - 248,
+                      hoveredRect.left + hoveredRect.width / 2 - 120
+                    ))
+                  }}
+                >
                   <div className="bg-gray-900 text-white rounded-lg shadow-lg p-2 min-w-[180px] max-w-[240px]">
                     <div className="text-xs font-medium mb-1">
                       Week {week}
@@ -165,6 +192,11 @@ export function WeeklyEventsBar({ events, submissions, maxEventsPerMonth, select
                     {exceedsLimit && (
                       <div className="mb-1 px-2 py-0.5 bg-red-500/20 rounded text-[10px] text-red-300">
                         Month exceeds limit ({monthEventCount} pending/accepted/{maxEventsPerMonth} max)
+                      </div>
+                    )}
+                    {hasOverlap && (
+                      <div className="mb-1 px-2 py-0.5 bg-amber-500/20 rounded text-[10px] text-amber-300">
+                        Contains overlapping events
                       </div>
                     )}
                     {count > 0 ? (

@@ -475,6 +475,7 @@ export default function App() {
                         event={editingEvent || undefined}
                         initialData={importedEventData || undefined}
                         allEvents={events}
+                        submissions={submissions}
                         onSave={handleSaveEvent}
                         onCancel={() => { setShowEventForm(false); setEditingEvent(null); setImportedEventData(null) }}
                         showMvpFeatures={uiSettings.showMvpFeatures}
@@ -625,7 +626,6 @@ export default function App() {
         isOpen={showCommandPalette}
         onClose={() => setShowCommandPalette(false)}
         events={events}
-        submissions={submissions}
         selectedEvent={selectedEvent}
         onNewEvent={() => {
           setActiveTab('events')

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import * as ContextMenu from '@radix-ui/react-context-menu'
 import { Event, Submission, Session, EventState } from '../types'
 import { computeEventState } from '../utils/computeEventState'
@@ -163,6 +163,14 @@ export function EventList({ events, submissions, sessions, onEdit, onDelete, onS
 
   const today = new Date()
   today.setHours(0, 0, 0, 0)
+
+  const overlappingEventsMap = useMemo(() => {
+    const map = new Map<string, ReturnType<typeof getOverlappingEvents>>()
+    for (const event of events) {
+      map.set(event.id, getOverlappingEvents(event, events, submissions))
+    }
+    return map
+  }, [events, submissions])
 
   const filteredEvents = events
     .filter(event => {
@@ -547,7 +555,7 @@ export function EventList({ events, submissions, sessions, onEdit, onDelete, onS
           const daysUntilCfcClose = getDaysRemaining(event.callForContentLastDate)
           const daysUntilEvent = getDaysRemaining(event.dateStart)
           const eventInPast = daysUntilEvent !== null && daysUntilEvent < 0
-          const overlappingEvents = getOverlappingEvents(event, events)
+          const overlappingEvents = overlappingEventsMap.get(event.id) ?? []
 
           return (
             <ContextMenu.Root key={event.id}>
@@ -650,7 +658,7 @@ export function EventList({ events, submissions, sessions, onEdit, onDelete, onS
                       </span>
                     </div>
                   )}
-                  {overlappingEvents.length > 0 && (
+                  {overlappingEvents.length > 0 && state !== 'rejected' && state !== 'declined' && state !== 'cancelled' && (
                     <div className="mt-1">
                       <span
                         className="px-1.5 py-0.5 text-xs rounded bg-amber-100 text-amber-800 font-medium"
