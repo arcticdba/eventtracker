@@ -605,7 +605,7 @@ app.post('/api/import/sessionize', async (req, res) => {
 
 // SPA fallback - serve index.html for any non-API routes in production
 if (process.env.NODE_ENV === 'production') {
-  app.get('*', (_req, res) => {
+  app.get('/{*splat}', (_req, res) => {
     res.sendFile(path.join(__dirname, 'dist', 'index.html'))
   })
 }

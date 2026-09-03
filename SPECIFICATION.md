@@ -257,7 +257,8 @@ Two optional timeline visualizations (toggled via settings):
 
 **Weekly Events Bar:**
 - Shows stacked weekly rows for the previous year, current year, next year, and any later years containing events
-- Shows the actual number of calendar weeks for each year
+- Uses ISO-8601 week numbering: weeks start on Monday and week 1 contains 4 January
+- Shows the actual number of ISO weeks for each week-year
 - Smaller dots (max 2 visible per week, +N indicator)
 - Hover shows week number, year, date (using the configured date format), and events
 - Tooltip positioning adapts to edge proximity (left/center/right)

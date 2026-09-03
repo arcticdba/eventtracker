@@ -30,15 +30,32 @@ function formatLocalDate(date: Date, dateFormat: DateFormat): string {
   return formatDate(`${year}-${month}-${day}`, dateFormat)
 }
 
-function getWeekNumber(date: Date): number {
-  const startOfYear = new Date(date.getFullYear(), 0, 1)
-  const days = Math.floor((date.getTime() - startOfYear.getTime()) / 86400000)
-  return Math.ceil((days + startOfYear.getDay() + 1) / 7)
+function getISOWeek(date: Date): { year: number; week: number } {
+  // Use UTC for the calculation so daylight-saving transitions cannot shift a week.
+  const thursday = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()))
+  const day = thursday.getUTCDay() || 7
+  thursday.setUTCDate(thursday.getUTCDate() + 4 - day)
+  const year = thursday.getUTCFullYear()
+  const yearStart = new Date(Date.UTC(year, 0, 1))
+  const week = Math.ceil((((thursday.getTime() - yearStart.getTime()) / 86400000) + 1) / 7)
+  return { year, week }
 }
 
 function getWeekStart(year: number, week: number): Date {
-  const startOfYear = new Date(year, 0, 1)
-  return new Date(year, 0, 1 + (week - 1) * 7 - startOfYear.getDay())
+  // ISO week 1 contains 4 January; walk back to its Monday.
+  const januaryFourth = new Date(year, 0, 4)
+  const day = januaryFourth.getDay() || 7
+  return new Date(year, 0, 4 - (day - 1) + (week - 1) * 7)
+}
+
+function getWeeksInISOYear(year: number): number {
+  return getISOWeek(new Date(year, 11, 28)).week
+}
+
+function getWeekMonth(year: number, week: number): number {
+  const thursday = getWeekStart(year, week)
+  thursday.setDate(thursday.getDate() + 3)
+  return thursday.getMonth()
 }
 
 function getEventDotColor(event: Event, submissions: Submission[]): string {
@@ -54,13 +71,14 @@ export function WeeklyEventsBar({ events, submissions, maxEventsPerMonth, select
   const [hoveredCell, setHoveredCell] = useState<string | null>(null)
   const [hoveredRect, setHoveredRect] = useState<DOMRect | null>(null)
   const now = new Date()
-  const currentYear = now.getFullYear()
-  const currentWeek = getWeekNumber(now)
+  const currentISOWeek = getISOWeek(now)
+  const currentYear = currentISOWeek.year
+  const currentWeek = currentISOWeek.week
 
   const visibleYears = useMemo(() => {
     const years = new Set([currentYear - 1, currentYear, currentYear + 1])
     events.forEach(event => {
-      const year = parseDateOnly(event.dateStart).getFullYear()
+      const year = getISOWeek(parseDateOnly(event.dateStart)).year
       if (year > currentYear) years.add(year)
     })
     return [...years].sort((a, b) => a - b)
@@ -70,11 +88,12 @@ export function WeeklyEventsBar({ events, submissions, maxEventsPerMonth, select
     const cells = new Set<string>()
     events.forEach(event => {
       const date = parseDateOnly(event.dateStart)
-      if (!visibleYears.includes(date.getFullYear())) return
+      const isoWeek = getISOWeek(date)
+      if (!visibleYears.includes(isoWeek.year)) return
       const state = computeEventState(event.id, submissions)
       if (state === 'rejected' || state === 'declined' || state === 'cancelled') return
       if (getOverlappingEvents(event, events, submissions).length > 0) {
-        cells.add(`${date.getFullYear()}-${getWeekNumber(date)}`)
+        cells.add(`${isoWeek.year}-${isoWeek.week}`)
       }
     })
     return cells
@@ -96,19 +115,19 @@ export function WeeklyEventsBar({ events, submissions, maxEventsPerMonth, select
       <div className="overflow-x-auto">
         <div className="min-w-[560px] space-y-2">
           {visibleYears.map(year => {
-            const weekCount = getWeekNumber(new Date(year, 11, 31))
+            const weekCount = getWeeksInISOYear(year)
             const eventsByWeek: Event[][] = Array.from({ length: weekCount }, () => [])
             const eventsByMonth: number[] = Array(12).fill(0)
-            const yearEvents = events.filter(event => parseDateOnly(event.dateStart).getFullYear() === year)
+            const yearEvents = events.filter(event => getISOWeek(parseDateOnly(event.dateStart)).year === year)
 
             yearEvents.forEach(event => {
               const date = parseDateOnly(event.dateStart)
-              eventsByWeek[getWeekNumber(date) - 1]?.push(event)
+              const week = getISOWeek(date).week
+              eventsByWeek[week - 1]?.push(event)
               const state = computeEventState(event.id, submissions)
-              if (state === 'pending' || state === 'selected') eventsByMonth[date.getMonth()]++
+              if (state === 'pending' || state === 'selected') eventsByMonth[getWeekMonth(year, week)]++
             })
             eventsByWeek.forEach(weekEvents => weekEvents.sort((a, b) => a.dateStart.localeCompare(b.dateStart)))
-            const getWeekMonth = (week: number) => getWeekStart(year, week).getMonth()
 
             return (
               <div key={year}>
@@ -120,15 +139,18 @@ export function WeeklyEventsBar({ events, submissions, maxEventsPerMonth, select
                     {Array.from({ length: weekCount }, (_, index) => index + 1).map(week => {
                       const key = `${year}-${week}`
                       const weekEvents = eventsByWeek[week - 1]
-                      const month = getWeekMonth(week)
+                      const month = getWeekMonth(year, week)
                       const monthCount = eventsByMonth[month]
                       const exceedsLimit = maxEventsPerMonth > 0 && monthCount > maxEventsPerMonth
                       const atLimit = maxEventsPerMonth > 0 && monthCount === maxEventsPerMonth
                       const current = year === currentYear && week === currentWeek
                       const hovered = hoveredCell === key
                       const selected = selectedMonth?.year === year && selectedMonth.month === month
-                      const monthStart = week === 1 || month !== getWeekMonth(week - 1)
-                      const monthEnd = week === weekCount || month !== getWeekMonth(week + 1)
+                      const monthStart = week === 1 || month !== getWeekMonth(year, week - 1)
+                      const monthEnd = week === weekCount || month !== getWeekMonth(year, week + 1)
+                      const weekStart = getWeekStart(year, week)
+                      const weekEnd = new Date(weekStart)
+                      weekEnd.setDate(weekEnd.getDate() + 6)
 
                       return (
                         <div key={key} className="flex-1 relative"
@@ -157,7 +179,7 @@ export function WeeklyEventsBar({ events, submissions, maxEventsPerMonth, select
                             left: Math.max(8, Math.min(window.innerWidth - 248, hoveredRect.left + hoveredRect.width / 2 - 120))
                           }}>
                             <div className="bg-gray-900 text-white rounded-lg shadow-lg p-2 min-w-[180px] max-w-[240px]">
-                              <div className="text-xs font-medium mb-1">Week {week}, {year}<span className="text-gray-400 font-normal ml-1">({formatLocalDate(getWeekStart(year, week), dateFormat)})</span></div>
+                              <div className="text-xs font-medium mb-1">Week {week}, {year}<span className="text-gray-400 font-normal ml-1">({formatLocalDate(weekStart, dateFormat)}–{formatLocalDate(weekEnd, dateFormat)})</span></div>
                               {exceedsLimit && <div className="mb-1 px-2 py-0.5 bg-red-500/20 rounded text-[10px] text-red-300">Month exceeds limit ({monthCount} pending/accepted/{maxEventsPerMonth} max)</div>}
                               {overlapCells.has(key) && <div className="mb-1 px-2 py-0.5 bg-amber-500/20 rounded text-[10px] text-amber-300">Contains overlapping events</div>}
                               {weekEvents.length ? <ul className="space-y-1">{weekEvents.map(event => <li key={event.id} className="text-[10px]">

@@ -3,7 +3,7 @@ services:
     build: .
     container_name: eventtracker
     ports:
-      - "3000:3000"
+      - "3333:3000"
     volumes:
       - eventtracker-data:/data
     restart: unless-stopped
