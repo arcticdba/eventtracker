@@ -246,21 +246,23 @@ Header contains:
 Two optional timeline visualizations (toggled via settings):
 
 **Monthly Events Bar:**
-- Shows 12 months of the current year
+- Shows stacked monthly rows for the previous year, current year, next year, and any later years containing events
 - Each month displays colored dots for events
 - Dot colors indicate event state (green=selected, yellow=pending, red=rejected, gray=declined/none)
 - Past months show muted colors
-- Current month highlighted with blue background
+- Current month in the current-year row is highlighted with a blue background
 - Hover shows popover with event list (name, date range, city)
 - Click filters event list to that month
 - Shows total event count for year
 
 **Weekly Events Bar:**
-- Shows 52 weeks of current year
+- Shows stacked weekly rows for the previous year, current year, next year, and any later years containing events
+- Shows the actual number of calendar weeks for each year
 - Smaller dots (max 2 visible per week, +N indicator)
-- Hover shows week number, date, and events
+- Hover shows week number, year, date (using the configured date format), and events
 - Tooltip positioning adapts to edge proximity (left/center/right)
 - Month labels at bottom
+- Clicking a week filters the event list to that week row's month and year
 
 #### Event List Panel (Left Side)
 
@@ -312,6 +314,8 @@ Quick filter buttons for common views:
 Shows when event is selected:
 - Header with event name
 - "Add Sessions" button opens SessionPicker
+- Submissions are grouped with selected sessions first, followed by awaiting-decision and not-selected submissions
+- Group headings and outcome-specific card colors make selection outcomes clear
 - List of submissions with:
   - Session name (uses nameUsed if different from primary)
   - Level badge (color-coded 100-500)

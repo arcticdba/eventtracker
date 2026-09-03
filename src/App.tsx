@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Event, Session, Submission, SubmissionState, EventState } from './types'
+import { Event, Session, Submission, SubmissionState, EventState, CalendarSelection } from './types'
 import * as api from './api'
 import { EventList } from './components/EventList'
 import { EventForm } from './components/EventForm'
@@ -46,7 +46,7 @@ export default function App() {
   const [sessionShowRetired, setSessionShowRetired] = useState(false)
 
   // Month filter from the timeline bar
-  const [selectedMonth, setSelectedMonth] = useState<number | null>(null)
+  const [selectedMonth, setSelectedMonth] = useState<CalendarSelection | null>(null)
 
   // Event list counts for header display
   const [eventListCounts, setEventListCounts] = useState<{ filtered: number; total: number }>({ filtered: 0, total: 0 })
@@ -304,7 +304,7 @@ export default function App() {
   const filteredEvents = selectedMonth !== null
     ? events.filter(event => {
         const date = new Date(event.dateStart)
-        return date.getFullYear() === currentYear && date.getMonth() === selectedMonth
+        return date.getFullYear() === selectedMonth.year && date.getMonth() === selectedMonth.month
       })
     : events
 
@@ -442,7 +442,7 @@ export default function App() {
                       </span>
                       {selectedMonth !== null && (
                         <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-blue-100 text-blue-700 text-sm rounded-full">
-                          {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][selectedMonth]} {currentYear}
+                          {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][selectedMonth.month]} {selectedMonth.year}
                           <button
                             onClick={() => setSelectedMonth(null)}
                             className="hover:bg-blue-200 rounded-full p-0.5"

@@ -55,12 +55,50 @@ export function SubmissionList({ submissions, sessions, onUpdateState, onUpdateN
     setNotesValue('')
   }
 
+  const groups = [
+    {
+      label: 'Selected sessions',
+      description: 'Accepted for this event',
+      submissions: submissions.filter(submission => submission.state === 'selected'),
+      headingClass: 'text-green-700'
+    },
+    {
+      label: 'Awaiting decision',
+      description: 'Submitted but not decided yet',
+      submissions: submissions.filter(submission => submission.state === 'submitted'),
+      headingClass: 'text-blue-700'
+    },
+    {
+      label: 'Not selected',
+      description: 'Rejected, declined, or cancelled',
+      submissions: submissions.filter(submission =>
+        submission.state === 'rejected' || submission.state === 'declined' || submission.state === 'cancelled'
+      ),
+      headingClass: 'text-gray-600'
+    }
+  ].filter(group => group.submissions.length > 0)
+
+  const cardClass: Record<SubmissionState, string> = {
+    selected: 'border-green-300 bg-green-50/70',
+    submitted: 'border-blue-200 bg-blue-50/40',
+    rejected: 'border-red-200 bg-red-50/50',
+    declined: 'border-gray-300 bg-gray-50',
+    cancelled: 'border-gray-300 bg-gray-100/80'
+  }
+
   return (
     <div className="space-y-2">
       {submissions.length === 0 ? (
         <p className="text-gray-500 text-sm">No submissions for this event yet.</p>
-      ) : (
-        submissions.map(submission => {
+      ) : groups.map(group => (
+        <section key={group.label}>
+          <div className="flex items-baseline gap-2 mb-2 mt-3 first:mt-0">
+            <h3 className={`text-sm font-semibold ${group.headingClass}`}>{group.label}</h3>
+            <span className="text-xs text-gray-400">{group.submissions.length}</span>
+            <span className="text-xs text-gray-400">· {group.description}</span>
+          </div>
+          <div className="space-y-2">
+          {group.submissions.map(submission => {
           const session = getSession(submission.sessionId)
           if (!session) return null
 
@@ -70,7 +108,7 @@ export function SubmissionList({ submissions, sessions, onUpdateState, onUpdateN
           const isEditingThis = editingNotes === submission.id
 
           return (
-            <div key={submission.id} className="p-3 border rounded-lg">
+            <div key={submission.id} className={`p-3 border rounded-lg ${cardClass[submission.state]}`}>
               <div className="flex justify-between items-start">
                 <div>
                   <h4 className="font-medium text-gray-900">{displayName}</h4>
@@ -143,8 +181,10 @@ export function SubmissionList({ submissions, sessions, onUpdateState, onUpdateN
               </div>
             </div>
           )
-        })
-      )}
+          })}
+          </div>
+        </section>
+      ))}
     </div>
   )
 }

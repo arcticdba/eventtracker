@@ -66,3 +66,8 @@ export interface Submission {
 }
 
 export type EventState = 'selected' | 'rejected' | 'declined' | 'cancelled' | 'pending' | 'none'
+
+export interface CalendarSelection {
+  year: number
+  month: number
+}

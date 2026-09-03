@@ -250,8 +250,8 @@ export function EventList({ events, submissions, sessions, onEdit, onDelete, onS
       return filters.has(eventState)
     })
     .sort((a, b) => {
-      // Sort by start date descending (latest first)
-      return (b.dateStart || '').localeCompare(a.dateStart || '')
+      // Sort chronologically by event start date (earliest first)
+      return (a.dateStart || '').localeCompare(b.dateStart || '')
     })
 
   useEffect(() => {
