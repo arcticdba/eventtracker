@@ -9,6 +9,7 @@ import { SubmissionList } from './components/SubmissionList'
 import { SessionPicker } from './components/SessionPicker'
 import { ImportFromSessionize } from './components/ImportFromSessionize'
 import { Statistics } from './components/Statistics'
+import { StatisticsLab } from './components/StatisticsLab'
 import { MonthlyEventsBar } from './components/MonthlyEventsBar'
 import { WeeklyEventsBar } from './components/WeeklyEventsBar'
 import { Settings } from './components/Settings'
@@ -19,10 +20,10 @@ import { MONTHS, parseDateOnly } from './utils/date'
 import { useEventTrackerData } from './hooks/useEventTrackerData'
 import { useUISettings } from './hooks/useUISettings'
 
-type Tab = 'events' | 'sessions' | 'statistics'
+type Tab = 'events' | 'sessions' | 'statistics' | 'statistics-lab'
 
 export default function App() {
-  const { events, setEvents, sessions, setSessions, submissions, setSubmissions } = useEventTrackerData()
+  const { events, setEvents, eventSeries, setEventSeries, sessions, setSessions, submissions, setSubmissions } = useEventTrackerData()
   const { settings: uiSettings, updateSettings } = useUISettings()
   const [activeTab, setActiveTab] = useState<Tab>('events')
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null)
@@ -42,6 +43,7 @@ export default function App() {
   const [eventNotFullyBooked, setEventNotFullyBooked] = useState(false)
   const [eventCfsOpen, setEventCfsOpen] = useState(false)
   const [eventEquipmentNeeded, setEventEquipmentNeeded] = useState(false)
+  const [eventSearch, setEventSearch] = useState('')
 
   // Persistent filter state for SessionList
   const [sessionShowActive, setSessionShowActive] = useState(true)
@@ -110,6 +112,24 @@ export default function App() {
     }
     setShowEventForm(false)
     setEditingEvent(null)
+  }
+
+  async function handleCreateEventSeries(name: string) {
+    const created = await api.createEventSeries(name)
+    setEventSeries([...eventSeries, created].sort((a, b) => a.name.localeCompare(b.name)))
+    return created
+  }
+
+  async function handleRenameEventSeries(id: string, name: string) {
+    const updated = await api.updateEventSeries(id, name)
+    setEventSeries(eventSeries.map(series => series.id === id ? updated : series).sort((a, b) => a.name.localeCompare(b.name)))
+    return updated
+  }
+
+  async function handleDeleteEventSeries(id: string) {
+    await api.deleteEventSeries(id)
+    setEventSeries(eventSeries.filter(series => series.id !== id))
+    setEvents(events.map(event => event.seriesId === id ? { ...event, seriesId: undefined } : event))
   }
 
   async function handleDeleteEvent(id: string) {
@@ -340,6 +360,16 @@ export default function App() {
             >
               Statistics
             </button>
+            <button
+              onClick={() => setActiveTab('statistics-lab')}
+              className={`px-4 py-2 rounded-lg font-medium ${
+                activeTab === 'statistics-lab'
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-white text-gray-600 hover:bg-gray-50'
+              }`}
+            >
+              Statistics Lab
+            </button>
           </div>
         </div>
 
@@ -398,6 +428,10 @@ export default function App() {
           <div className="overflow-y-auto lg:flex-1">
             <Statistics events={events} sessions={sessions} submissions={submissions} dateFormat={uiSettings.dateFormat} showSessionPerformance={uiSettings.showSessionPerformance} />
           </div>
+        ) : activeTab === 'statistics-lab' ? (
+          <div className="overflow-y-auto lg:flex-1">
+            <StatisticsLab events={events} eventSeries={eventSeries} sessions={sessions} submissions={submissions} dateFormat={uiSettings.dateFormat} />
+          </div>
         ) : (
           <div className={`grid gap-3 ${activeTab === 'events' && !showEventForm ? 'grid-cols-1 lg:grid-cols-2' : 'grid-cols-1'} lg:flex-1 lg:overflow-hidden`}>
             {/* Left Panel */}
@@ -445,7 +479,11 @@ export default function App() {
                         event={editingEvent || undefined}
                         initialData={importedEventData || undefined}
                         allEvents={events}
+                        eventSeries={eventSeries}
                         submissions={submissions}
+                        onCreateEventSeries={handleCreateEventSeries}
+                        onRenameEventSeries={handleRenameEventSeries}
+                        onDeleteEventSeries={handleDeleteEventSeries}
                         onSave={handleSaveEvent}
                         onCancel={() => { setShowEventForm(false); setEditingEvent(null); setImportedEventData(null) }}
                         showMvpFeatures={uiSettings.showMvpFeatures}
@@ -454,8 +492,11 @@ export default function App() {
                     ) : (
                       <EventList
                         events={filteredEvents}
+                        search={eventSearch}
+                        onSearchChange={setEventSearch}
                         submissions={submissions}
                         sessions={sessions}
+                        eventSeries={eventSeries}
                         onEdit={e => { setEditingEvent(e); setShowEventForm(true) }}
                         onDelete={handleDeleteEvent}
                         onSelect={setSelectedEvent}

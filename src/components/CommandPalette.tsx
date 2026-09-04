@@ -19,7 +19,7 @@ interface CommandPaletteProps {
   onAddSessionToEvent: () => void
   onOpenSettings: () => void
   onSelectEvent: (event: Event) => void
-  onTabChange: (tab: 'events' | 'sessions' | 'statistics') => void
+  onTabChange: (tab: 'events' | 'sessions' | 'statistics' | 'statistics-lab') => void
 }
 
 export function CommandPalette({
@@ -58,6 +58,7 @@ export function CommandPalette({
     { id: 'tab-events', label: 'Go to Events', category: 'navigation', action: () => { onTabChange('events'); onClose() } },
     { id: 'tab-sessions', label: 'Go to Sessions', category: 'navigation', action: () => { onTabChange('sessions'); onClose() } },
     { id: 'tab-stats', label: 'Go to Statistics', category: 'navigation', action: () => { onTabChange('statistics'); onClose() } },
+    { id: 'tab-stats-lab', label: 'Go to Statistics Lab', category: 'navigation', action: () => { onTabChange('statistics-lab'); onClose() } },
 
     // Event quick access (first 5 events matching search)
     ...events

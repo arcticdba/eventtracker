@@ -34,8 +34,24 @@ interface Event {
   hotels: HotelBooking[]        // Array of hotel bookings
   mvpSubmission: boolean        // Has MVP portal submission been completed?
   notes: string                 // Free-form notes about the event
+  seriesId?: string             // Optional reference to a recurring event series
 }
 ```
+
+### Event Series
+Groups individual yearly editions of a recurring event without changing their
+independent dates, locations, submissions, or outcomes.
+
+```typescript
+interface EventSeries {
+  id: string                    // UUID
+  name: string                  // Canonical name (e.g., "SQLBits")
+}
+```
+
+The `eventSeries` collection and each event's `seriesId` are optional when data
+is loaded, so data files created by earlier versions remain valid. Removing a
+series clears its references but never removes its events.
 
 ### Session
 Represents a talk/presentation that can be submitted to events.
@@ -357,6 +373,15 @@ Shows when event is selected:
 ### Statistics Tab
 
 Shows analytics for events with at least one selected submission:
+
+The adjacent **Statistics Lab** tab provides an experimental alternative while
+leaving this original dashboard unchanged. It emphasizes event outcomes, counts
+each event once regardless of the number of submitted sessions, and uses accepted
+and rejected events as the acceptance-rate denominator. It provides year/format
+filters, event-grouped outcome drill-downs, submitted-name aliases, cities visited,
+clickable event-based acceptance by country and recurring event series, and
+event-performance breakdowns by geographic region and season.
+All event dates in the view use the configured date format.
 
 **Year Filter:**
 - Click any year bar to filter all stats to that year

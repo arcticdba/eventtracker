@@ -1,4 +1,4 @@
-import { Event, Session, Submission, SubmissionState, UISettings } from './types'
+import { Event, EventSeries, Session, Submission, SubmissionState, UISettings } from './types'
 
 export type { DateFormat, UISettings } from './types'
 
@@ -36,6 +36,22 @@ function jsonOptions(method: string, body: unknown): RequestInit {
 }
 
 // Events
+export async function fetchEventSeries(): Promise<EventSeries[]> {
+  return request('/event-series')
+}
+
+export async function createEventSeries(name: string): Promise<EventSeries> {
+  return request('/event-series', jsonOptions('POST', { name }))
+}
+
+export async function updateEventSeries(id: string, name: string): Promise<EventSeries> {
+  return request(`/event-series/${id}`, jsonOptions('PUT', { name }))
+}
+
+export async function deleteEventSeries(id: string): Promise<void> {
+  await request<void>(`/event-series/${id}`, { method: 'DELETE' })
+}
+
 export async function fetchEvents(): Promise<Event[]> {
   return request('/events')
 }

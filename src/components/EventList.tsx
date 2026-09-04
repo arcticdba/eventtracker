@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import * as ContextMenu from '@radix-ui/react-context-menu'
-import { Event, Submission, Session, EventState } from '../types'
+import { Event, EventSeries, Submission, Session, EventState } from '../types'
 import { computeEventState } from '../utils/computeEventState'
 import { getOverlappingEvents, groupSubmissionsByEvent } from '../utils/getOverlappingEvents'
 import { formatDate } from '../utils/formatDate'
@@ -10,8 +10,11 @@ import { compareDateOnly, parseDateOnly } from '../utils/date'
 
 interface Props {
   events: Event[]
+  search: string
+  onSearchChange: (value: string) => void
   submissions: Submission[]
   sessions: Session[]
+  eventSeries: EventSeries[]
   onEdit: (event: Event) => void
   onDelete: (id: string) => void
   onSelect: (event: Event) => void
@@ -151,7 +154,7 @@ function formatLocation(country: string, city: string, remote: boolean): string 
   return parts.join(', ') || 'No location'
 }
 
-export function EventList({ events, submissions, sessions, onEdit, onDelete, onSelect, onDecline, onCancel, onRejectPending, onToggleRemote, onToggleMvpSubmission, selectedEventId, filters, onFiltersChange, futureOnly, onFutureOnlyChange, pastOnly, onPastOnlyChange, showMvpFeatures = true, mvpCompletedOnly, onMvpCompletedOnlyChange, notFullyBooked, onNotFullyBookedChange, cfsOpen, onCfsOpenChange, equipmentNeeded, onEquipmentNeededChange, onFilteredCountChange, dateFormat }: Props) {
+export function EventList({ events, search, onSearchChange, submissions, sessions, eventSeries, onEdit, onDelete, onSelect, onDecline, onCancel, onRejectPending, onToggleRemote, onToggleMvpSubmission, selectedEventId, filters, onFiltersChange, futureOnly, onFutureOnlyChange, pastOnly, onPastOnlyChange, showMvpFeatures = true, mvpCompletedOnly, onMvpCompletedOnlyChange, notFullyBooked, onNotFullyBookedChange, cfsOpen, onCfsOpenChange, equipmentNeeded, onEquipmentNeededChange, onFilteredCountChange, dateFormat }: Props) {
   const toggleFilter = (state: EventState) => {
     const newFilters = new Set(filters)
     if (newFilters.has(state)) {
@@ -176,6 +179,13 @@ export function EventList({ events, submissions, sessions, onEdit, onDelete, onS
 
   const filteredEvents = events
     .filter(event => {
+      const query = search.trim().toLowerCase()
+      if (query) {
+        const seriesName = eventSeries.find(series => series.id === event.seriesId)?.name ?? ''
+        const searchable = [event.name, event.city, event.country, seriesName].join(' ').toLowerCase()
+        if (!searchable.includes(query)) return false
+      }
+
       const eventState = computeEventState(event.id, submissions)
 
       // Always show selected events without MVP submission (only when MVP features enabled)
@@ -426,6 +436,20 @@ export function EventList({ events, submissions, sessions, onEdit, onDelete, onS
   return (
     <div className="flex flex-col h-full">
       <div className="pb-3 flex-shrink-0 bg-white px-1">
+        <div className="relative mb-3">
+          <svg className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="m21 21-4.35-4.35m1.35-5.65a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
+          </svg>
+          <input
+            type="search"
+            value={search}
+            onChange={event => onSearchChange(event.target.value)}
+            placeholder="Search events, cities, countries, or series"
+            aria-label="Search events"
+            className="w-full rounded-lg border border-gray-300 py-2 pl-9 pr-9 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+          />
+          {search && <button type="button" onClick={() => onSearchChange('')} aria-label="Clear event search" className="absolute right-2 top-1/2 -translate-y-1/2 rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-700">×</button>}
+        </div>
         <div className="flex items-center gap-1.5 flex-wrap">
           {/* Preset buttons */}
           {presets.map(preset => (
@@ -540,7 +564,7 @@ export function EventList({ events, submissions, sessions, onEdit, onDelete, onS
         {events.length === 0 ? (
           <p className="text-gray-500 text-sm">No events yet. Create one to get started.</p>
         ) : filteredEvents.length === 0 ? (
-          <p className="text-gray-500 text-sm">No events match this filter.</p>
+          <p className="text-gray-500 text-sm">No events match the current search and filters.</p>
         ) : (
           filteredEvents.map(event => {
           const state = computeEventState(event.id, submissions)
@@ -576,6 +600,11 @@ export function EventList({ events, submissions, sessions, onEdit, onDelete, onS
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
                     <h3 className={`font-medium text-gray-900 ${state === 'cancelled' ? 'line-through' : ''}`}>{event.name}</h3>
+                    {event.seriesId && eventSeries.find(series => series.id === event.seriesId) && (
+                      <span className="rounded bg-blue-100 px-1.5 py-0.5 text-xs text-blue-700" title="Event series">
+                        {eventSeries.find(series => series.id === event.seriesId)!.name}
+                      </span>
+                    )}
                     {event.remote && (
                       <span className="px-1.5 py-0.5 text-xs rounded bg-purple-100 text-purple-700">
                         Remote

@@ -32,6 +32,12 @@ export interface Event {
   eventHandlesHotel: boolean
   mvpSubmission: boolean
   notes: string
+  seriesId?: string
+}
+
+export interface EventSeries {
+  id: string
+  name: string
 }
 
 export type TargetAudience = 'Developer' | 'IT Pro' | 'Business Decision Maker' | 'Technical Decision Maker' | 'Student' | 'Other'

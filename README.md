@@ -57,6 +57,25 @@ A React/TypeScript application for tracking speaking engagements, session submis
 - Countries and cities visited lists with flag emojis
 - Session performance analytics with acceptance rates by level
 
+### Statistics Lab
+- Experimental, event-performance dashboard available beside the original Statistics tab
+- Filters by event year and in-person/remote format
+- Acceptance rate based only on selected and rejected decisions
+- Clickable outcome breakdown grouped by event
+- Event outcomes with session titles and submitted aliases available as drill-down details
+- Event-based acceptance rates by country and recurring event series
+- Event performance breakdowns by geographic region and season
+- Completed/upcoming engagements derived from selected submissions and event dates
+- Yearly performance trends, speaking-footprint summary, and cities visited
+
+### Recurring Event Series
+- Link individual editions such as SQLBits 2024 and SQLBits 2025 to one canonical series
+- Create, select, rename, or remove a series from the event editor
+- Removing a series unlinks its events without deleting them
+- Compare event-level acceptance across recurring editions in Statistics Lab
+
+The Events tab can be searched by event name, city, country, or event series.
+
 ## Tech Stack
 
 - **Frontend**: React 18, TypeScript, Vite

@@ -3,7 +3,7 @@ import cors from 'cors'
 import path from 'path'
 import { readFileSync, writeFileSync, existsSync, renameSync } from 'fs'
 import { v4 as uuidv4 } from 'uuid'
-import type { Event, Session, Submission, UISettings } from './src/types'
+import type { Event, EventSeries, Session, Submission, UISettings } from './src/types'
 import { extractSessionizeLocation } from './server/sessionizeParser'
 
 const app = express()
@@ -21,6 +21,7 @@ if (process.env.NODE_ENV === 'production') {
 
 interface Data {
   events: Event[]
+  eventSeries: EventSeries[]
   sessions: Session[]
   submissions: Submission[]
 }
@@ -35,7 +36,7 @@ function writeJsonFile(file: string, value: unknown): void {
 
 function loadData(): Data {
   if (!existsSync(DATA_FILE)) {
-    return { events: [], sessions: [], submissions: [] }
+    return { events: [], eventSeries: [], sessions: [], submissions: [] }
   }
   const raw = readFileSync(DATA_FILE, 'utf-8')
   const data = JSON.parse(raw) as Partial<Data>
@@ -49,6 +50,7 @@ function loadData(): Data {
     hotels: e.hotels || [],
     mvpSubmission: e.mvpSubmission ?? false
   }))
+  data.eventSeries = Array.isArray(data.eventSeries) ? data.eventSeries : []
   return data as Data
 }
 
@@ -106,6 +108,46 @@ app.put('/api/settings', (req, res) => {
 })
 
 // Events
+app.get('/api/event-series', (_req, res) => {
+  res.json(loadData().eventSeries)
+})
+
+app.post('/api/event-series', (req, res) => {
+  const data = loadData()
+  const name = String(req.body.name || '').trim()
+  if (!name) return res.status(400).json({ error: 'Series name is required' })
+  const existing = data.eventSeries.find(series => series.name.localeCompare(name, undefined, { sensitivity: 'accent' }) === 0)
+  if (existing) return res.status(409).json({ error: 'An event series with this name already exists' })
+  const series: EventSeries = { id: uuidv4(), name }
+  data.eventSeries.push(series)
+  saveData(data)
+  res.status(201).json(series)
+})
+
+app.put('/api/event-series/:id', (req, res) => {
+  const data = loadData()
+  const index = data.eventSeries.findIndex(series => series.id === req.params.id)
+  if (index === -1) return res.status(404).json({ error: 'Event series not found' })
+  const name = String(req.body.name || '').trim()
+  if (!name) return res.status(400).json({ error: 'Series name is required' })
+  if (data.eventSeries.some(series => series.id !== req.params.id && series.name.localeCompare(name, undefined, { sensitivity: 'accent' }) === 0)) {
+    return res.status(409).json({ error: 'An event series with this name already exists' })
+  }
+  data.eventSeries[index] = { ...data.eventSeries[index], name }
+  saveData(data)
+  res.json(data.eventSeries[index])
+})
+
+app.delete('/api/event-series/:id', (req, res) => {
+  const data = loadData()
+  const index = data.eventSeries.findIndex(series => series.id === req.params.id)
+  if (index === -1) return res.status(404).json({ error: 'Event series not found' })
+  data.eventSeries.splice(index, 1)
+  data.events = data.events.map(event => event.seriesId === req.params.id ? { ...event, seriesId: undefined } : event)
+  saveData(data)
+  res.status(204).send()
+})
+
 app.get('/api/events', (_req, res) => {
   const data = loadData()
   res.json(data.events)
@@ -113,6 +155,9 @@ app.get('/api/events', (_req, res) => {
 
 app.post('/api/events', (req, res) => {
   const data = loadData()
+  if (req.body.seriesId && !data.eventSeries.some(series => series.id === req.body.seriesId)) {
+    return res.status(400).json({ error: 'Event series not found' })
+  }
   const newEvent: Event = {
     id: uuidv4(),
     name: req.body.name,
@@ -130,7 +175,8 @@ app.post('/api/events', (req, res) => {
     eventHandlesTravel: req.body.eventHandlesTravel || false,
     eventHandlesHotel: req.body.eventHandlesHotel || false,
     mvpSubmission: req.body.mvpSubmission || false,
-    notes: req.body.notes || ''
+    notes: req.body.notes || '',
+    seriesId: req.body.seriesId || undefined
   }
   data.events.push(newEvent)
   saveData(data)
@@ -148,7 +194,14 @@ app.put('/api/events/:id', (req, res) => {
   const data = loadData()
   const index = data.events.findIndex(e => e.id === req.params.id)
   if (index === -1) return res.status(404).json({ error: 'Event not found' })
-  data.events[index] = { ...data.events[index], ...req.body, id: req.params.id }
+  if (req.body.seriesId && !data.eventSeries.some(series => series.id === req.body.seriesId)) {
+    return res.status(400).json({ error: 'Event series not found' })
+  }
+  const updates = { ...req.body }
+  if (Object.prototype.hasOwnProperty.call(req.body, 'seriesId')) {
+    updates.seriesId = req.body.seriesId || undefined
+  }
+  data.events[index] = { ...data.events[index], ...updates, id: req.params.id }
   saveData(data)
   res.json(data.events[index])
 })
@@ -273,10 +326,12 @@ app.get('/api/export/json', (_req, res) => {
 // Export events as CSV
 app.get('/api/export/events.csv', (_req, res) => {
   const data = loadData()
-  const headers = ['id', 'name', 'country', 'city', 'dateStart', 'dateEnd', 'remote', 'callForContentUrl', 'callForContentLastDate', 'loginTool', 'mvpSubmission', 'notes']
+  const headers = ['id', 'name', 'seriesId', 'seriesName', 'country', 'city', 'dateStart', 'dateEnd', 'remote', 'callForContentUrl', 'callForContentLastDate', 'loginTool', 'mvpSubmission', 'notes']
   const rows = data.events.map(e => [
     e.id,
     `"${(e.name || '').replace(/"/g, '""')}"`,
+    e.seriesId || '',
+    `"${(data.eventSeries.find(series => series.id === e.seriesId)?.name || '').replace(/"/g, '""')}"`,
     `"${(e.country || '').replace(/"/g, '""')}"`,
     `"${(e.city || '').replace(/"/g, '""')}"`,
     e.dateStart,

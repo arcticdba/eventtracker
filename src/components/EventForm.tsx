@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
-import { Event, TravelBooking, HotelBooking, TravelType, Submission } from '../types'
+import { Event, EventSeries, TravelBooking, HotelBooking, TravelType, Submission } from '../types'
 import { DateFormat } from '../api'
 import { v4 as uuidv4 } from 'uuid'
 import { getOverlappingEvents } from '../utils/getOverlappingEvents'
@@ -10,7 +10,11 @@ interface Props {
   event?: Event
   initialData?: Omit<Event, 'id'>
   allEvents: Event[]
+  eventSeries: EventSeries[]
   submissions: Submission[]
+  onCreateEventSeries: (name: string) => Promise<EventSeries>
+  onRenameEventSeries: (id: string, name: string) => Promise<EventSeries>
+  onDeleteEventSeries: (id: string) => Promise<void>
   onSave: (data: Omit<Event, 'id'>) => void
   onCancel: () => void
   showMvpFeatures?: boolean
@@ -25,7 +29,7 @@ const travelTypeLabels: Record<TravelType, string> = {
   other: 'Other'
 }
 
-export function EventForm({ event, initialData, allEvents, submissions, onSave, onCancel, showMvpFeatures = true, dateFormat }: Props) {
+export function EventForm({ event, initialData, allEvents, eventSeries, submissions, onCreateEventSeries, onRenameEventSeries, onDeleteEventSeries, onSave, onCancel, showMvpFeatures = true, dateFormat }: Props) {
   // Use event first (for editing), then initialData (for import), then empty
   const source = event || initialData
   const [name, setName] = useState(source?.name || '')
@@ -33,6 +37,11 @@ export function EventForm({ event, initialData, allEvents, submissions, onSave, 
   const [city, setCity] = useState(source?.city || '')
   const [dateStart, setDateStart] = useState(source?.dateStart || '')
   const [dateEnd, setDateEnd] = useState(source?.dateEnd || '')
+  const [seriesId, setSeriesId] = useState(source?.seriesId || '')
+  const [showNewSeries, setShowNewSeries] = useState(false)
+  const [newSeriesName, setNewSeriesName] = useState('')
+  const [seriesError, setSeriesError] = useState('')
+  const [creatingSeries, setCreatingSeries] = useState(false)
 
   // Calculate overlapping events based on current date inputs
   const overlappingEvents = useMemo(() => {
@@ -97,6 +106,7 @@ export function EventForm({ event, initialData, allEvents, submissions, onSave, 
       setCity(initialData.city || '')
       setDateStart(initialData.dateStart || '')
       setDateEnd(initialData.dateEnd || '')
+      setSeriesId(initialData.seriesId || '')
       setRemote(initialData.remote || false)
       setCallForContentUrl(initialData.callForContentUrl || '')
       setCallForContentLastDate(initialData.callForContentLastDate || '')
@@ -109,6 +119,56 @@ export function EventForm({ event, initialData, allEvents, submissions, onSave, 
       setNotes(initialData.notes || '')
     }
   }, [initialData, event, showMvpFeatures])
+
+  const addEventSeries = async () => {
+    const trimmedName = newSeriesName.trim()
+    if (!trimmedName) return
+    const existing = eventSeries.find(series => series.name.toLowerCase() === trimmedName.toLowerCase())
+    if (existing) {
+      setSeriesId(existing.id)
+      setNewSeriesName('')
+      setShowNewSeries(false)
+      setSeriesError('')
+      return
+    }
+    setCreatingSeries(true)
+    setSeriesError('')
+    try {
+      const created = await onCreateEventSeries(trimmedName)
+      setSeriesId(created.id)
+      setNewSeriesName('')
+      setShowNewSeries(false)
+    } catch (error) {
+      setSeriesError(error instanceof Error ? error.message : 'Could not create event series')
+    } finally {
+      setCreatingSeries(false)
+    }
+  }
+
+  const renameSelectedSeries = async () => {
+    const selected = eventSeries.find(series => series.id === seriesId)
+    if (!selected) return
+    const name = window.prompt('Rename event series', selected.name)?.trim()
+    if (!name || name === selected.name) return
+    setSeriesError('')
+    try {
+      await onRenameEventSeries(selected.id, name)
+    } catch (error) {
+      setSeriesError(error instanceof Error ? error.message : 'Could not rename event series')
+    }
+  }
+
+  const deleteSelectedSeries = async () => {
+    const selected = eventSeries.find(series => series.id === seriesId)
+    if (!selected || !window.confirm(`Remove the “${selected.name}” series? Events in it will become ungrouped, but will not be deleted.`)) return
+    setSeriesError('')
+    try {
+      await onDeleteEventSeries(selected.id)
+      setSeriesId('')
+    } catch (error) {
+      setSeriesError(error instanceof Error ? error.message : 'Could not remove event series')
+    }
+  }
 
   // Handle Escape key to cancel
   useEffect(() => {
@@ -204,7 +264,9 @@ export function EventForm({ event, initialData, allEvents, submissions, onSave, 
       eventHandlesTravel,
       eventHandlesHotel,
       mvpSubmission,
-      notes
+      notes,
+      // Send an empty value explicitly so editing can unlink an existing series.
+      seriesId
     })
   }
 
@@ -232,6 +294,25 @@ export function EventForm({ event, initialData, allEvents, submissions, onSave, 
           />
           <label htmlFor="remote" className="text-sm text-gray-700">Remote event</label>
         </div>
+      </div>
+      <div>
+        <label className="block text-sm font-medium text-gray-700">Event series</label>
+        <p className="text-xs text-gray-500">Link yearly editions of the same recurring event.</p>
+        <div className="mt-1 flex flex-wrap gap-2">
+          <select value={seriesId} onChange={e => setSeriesId(e.target.value)} className="min-w-56 flex-1 rounded border border-gray-300 px-3 py-2 shadow-sm">
+            <option value="">Not part of a series</option>
+            {[...eventSeries].sort((a, b) => a.name.localeCompare(b.name)).map(series => <option key={series.id} value={series.id}>{series.name}</option>)}
+          </select>
+          <button type="button" onClick={() => { setShowNewSeries(!showNewSeries); setSeriesError('') }} className="rounded border border-blue-300 px-3 py-2 text-sm text-blue-700 hover:bg-blue-50">+ New series</button>
+          {seriesId && <button type="button" onClick={() => void renameSelectedSeries()} className="rounded px-2 py-2 text-sm text-gray-600 hover:bg-gray-100">Rename</button>}
+          {seriesId && <button type="button" onClick={() => void deleteSelectedSeries()} className="rounded px-2 py-2 text-sm text-red-600 hover:bg-red-50">Remove</button>}
+        </div>
+        {showNewSeries && <div className="mt-2 flex flex-wrap gap-2 rounded border border-blue-100 bg-blue-50 p-2">
+          <input type="text" value={newSeriesName} onChange={e => setNewSeriesName(e.target.value)} onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); void addEventSeries() } }} placeholder="For example, SQLBits" className="min-w-48 flex-1 rounded border border-gray-300 px-3 py-2 text-sm" autoFocus />
+          <button type="button" onClick={() => void addEventSeries()} disabled={creatingSeries || !newSeriesName.trim()} className="rounded bg-blue-600 px-3 py-2 text-sm text-white hover:bg-blue-700 disabled:opacity-50">{creatingSeries ? 'Adding…' : 'Add'}</button>
+          <button type="button" onClick={() => { setShowNewSeries(false); setNewSeriesName(''); setSeriesError('') }} className="rounded px-3 py-2 text-sm text-gray-600 hover:bg-white">Cancel</button>
+        </div>}
+        {seriesError && <p className="mt-1 text-sm text-red-600">{seriesError}</p>}
       </div>
       <div className="flex gap-3 items-end">
         {!remote && <div className="flex-1">
