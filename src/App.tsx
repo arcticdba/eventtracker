@@ -15,13 +15,15 @@ import { Settings } from './components/Settings'
 import { CommandPalette } from './components/CommandPalette'
 import { UISettings } from './api'
 import { computeEventState } from './utils/computeEventState'
+import { MONTHS, parseDateOnly } from './utils/date'
+import { useEventTrackerData } from './hooks/useEventTrackerData'
+import { useUISettings } from './hooks/useUISettings'
 
 type Tab = 'events' | 'sessions' | 'statistics'
 
 export default function App() {
-  const [events, setEvents] = useState<Event[]>([])
-  const [sessions, setSessions] = useState<Session[]>([])
-  const [submissions, setSubmissions] = useState<Submission[]>([])
+  const { events, setEvents, sessions, setSessions, submissions, setSubmissions } = useEventTrackerData()
+  const { settings: uiSettings, updateSettings } = useUISettings()
   const [activeTab, setActiveTab] = useState<Tab>('events')
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null)
   const [editingEvent, setEditingEvent] = useState<Event | null>(null)
@@ -54,21 +56,6 @@ export default function App() {
   // Settings
   const [showSettings, setShowSettings] = useState(false)
   const [showCommandPalette, setShowCommandPalette] = useState(false)
-  const [uiSettings, setUISettings] = useState<UISettings>({
-    showMonthView: true,
-    showWeekView: true,
-    showMvpFeatures: true,
-    showSessionPerformance: true,
-    maxEventsPerMonth: 0,
-    maxEventsPerYear: 0,
-    dateFormat: 'YYYY-MM-DD'
-  })
-
-  useEffect(() => {
-    loadData()
-    loadSettings()
-  }, [])
-
   // Global keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -108,25 +95,8 @@ export default function App() {
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [activeTab, showEventForm, showSessionForm, showSessionPicker, selectedEvent])
 
-  async function loadSettings() {
-    const settings = await api.fetchSettings()
-    setUISettings(settings)
-  }
-
   async function handleSettingsChange(settings: UISettings) {
-    setUISettings(settings)
-    await api.saveSettings(settings)
-  }
-
-  async function loadData() {
-    const [eventsData, sessionsData, submissionsData] = await Promise.all([
-      api.fetchEvents(),
-      api.fetchSessions(),
-      api.fetchSubmissions()
-    ])
-    setEvents(eventsData)
-    setSessions(sessionsData)
-    setSubmissions(submissionsData)
+    await updateSettings(settings)
   }
 
   // Event handlers
@@ -303,7 +273,7 @@ export default function App() {
   const currentYear = new Date().getFullYear()
   const filteredEvents = selectedMonth !== null
     ? events.filter(event => {
-        const date = new Date(event.dateStart)
+        const date = parseDateOnly(event.dateStart)
         return date.getFullYear() === selectedMonth.year && date.getMonth() === selectedMonth.month
       })
     : events
@@ -398,7 +368,7 @@ export default function App() {
             {/* Year bandwidth warning */}
             {uiSettings.maxEventsPerYear > 0 && (() => {
               const eventsThisYear = events.filter(e => {
-                if (new Date(e.dateStart).getFullYear() !== currentYear) return false
+                if (parseDateOnly(e.dateStart).getFullYear() !== currentYear) return false
                 const state = computeEventState(e.id, submissions)
                 return state === 'pending' || state === 'selected'
               }).length
@@ -442,7 +412,7 @@ export default function App() {
                       </span>
                       {selectedMonth !== null && (
                         <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-blue-100 text-blue-700 text-sm rounded-full">
-                          {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][selectedMonth.month]} {selectedMonth.year}
+                          {MONTHS[selectedMonth.month]} {selectedMonth.year}
                           <button
                             onClick={() => setSelectedMonth(null)}
                             className="hover:bg-blue-200 rounded-full p-0.5"

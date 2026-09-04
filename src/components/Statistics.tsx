@@ -3,6 +3,7 @@ import { Event, Session, Submission } from '../types'
 import { formatDate } from '../utils/formatDate'
 import { DateFormat } from '../api'
 import { getCountryFlagOrEmpty } from '../utils/countryFlags'
+import { MONTHS, parseDateOnly } from '../utils/date'
 
 interface Props {
   events: Event[]
@@ -49,7 +50,7 @@ function getRegion(country: string): string {
 }
 
 function getSeason(dateStr: string): string {
-  const month = new Date(dateStr).getMonth()
+  const month = parseDateOnly(dateStr).getMonth()
   if (month >= 2 && month <= 4) return 'Spring'
   if (month >= 5 && month <= 7) return 'Summer'
   if (month >= 8 && month <= 10) return 'Fall'
@@ -57,14 +58,14 @@ function getSeason(dateStr: string): string {
 }
 
 function getYear(dateStr: string): number {
-  return new Date(dateStr).getFullYear()
+  return parseDateOnly(dateStr).getFullYear()
 }
 
 function getMonth(dateStr: string): number {
-  return new Date(dateStr).getMonth()
+  return parseDateOnly(dateStr).getMonth()
 }
 
-const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+const monthNames = MONTHS
 
 export function Statistics({ events, sessions, submissions, dateFormat, showSessionPerformance }: Props) {
   const [selectedYear, setSelectedYear] = useState<number | null>(null)

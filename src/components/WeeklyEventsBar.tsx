@@ -1,9 +1,10 @@
 import { useMemo, useState } from 'react'
 import { CalendarSelection, Event, Submission } from '../types'
 import { computeEventState } from '../utils/computeEventState'
-import { getOverlappingEvents } from '../utils/getOverlappingEvents'
+import { getOverlappingEvents, groupSubmissionsByEvent } from '../utils/getOverlappingEvents'
 import { formatDate } from '../utils/formatDate'
 import { DateFormat } from '../api'
+import { getISOWeek, getISOWeeksInYear, getISOWeekStart, MONTHS, parseDateOnly, toDateOnly } from '../utils/date'
 
 interface Props {
   events: Event[]
@@ -14,46 +15,12 @@ interface Props {
   dateFormat: DateFormat
 }
 
-const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-
-function parseDateOnly(value: string): Date {
-  const match = value.match(/^(\d{4})-(\d{2})-(\d{2})$/)
-  return match
-    ? new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]))
-    : new Date(value)
-}
-
 function formatLocalDate(date: Date, dateFormat: DateFormat): string {
-  const year = date.getFullYear()
-  const month = String(date.getMonth() + 1).padStart(2, '0')
-  const day = String(date.getDate()).padStart(2, '0')
-  return formatDate(`${year}-${month}-${day}`, dateFormat)
-}
-
-function getISOWeek(date: Date): { year: number; week: number } {
-  // Use UTC for the calculation so daylight-saving transitions cannot shift a week.
-  const thursday = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()))
-  const day = thursday.getUTCDay() || 7
-  thursday.setUTCDate(thursday.getUTCDate() + 4 - day)
-  const year = thursday.getUTCFullYear()
-  const yearStart = new Date(Date.UTC(year, 0, 1))
-  const week = Math.ceil((((thursday.getTime() - yearStart.getTime()) / 86400000) + 1) / 7)
-  return { year, week }
-}
-
-function getWeekStart(year: number, week: number): Date {
-  // ISO week 1 contains 4 January; walk back to its Monday.
-  const januaryFourth = new Date(year, 0, 4)
-  const day = januaryFourth.getDay() || 7
-  return new Date(year, 0, 4 - (day - 1) + (week - 1) * 7)
-}
-
-function getWeeksInISOYear(year: number): number {
-  return getISOWeek(new Date(year, 11, 28)).week
+  return formatDate(toDateOnly(date), dateFormat)
 }
 
 function getWeekMonth(year: number, week: number): number {
-  const thursday = getWeekStart(year, week)
+  const thursday = getISOWeekStart(year, week)
   thursday.setDate(thursday.getDate() + 3)
   return thursday.getMonth()
 }
@@ -86,13 +53,14 @@ export function WeeklyEventsBar({ events, submissions, maxEventsPerMonth, select
 
   const overlapCells = useMemo(() => {
     const cells = new Set<string>()
+    const submissionsByEvent = groupSubmissionsByEvent(submissions)
     events.forEach(event => {
       const date = parseDateOnly(event.dateStart)
       const isoWeek = getISOWeek(date)
       if (!visibleYears.includes(isoWeek.year)) return
       const state = computeEventState(event.id, submissions)
       if (state === 'rejected' || state === 'declined' || state === 'cancelled') return
-      if (getOverlappingEvents(event, events, submissions).length > 0) {
+      if (getOverlappingEvents(event, events, submissions, submissionsByEvent).length > 0) {
         cells.add(`${isoWeek.year}-${isoWeek.week}`)
       }
     })
@@ -115,7 +83,7 @@ export function WeeklyEventsBar({ events, submissions, maxEventsPerMonth, select
       <div className="overflow-x-auto">
         <div className="min-w-[560px] space-y-2">
           {visibleYears.map(year => {
-            const weekCount = getWeeksInISOYear(year)
+            const weekCount = getISOWeeksInYear(year)
             const eventsByWeek: Event[][] = Array.from({ length: weekCount }, () => [])
             const eventsByMonth: number[] = Array(12).fill(0)
             const yearEvents = events.filter(event => getISOWeek(parseDateOnly(event.dateStart)).year === year)
@@ -148,7 +116,7 @@ export function WeeklyEventsBar({ events, submissions, maxEventsPerMonth, select
                       const selected = selectedMonth?.year === year && selectedMonth.month === month
                       const monthStart = week === 1 || month !== getWeekMonth(year, week - 1)
                       const monthEnd = week === weekCount || month !== getWeekMonth(year, week + 1)
-                      const weekStart = getWeekStart(year, week)
+                      const weekStart = getISOWeekStart(year, week)
                       const weekEnd = new Date(weekStart)
                       weekEnd.setDate(weekEnd.getDate() + 6)
 

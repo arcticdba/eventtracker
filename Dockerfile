@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1
+
 # Build stage - compile TypeScript and build React frontend
 FROM node:20-alpine AS builder
 
@@ -6,18 +8,16 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install all dependencies (including dev)
-RUN npm ci
+# Install all dependencies (including dev). The lockfile contains an optional
+# Vitest/Vite peer mismatch, so avoid npm's expensive peer backtracking here.
+RUN --mount=type=cache,target=/root/.npm \
+    npm ci --legacy-peer-deps --no-audit --no-fund
 
 # Copy source files
 COPY . .
 
-# Build the React frontend (run via node to avoid permission issues on QNAP)
-RUN node node_modules/typescript/bin/tsc && node node_modules/vite/bin/vite.js build
-
-# Compile the server TypeScript and rename to .cjs for CommonJS compatibility
-RUN node node_modules/typescript/bin/tsc server.ts --esModuleInterop --module commonjs --target ES2020 --outDir ./compiled \
-    && mv ./compiled/server.js ./compiled/server.cjs
+# Build the React frontend and bundled CommonJS server
+RUN npm run build
 
 # Production stage
 FROM node:20-alpine
@@ -28,7 +28,8 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install only production dependencies
-RUN npm ci --omit=dev
+RUN --mount=type=cache,target=/root/.npm \
+    npm ci --omit=dev --legacy-peer-deps --no-audit --no-fund
 
 # Copy built frontend from builder
 COPY --from=builder /app/dist ./dist
@@ -47,6 +48,9 @@ ENV SETTINGS_FILE=/data/settings.json
 
 # Expose port
 EXPOSE 3000
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+  CMD wget -qO- http://127.0.0.1:3000/api/health > /dev/null || exit 1
 
 # Start the server
 CMD ["node", "server.cjs"]

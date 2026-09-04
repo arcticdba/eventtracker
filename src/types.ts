@@ -71,3 +71,25 @@ export interface CalendarSelection {
   year: number
   month: number
 }
+
+export type DateFormat = 'YYYY-MM-DD' | 'MM/DD/YYYY' | 'DD/MM/YYYY' | 'DD.MM.YYYY' | 'DD-MM-YYYY' | 'YYYY/MM/DD'
+
+export interface UISettings {
+  showMonthView: boolean
+  showWeekView: boolean
+  showMvpFeatures: boolean
+  showSessionPerformance: boolean
+  maxEventsPerMonth: number
+  maxEventsPerYear: number
+  dateFormat: DateFormat
+}
+
+export const DEFAULT_UI_SETTINGS: UISettings = {
+  showMonthView: true,
+  showWeekView: true,
+  showMvpFeatures: true,
+  showSessionPerformance: true,
+  maxEventsPerMonth: 0,
+  maxEventsPerYear: 0,
+  dateFormat: 'YYYY-MM-DD'
+}

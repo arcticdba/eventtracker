@@ -2,10 +2,11 @@ import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import * as ContextMenu from '@radix-ui/react-context-menu'
 import { Event, Submission, Session, EventState } from '../types'
 import { computeEventState } from '../utils/computeEventState'
-import { getOverlappingEvents } from '../utils/getOverlappingEvents'
+import { getOverlappingEvents, groupSubmissionsByEvent } from '../utils/getOverlappingEvents'
 import { formatDate } from '../utils/formatDate'
 import { getCountryFlagOrEmpty } from '../utils/countryFlags'
 import { DateFormat } from '../api'
+import { compareDateOnly, parseDateOnly } from '../utils/date'
 
 interface Props {
   events: Event[]
@@ -133,7 +134,7 @@ function LoginToolIcon({ tool, url }: { tool: string; url?: string }) {
 
 function getDaysRemaining(dateString: string): number | null {
   if (!dateString) return null
-  const targetDate = new Date(dateString)
+  const targetDate = parseDateOnly(dateString)
   const today = new Date()
   today.setHours(0, 0, 0, 0)
   targetDate.setHours(0, 0, 0, 0)
@@ -166,8 +167,9 @@ export function EventList({ events, submissions, sessions, onEdit, onDelete, onS
 
   const overlappingEventsMap = useMemo(() => {
     const map = new Map<string, ReturnType<typeof getOverlappingEvents>>()
+    const submissionsByEvent = groupSubmissionsByEvent(submissions)
     for (const event of events) {
-      map.set(event.id, getOverlappingEvents(event, events, submissions))
+      map.set(event.id, getOverlappingEvents(event, events, submissions, submissionsByEvent))
     }
     return map
   }, [events, submissions])
@@ -181,21 +183,21 @@ export function EventList({ events, submissions, sessions, onEdit, onDelete, onS
 
       // Filter by future/past (but always include non-MVP selected events)
       if (futureOnly && !showDueToMvp) {
-        const endDate = new Date(event.dateEnd || event.dateStart)
+        const endDate = parseDateOnly(event.dateEnd || event.dateStart)
         endDate.setHours(0, 0, 0, 0)
         if (endDate < today) return false
       }
 
       // Filter by past only (event has ended)
       if (pastOnly) {
-        const endDate = new Date(event.dateEnd || event.dateStart)
+        const endDate = parseDateOnly(event.dateEnd || event.dateStart)
         endDate.setHours(0, 0, 0, 0)
         if (endDate >= today) return false
       }
 
       // Helper to check if event needs booking
       const checkNeedsBooking = () => {
-        const startDate = new Date(event.dateStart)
+        const startDate = parseDateOnly(event.dateStart)
         startDate.setHours(0, 0, 0, 0)
         const isUpcoming = startDate > today
         const isInPerson = !event.remote
@@ -230,7 +232,7 @@ export function EventList({ events, submissions, sessions, onEdit, onDelete, onS
       // Filter by CFS open (call for speakers/content still open)
       if (cfsOpen) {
         if (!event.callForContentLastDate) return false
-        const cfsDate = new Date(event.callForContentLastDate)
+        const cfsDate = parseDateOnly(event.callForContentLastDate)
         cfsDate.setHours(23, 59, 59, 999) // End of day
         if (cfsDate < today) return false
       }
@@ -251,7 +253,7 @@ export function EventList({ events, submissions, sessions, onEdit, onDelete, onS
     })
     .sort((a, b) => {
       // Sort chronologically by event start date (earliest first)
-      return (a.dateStart || '').localeCompare(b.dateStart || '')
+      return compareDateOnly(a.dateStart || '', b.dateStart || '')
     })
 
   useEffect(() => {

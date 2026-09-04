@@ -1,9 +1,10 @@
 import { useMemo, useState } from 'react'
 import { CalendarSelection, Event, Submission } from '../types'
 import { computeEventState } from '../utils/computeEventState'
-import { getOverlappingEvents } from '../utils/getOverlappingEvents'
+import { getOverlappingEvents, groupSubmissionsByEvent } from '../utils/getOverlappingEvents'
 import { formatDate } from '../utils/formatDate'
 import { DateFormat } from '../api'
+import { MONTHS, parseDateOnly } from '../utils/date'
 
 interface Props {
   events: Event[]
@@ -12,15 +13,6 @@ interface Props {
   onMonthSelect: (month: CalendarSelection | null) => void
   maxEventsPerMonth: number
   dateFormat: DateFormat
-}
-
-const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-
-function parseDateOnly(value: string): Date {
-  const match = value.match(/^(\d{4})-(\d{2})-(\d{2})$/)
-  return match
-    ? new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]))
-    : new Date(value)
 }
 
 function getEventDotColor(event: Event, submissions: Submission[], isPast: boolean): string {
@@ -59,12 +51,13 @@ export function MonthlyEventsBar({ events, submissions, selectedMonth, onMonthSe
 
   const overlapCells = useMemo(() => {
     const cells = new Set<string>()
+    const submissionsByEvent = groupSubmissionsByEvent(submissions)
     events.forEach(event => {
       const date = parseDateOnly(event.dateStart)
       if (!visibleYears.includes(date.getFullYear())) return
       const state = computeEventState(event.id, submissions)
       if (state === 'rejected' || state === 'declined' || state === 'cancelled') return
-      if (getOverlappingEvents(event, events, submissions).length > 0) {
+      if (getOverlappingEvents(event, events, submissions, submissionsByEvent).length > 0) {
         cells.add(`${date.getFullYear()}-${date.getMonth()}`)
       }
     })

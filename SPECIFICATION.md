@@ -177,6 +177,11 @@ When the current year exceeds or meets the limit, a banner appears above the eve
 
 Base URL: `/api`
 
+### Health
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/health` | Container and API health check |
+
 ### Events
 | Method | Endpoint | Description |
 |--------|----------|-------------|
@@ -608,6 +613,7 @@ Mount `/data` for persistent storage of data.json and settings.json.
 │   │   ├── CommandPalette.tsx # Command palette (⌘K)
 │   │   └── ImportFromSessionize.tsx # Import modal
 │   └── utils/
+│       ├── date.ts           # Date-only formatting and ISO-week calculations
 │       ├── computeEventState.ts # Event state computation
 │       ├── getOverlappingEvents.ts # Overlap detection
 │       ├── formatDate.ts     # Date formatting utilities
@@ -621,6 +627,10 @@ Mount `/data` for persistent storage of data.json and settings.json.
 ```
 
 ---
+
+## Verification
+
+Core date, ISO-week, event-state, and overlap behavior is covered by Vitest unit tests colocated with the utility modules. Run them with `npm test`.
 
 ## Dependencies
 

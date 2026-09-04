@@ -67,7 +67,7 @@ A React/TypeScript application for tracking speaking engagements, session submis
 ## Getting Started
 
 ### Prerequisites
-- Node.js 18+
+- Node.js 20.19+ (or 22.12+)
 - npm
 
 ### Installation
@@ -84,6 +84,12 @@ npm run dev
 ```
 
 The app will be available at http://localhost:5173
+
+Run the automated domain and calendar checks with:
+
+```bash
+npm test
+```
 
 ## Docker Deployment
 
@@ -105,6 +111,38 @@ The app will be available at http://localhost:3000
 ### Deploying to QNAP NAS with Portainer
 
 Building on the NAS can have permission issues, so it's easier to build on your local machine and transfer the image.
+
+#### Automated Build and Transfer
+
+The deployment helper builds versioned and `latest` image tags, saves the image,
+copies it to the NAS, and loads it into Docker:
+
+```bash
+./scripts/deploy-nas.sh admin@your-nas-ip /share/YourFolder/eventtracker
+```
+
+The NAS target and directory can also be saved in environment variables:
+
+```bash
+export NAS_TARGET=admin@your-nas-ip
+export NAS_DIRECTORY=/share/YourFolder/eventtracker
+./scripts/deploy-nas.sh
+```
+
+Preview all commands without running them:
+
+```bash
+./scripts/deploy-nas.sh --dry-run admin@your-nas-ip /share/YourFolder/eventtracker
+```
+
+The script leaves the generated versioned `.tar` file locally and on the NAS.
+After it finishes, recreate the container in Portainer using
+`eventtracker:latest`, preserving the `/data` mount and the `3333:3000` port
+mapping.
+
+Portainer can create container or service webhooks that trigger a redeploy, but
+they are best suited to images pulled from a registry. This local image-transfer
+workflow intentionally leaves container recreation as the final manual step.
 
 #### 1. Build the Image (on Mac)
 
@@ -210,6 +248,7 @@ Note: `data.json` and `settings.json` are created at runtime and not included in
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
+| GET | /api/health | Container and API health check |
 | GET | /api/events | List all events |
 | POST | /api/events | Create event |
 | GET | /api/events/:id | Get event |

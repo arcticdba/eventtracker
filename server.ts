@@ -1,8 +1,10 @@
 import express from 'express'
 import cors from 'cors'
 import path from 'path'
-import { readFileSync, writeFileSync, existsSync } from 'fs'
+import { readFileSync, writeFileSync, existsSync, renameSync } from 'fs'
 import { v4 as uuidv4 } from 'uuid'
+import type { Event, Session, Submission, UISettings } from './src/types'
+import { extractSessionizeLocation } from './server/sessionizeParser'
 
 const app = express()
 const PORT = process.env.PORT || 3001
@@ -17,81 +19,18 @@ if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, 'dist')))
 }
 
-interface TravelBooking {
-  id: string
-  type: 'flight' | 'train' | 'bus' | 'car' | 'other'
-  reference: string
-}
-
-interface HotelBooking {
-  id: string
-  name: string
-  reference: string
-}
-
-interface Event {
-  id: string
-  name: string
-  country: string
-  city: string
-  dateStart: string
-  dateEnd: string
-  remote: boolean
-  url: string
-  callForContentUrl: string
-  callForContentLastDate: string
-  loginTool: string
-  travel: TravelBooking[]
-  hotels: HotelBooking[]
-  eventHandlesTravel: boolean
-  eventHandlesHotel: boolean
-  mvpSubmission: boolean
-  notes: string
-}
-
-interface Session {
-  id: string
-  name: string
-  alternateNames: string[]
-  sessionType: string
-  level: string
-  abstract: string
-  summary: string
-  goals: string
-  elevatorPitch: string
-  retired: boolean
-  materialsUrl: string
-  targetAudience: string[]
-  primaryTechnology: string
-  additionalTechnology: string
-  equipmentNotes: string
-}
-
-interface Submission {
-  id: string
-  sessionId: string
-  eventId: string
-  state: 'submitted' | 'selected' | 'rejected' | 'declined' | 'cancelled'
-  nameUsed: string
-  notes: string
-}
-
 interface Data {
   events: Event[]
   sessions: Session[]
   submissions: Submission[]
 }
 
-type DateFormat = 'YYYY-MM-DD' | 'MM/DD/YYYY' | 'DD/MM/YYYY' | 'DD.MM.YYYY' | 'DD-MM-YYYY' | 'YYYY/MM/DD'
+type Settings = UISettings
 
-interface Settings {
-  showMonthView: boolean
-  showWeekView: boolean
-  showMvpFeatures: boolean
-  showSessionPerformance: boolean
-  maxEventsPerMonth: number
-  maxEventsPerYear: number
-  dateFormat: DateFormat
+function writeJsonFile(file: string, value: unknown): void {
+  const temporaryFile = `${file}.tmp`
+  writeFileSync(temporaryFile, JSON.stringify(value, null, 2))
+  renameSync(temporaryFile, file)
 }
 
 function loadData(): Data {
@@ -99,7 +38,10 @@ function loadData(): Data {
     return { events: [], sessions: [], submissions: [] }
   }
   const raw = readFileSync(DATA_FILE, 'utf-8')
-  const data = JSON.parse(raw)
+  const data = JSON.parse(raw) as Partial<Data>
+  if (!Array.isArray(data.events) || !Array.isArray(data.sessions) || !Array.isArray(data.submissions)) {
+    throw new Error(`Invalid data file: ${DATA_FILE}`)
+  }
   // Ensure existing events have travel, hotels, and mvpSubmission fields
   data.events = data.events.map((e: Event) => ({
     ...e,
@@ -107,11 +49,11 @@ function loadData(): Data {
     hotels: e.hotels || [],
     mvpSubmission: e.mvpSubmission ?? false
   }))
-  return data
+  return data as Data
 }
 
 function saveData(data: Data): void {
-  writeFileSync(DATA_FILE, JSON.stringify(data, null, 2))
+  writeJsonFile(DATA_FILE, data)
 }
 
 const defaultSettings: Settings = {
@@ -137,8 +79,12 @@ function loadSettings(): Settings {
 }
 
 function saveSettings(settings: Settings): void {
-  writeFileSync(SETTINGS_FILE, JSON.stringify(settings, null, 2))
+  writeJsonFile(SETTINGS_FILE, settings)
 }
+
+app.get('/api/health', (_req, res) => {
+  res.json({ status: 'ok' })
+})
 
 // Settings
 app.get('/api/settings', (_req, res) => {
@@ -542,25 +488,7 @@ app.post('/api/import/sessionize', async (req, res) => {
       }
     }
 
-    // Extract location from <span class="block"> elements after "location" section
-    let city = ''
-    let country = ''
-    const locationSection = html.match(/location\s*<\/div>\s*<h2[^>]*>\s*([\s\S]*?)<\/h2>/i)
-    if (locationSection) {
-      // Find all <span class="block"> content
-      const spans = locationSection[1].match(/<span[^>]*>([^<]+)<\/span>/gi)
-      if (spans && spans.length >= 2) {
-        // Last span usually has "City, Country"
-        const lastSpan = spans[spans.length - 1].replace(/<[^>]+>/g, '').trim()
-        const parts = lastSpan.split(',').map(s => s.trim())
-        if (parts.length >= 2) {
-          city = parts[0]
-          country = parts[1]
-        } else if (parts.length === 1) {
-          city = parts[0]
-        }
-      }
-    }
+    const { city, country } = extractSessionizeLocation(html)
 
     // Extract event start date - look for "event starts" section
     let dateStart = ''

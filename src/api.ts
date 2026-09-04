@@ -1,137 +1,105 @@
-import { Event, Session, Submission, SubmissionState } from './types'
+import { Event, Session, Submission, SubmissionState, UISettings } from './types'
+
+export type { DateFormat, UISettings } from './types'
 
 const API_BASE = '/api'
 
+export class ApiError extends Error {
+  constructor(message: string, public readonly status: number) {
+    super(message)
+    this.name = 'ApiError'
+  }
+}
+
+async function request<T>(path: string, options?: RequestInit): Promise<T> {
+  const res = await fetch(`${API_BASE}${path}`, options)
+  if (!res.ok) {
+    let message = `${res.status} ${res.statusText}`
+    try {
+      const body = await res.json() as { error?: string }
+      if (body.error) message = body.error
+    } catch {
+      // Preserve the HTTP status message when the response has no JSON body.
+    }
+    throw new ApiError(message, res.status)
+  }
+  if (res.status === 204) return undefined as T
+  return res.json() as Promise<T>
+}
+
+function jsonOptions(method: string, body: unknown): RequestInit {
+  return {
+    method,
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  }
+}
+
 // Events
 export async function fetchEvents(): Promise<Event[]> {
-  const res = await fetch(`${API_BASE}/events`)
-  return res.json()
+  return request('/events')
 }
 
 export async function createEvent(event: Omit<Event, 'id'>): Promise<Event> {
-  const res = await fetch(`${API_BASE}/events`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(event)
-  })
-  return res.json()
+  return request('/events', jsonOptions('POST', event))
 }
 
 export async function updateEvent(id: string, event: Partial<Event>): Promise<Event> {
-  const res = await fetch(`${API_BASE}/events/${id}`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(event)
-  })
-  return res.json()
+  return request(`/events/${id}`, jsonOptions('PUT', event))
 }
 
 export async function deleteEvent(id: string): Promise<void> {
-  await fetch(`${API_BASE}/events/${id}`, { method: 'DELETE' })
+  await request<void>(`/events/${id}`, { method: 'DELETE' })
 }
 
 // Sessions
 export async function fetchSessions(): Promise<Session[]> {
-  const res = await fetch(`${API_BASE}/sessions`)
-  return res.json()
+  return request('/sessions')
 }
 
 export async function createSession(session: Omit<Session, 'id'>): Promise<Session> {
-  const res = await fetch(`${API_BASE}/sessions`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(session)
-  })
-  return res.json()
+  return request('/sessions', jsonOptions('POST', session))
 }
 
 export async function updateSession(id: string, session: Partial<Session>): Promise<Session> {
-  const res = await fetch(`${API_BASE}/sessions/${id}`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(session)
-  })
-  return res.json()
+  return request(`/sessions/${id}`, jsonOptions('PUT', session))
 }
 
 export async function deleteSession(id: string): Promise<void> {
-  await fetch(`${API_BASE}/sessions/${id}`, { method: 'DELETE' })
+  await request<void>(`/sessions/${id}`, { method: 'DELETE' })
 }
 
 // Submissions
 export async function fetchSubmissions(): Promise<Submission[]> {
-  const res = await fetch(`${API_BASE}/submissions`)
-  return res.json()
+  return request('/submissions')
 }
 
 export async function createSubmission(sessionId: string, eventId: string, nameUsed: string, notes?: string): Promise<Submission> {
-  const res = await fetch(`${API_BASE}/submissions`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ sessionId, eventId, nameUsed, notes: notes || '' })
-  })
-  return res.json()
+  return request('/submissions', jsonOptions('POST', { sessionId, eventId, nameUsed, notes: notes || '' }))
 }
 
 export async function updateSubmissionState(id: string, state: SubmissionState): Promise<Submission> {
-  const res = await fetch(`${API_BASE}/submissions/${id}`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ state })
-  })
-  return res.json()
+  return request(`/submissions/${id}`, jsonOptions('PUT', { state }))
 }
 
 export async function updateSubmissionNotes(id: string, notes: string): Promise<Submission> {
-  const res = await fetch(`${API_BASE}/submissions/${id}`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ notes })
-  })
-  return res.json()
+  return request(`/submissions/${id}`, jsonOptions('PUT', { notes }))
 }
 
 export async function deleteSubmission(id: string): Promise<void> {
-  await fetch(`${API_BASE}/submissions/${id}`, { method: 'DELETE' })
+  await request<void>(`/submissions/${id}`, { method: 'DELETE' })
 }
 
 // Settings
-export type DateFormat = 'YYYY-MM-DD' | 'MM/DD/YYYY' | 'DD/MM/YYYY' | 'DD.MM.YYYY' | 'DD-MM-YYYY' | 'YYYY/MM/DD'
-
-export interface UISettings {
-  showMonthView: boolean
-  showWeekView: boolean
-  showMvpFeatures: boolean
-  showSessionPerformance: boolean
-  maxEventsPerMonth: number  // 0 = no limit
-  maxEventsPerYear: number   // 0 = no limit
-  dateFormat: DateFormat
-}
-
 export async function fetchSettings(): Promise<UISettings> {
-  const res = await fetch(`${API_BASE}/settings`)
-  return res.json()
+  return request('/settings')
 }
 
 export async function saveSettings(settings: UISettings): Promise<UISettings> {
-  const res = await fetch(`${API_BASE}/settings`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(settings)
-  })
-  return res.json()
+  return request('/settings', jsonOptions('PUT', settings))
 }
 
 // Import
 export async function importFromSessionize(url: string): Promise<Omit<Event, 'id'>> {
-  const res = await fetch(`${API_BASE}/import/sessionize`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ url })
-  })
-  if (!res.ok) {
-    const error = await res.json()
-    throw new Error(error.error || 'Import failed')
-  }
-  return res.json()
+  return request('/import/sessionize', jsonOptions('POST', { url }))
 }
