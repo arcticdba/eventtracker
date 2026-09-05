@@ -51,7 +51,7 @@ A React/TypeScript application for tracking speaking engagements, session submis
 - Filters by event year and in-person/remote format
 - Acceptance rate based only on accepted and rejected events
 - Clickable outcome breakdown grouped by event
-- Event outcomes with session titles and submitted aliases available as drill-down details
+- Optional event-outcome drill-down details with session titles and submitted aliases, controlled in Settings
 - Event-based acceptance rates by country and recurring event series
 - Event performance breakdowns by geographic region and season
 - Completed/upcoming engagements derived from selected submissions and event dates

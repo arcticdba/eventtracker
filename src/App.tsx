@@ -21,6 +21,7 @@ import { useEventTrackerData } from './hooks/useEventTrackerData'
 import { useUISettings } from './hooks/useUISettings'
 
 type Tab = 'events' | 'sessions' | 'statistics'
+type SessionEditReturn = { tab: 'events' | 'statistics'; eventId: string; submissionId: string; outcome?: SubmissionState }
 
 export default function App() {
   const { events, setEvents, eventSeries, setEventSeries, sessions, setSessions, submissions, setSubmissions } = useEventTrackerData()
@@ -29,6 +30,9 @@ export default function App() {
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null)
   const [editingEvent, setEditingEvent] = useState<Event | null>(null)
   const [editingSession, setEditingSession] = useState<Session | null>(null)
+  const [sessionEditReturn, setSessionEditReturn] = useState<SessionEditReturn | null>(null)
+  const [focusedSubmissionId, setFocusedSubmissionId] = useState<string | null>(null)
+  const [statisticsExpandedOutcome, setStatisticsExpandedOutcome] = useState<SubmissionState | null>(null)
   const [showEventForm, setShowEventForm] = useState(false)
   const [showSessionForm, setShowSessionForm] = useState(false)
   const [showSessionPicker, setShowSessionPicker] = useState(false)
@@ -58,6 +62,16 @@ export default function App() {
   // Settings
   const [showSettings, setShowSettings] = useState(false)
   const [showCommandPalette, setShowCommandPalette] = useState(false)
+
+  useEffect(() => {
+    if (!focusedSubmissionId) return
+    const timeout = window.setTimeout(() => {
+      setFocusedSubmissionId(null)
+      setStatisticsExpandedOutcome(null)
+    }, 2000)
+    return () => window.clearTimeout(timeout)
+  }, [focusedSubmissionId])
+
   // Global keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -166,8 +180,7 @@ export default function App() {
       const created = await api.createSession(data)
       setSessions([...sessions, created])
     }
-    setShowSessionForm(false)
-    setEditingSession(null)
+    finishSessionEditing()
   }
 
   async function handleDeleteSession(id: string) {
@@ -183,6 +196,30 @@ export default function App() {
       const updated = await api.updateSession(id, { retired: !session.retired })
       setSessions(sessions.map(s => s.id === id ? updated : s))
     }
+  }
+
+  function handleEditSession(session: Session, returnTo: SessionEditReturn | null = null) {
+    setActiveTab('sessions')
+    setEditingSession(session)
+    setShowSessionForm(true)
+    setShowSessionPicker(false)
+    setSessionEditReturn(returnTo)
+  }
+
+  function finishSessionEditing() {
+    const returnTo = sessionEditReturn
+    setShowSessionForm(false)
+    setEditingSession(null)
+    setSessionEditReturn(null)
+    if (!returnTo) return
+
+    setFocusedSubmissionId(returnTo.submissionId)
+    if (returnTo.tab === 'events') {
+      setSelectedEvent(events.find(event => event.id === returnTo.eventId) ?? null)
+    } else {
+      setStatisticsExpandedOutcome(returnTo.outcome ?? null)
+    }
+    setActiveTab(returnTo.tab)
   }
 
   // Submission handlers
@@ -444,7 +481,7 @@ export default function App() {
 
         {activeTab === 'statistics' ? (
           <div className="overflow-y-auto lg:flex-1">
-            <StatisticsLab events={events} eventSeries={eventSeries} sessions={sessions} submissions={submissions} dateFormat={uiSettings.dateFormat} />
+            <StatisticsLab events={events} eventSeries={eventSeries} sessions={sessions} submissions={submissions} dateFormat={uiSettings.dateFormat} showSessionDetails={uiSettings.showSessionPerformance} initialExpandedOutcome={statisticsExpandedOutcome} focusedSubmissionId={focusedSubmissionId} onEditSession={(session, submission, outcome) => handleEditSession(session, { tab: 'statistics', eventId: submission.eventId, submissionId: submission.id, outcome })} />
           </div>
         ) : (
           <div className={`grid gap-3 ${activeTab === 'events' && !showEventForm ? 'grid-cols-1 lg:grid-cols-2' : 'grid-cols-1'} lg:flex-1 lg:overflow-hidden`}>
@@ -557,14 +594,14 @@ export default function App() {
                       <SessionForm
                         session={editingSession || undefined}
                         onSave={handleSaveSession}
-                        onCancel={() => { setShowSessionForm(false); setEditingSession(null) }}
+                        onCancel={finishSessionEditing}
                       />
                     ) : (
                       <SessionList
                         sessions={sessions}
                         events={events}
                         submissions={submissions}
-                        onEdit={s => { setEditingSession(s); setShowSessionForm(true) }}
+                        onEdit={session => handleEditSession(session)}
                         onDelete={handleDeleteSession}
                         onToggleRetired={handleToggleSessionRetired}
                         showActive={sessionShowActive}
@@ -613,6 +650,8 @@ export default function App() {
                         onUpdateState={handleUpdateSubmissionState}
                         onUpdateNotes={handleUpdateSubmissionNotes}
                         onDelete={handleDeleteSubmission}
+                        focusedSubmissionId={focusedSubmissionId}
+                        onEditSession={(session, submission) => handleEditSession(session, { tab: 'events', eventId: submission.eventId, submissionId: submission.id })}
                       />
                     )
                   ) : (

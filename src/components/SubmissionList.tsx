@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Submission, Session, SubmissionState } from '../types'
 import { StateSelector } from './StateSelector'
 import { submissionCardStyles } from '../ui/styles'
@@ -33,12 +33,19 @@ interface Props {
   onUpdateState: (id: string, state: SubmissionState) => void
   onUpdateNotes: (id: string, notes: string) => void
   onDelete: (id: string) => void
+  onEditSession: (session: Session, submission: Submission) => void
+  focusedSubmissionId?: string | null
 }
 
-export function SubmissionList({ submissions, sessions, onUpdateState, onUpdateNotes, onDelete }: Props) {
+export function SubmissionList({ submissions, sessions, onUpdateState, onUpdateNotes, onDelete, onEditSession, focusedSubmissionId }: Props) {
   const getSession = (sessionId: string) => sessions.find(s => s.id === sessionId)
   const [editingNotes, setEditingNotes] = useState<string | null>(null)
   const [notesValue, setNotesValue] = useState('')
+
+  useEffect(() => {
+    if (!focusedSubmissionId) return
+    document.getElementById(`submission-${focusedSubmissionId}`)?.scrollIntoView({ block: 'center' })
+  }, [focusedSubmissionId])
 
   const startEditingNotes = (submission: Submission) => {
     setEditingNotes(submission.id)
@@ -101,9 +108,13 @@ export function SubmissionList({ submissions, sessions, onUpdateState, onUpdateN
           const isEditingThis = editingNotes === submission.id
 
           return (
-            <div key={submission.id} className={`rounded-lg border p-3 ${submissionCardStyles[submission.state]}`}>
+            <div id={`submission-${submission.id}`} key={submission.id} className={`rounded-lg border p-3 ${submissionCardStyles[submission.state]} ${focusedSubmissionId === submission.id ? 'ring-2 ring-blue-500 ring-offset-2' : ''}`}>
               <div className="flex justify-between items-start">
-                <div>
+                <div
+                  onDoubleClick={() => onEditSession(session, submission)}
+                  className="cursor-pointer select-none"
+                  title="Double-click to edit this session"
+                >
                   <h4 className="font-medium text-gray-900">{displayName}</h4>
                   <div className="flex items-center gap-2">
                     <span className={`px-1.5 py-0.5 text-xs rounded ${levelColors[session.level] || 'bg-gray-100'}`}>

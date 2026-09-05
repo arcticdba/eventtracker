@@ -1,11 +1,11 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { DateFormat, Event, EventSeries, Session, Submission, SubmissionState } from '../types'
 import { parseDateOnly } from '../utils/date'
 import { formatDate } from '../utils/formatDate'
 import { getCountryFlagOrEmpty } from '../utils/countryFlags'
 import { submissionBadgeStyles, submissionDotStyles } from '../ui/styles'
 
-interface Props { events: Event[]; eventSeries: EventSeries[]; sessions: Session[]; submissions: Submission[]; dateFormat: DateFormat }
+interface Props { events: Event[]; eventSeries: EventSeries[]; sessions: Session[]; submissions: Submission[]; dateFormat: DateFormat; showSessionDetails: boolean; initialExpandedOutcome?: SubmissionState | null; focusedSubmissionId?: string | null; onEditSession: (session: Session, submission: Submission, outcome: SubmissionState) => void }
 type FormatFilter = 'all' | 'in-person' | 'remote'
 type EventOutcome = SubmissionState
 
@@ -41,10 +41,10 @@ function getEventOutcome(related: Submission[]): EventOutcome {
   return 'cancelled'
 }
 
-export function StatisticsLab({ events, eventSeries, sessions, submissions, dateFormat }: Props) {
+export function StatisticsLab({ events, eventSeries, sessions, submissions, dateFormat, showSessionDetails, initialExpandedOutcome, focusedSubmissionId, onEditSession }: Props) {
   const [year, setYear] = useState('all')
   const [format, setFormat] = useState<FormatFilter>('all')
-  const [expandedOutcome, setExpandedOutcome] = useState<EventOutcome | null>(null)
+  const [expandedOutcome, setExpandedOutcome] = useState<EventOutcome | null>(initialExpandedOutcome ?? null)
   const [expandedCountry, setExpandedCountry] = useState<string | null>(null)
   const [expandedFootprint, setExpandedFootprint] = useState<'countries' | 'cities' | null>(null)
   const eventById = useMemo(() => new Map(events.map(event => [event.id, event])), [events])
@@ -153,9 +153,14 @@ export function StatisticsLab({ events, eventSeries, sessions, submissions, date
     ? eventStats.filter(item => item.outcome === expandedOutcome).sort((a, b) => b.event.dateStart.localeCompare(a.event.dateStart) || a.event.name.localeCompare(b.event.name))
     : []
 
+  useEffect(() => {
+    if (!focusedSubmissionId || !expandedOutcome) return
+    document.getElementById(`statistics-submission-${focusedSubmissionId}`)?.scrollIntoView({ block: 'center' })
+  }, [focusedSubmissionId, expandedOutcome])
+
   const eventDetails = (item: typeof eventStats[number]) => <div key={item.event.id} className="border-b border-gray-200 py-3 first:pt-0 last:border-0 last:pb-0">
     <div className="mb-1 flex flex-col sm:flex-row sm:items-baseline sm:justify-between"><span className="font-semibold text-gray-900">{item.event.name}</span><span className="text-xs text-gray-500">{formatDate(item.event.dateStart, dateFormat)} · {item.event.remote ? 'Online' : [item.event.city, item.event.country].filter(Boolean).join(', ')}</span></div>
-    <div className="space-y-1 pl-3">{item.related.map(submission => { const session = sessionById.get(submission.sessionId); const alias = submission.nameUsed && submission.nameUsed !== session?.name ? submission.nameUsed : ''; return <div key={submission.id} className="flex flex-col text-sm text-gray-700 sm:flex-row sm:justify-between"><span>{session?.name ?? 'Unknown session'}{alias && <span className="ml-2 text-xs italic text-gray-500">submitted as “{alias}”</span>}</span><span className="text-xs text-gray-500">{outcomeLabels[submission.state]}</span></div> })}</div>
+    {showSessionDetails && <div className="space-y-1 pl-3">{item.related.map(submission => { const session = sessionById.get(submission.sessionId); const alias = submission.nameUsed && submission.nameUsed !== session?.name ? submission.nameUsed : ''; return <div id={`statistics-submission-${submission.id}`} key={submission.id} onDoubleClick={() => session && onEditSession(session, submission, item.outcome)} className={`flex flex-col rounded text-sm text-gray-700 sm:flex-row sm:justify-between ${session ? 'cursor-pointer select-none' : ''} ${focusedSubmissionId === submission.id ? 'bg-blue-100 ring-2 ring-blue-500' : ''}`} title={session ? 'Double-click to edit this session' : undefined}><span>{session?.name ?? 'Unknown session'}{alias && <span className="ml-2 text-xs italic text-gray-500">submitted as “{alias}”</span>}</span><span className="text-xs text-gray-500">{outcomeLabels[submission.state]}</span></div> })}</div>}
   </div>
 
   return <div className="space-y-5 pb-8">
@@ -163,7 +168,7 @@ export function StatisticsLab({ events, eventSeries, sessions, submissions, date
 
     <div className="grid grid-cols-2 gap-3 lg:grid-cols-5"><Metric label="Events submitted" value={eventStats.length} detail="Each event counted once" /><Metric label="Events accepted" value={counts.selected} detail={`${counts.submitted} awaiting`} color="text-emerald-600" /><Metric label="Events rejected" value={counts.rejected} detail={`${decided} decided events`} color="text-rose-600" /><Metric label="Acceptance" value={acceptanceRate === null ? '—' : `${acceptanceRate}%`} detail={decided ? `${counts.selected} of ${decided} decided events` : 'No decisions yet'} color="text-blue-600" /><Metric label="Engagements" value={selectedEvents.length} detail={`${completedEngagements} completed · ${upcomingEngagements} upcoming`} color="text-purple-600" /></div>
 
-    <section className="ui-card"><div className="mb-4"><h3 className="ui-section-title">Event outcomes</h3><p className="ui-supporting-text">Every event appears once. Expand an outcome to see its events and submitted sessions.</p></div><div className="grid gap-2 sm:grid-cols-5">{(Object.keys(outcomeLabels) as EventOutcome[]).map(outcome => <button key={outcome} onClick={() => setExpandedOutcome(expandedOutcome === outcome ? null : outcome)} className={`rounded-lg border p-3 text-left transition hover:border-blue-300 ${expandedOutcome === outcome ? 'border-blue-500 bg-blue-50' : 'border-slate-200'}`}><div className="flex items-center gap-2 text-sm text-slate-600"><span className={`h-2.5 w-2.5 rounded-full ${submissionDotStyles[outcome]}`} />{outcomeLabels[outcome]}</div><div className="mt-1 text-2xl font-bold">{counts[outcome]}</div></button>)}</div>{expandedOutcome && <div className="mt-4 max-h-72 overflow-y-auto rounded-lg bg-slate-50 p-3">{outcomeEvents.length ? outcomeEvents.map(eventDetails) : <div className="text-sm text-slate-500">No events with this outcome.</div>}</div>}</section>
+    <section className="ui-card"><div className="mb-4"><h3 className="ui-section-title">Event outcomes</h3><p className="ui-supporting-text">{showSessionDetails ? 'Every event appears once. Expand an outcome to see its events and submitted sessions.' : 'Every event appears once. Expand an outcome to see its events.'}</p></div><div className="grid gap-2 sm:grid-cols-5">{(Object.keys(outcomeLabels) as EventOutcome[]).map(outcome => <button key={outcome} onClick={() => setExpandedOutcome(expandedOutcome === outcome ? null : outcome)} className={`rounded-lg border p-3 text-left transition hover:border-blue-300 ${expandedOutcome === outcome ? 'border-blue-500 bg-blue-50' : 'border-slate-200'}`}><div className="flex items-center gap-2 text-sm text-slate-600"><span className={`h-2.5 w-2.5 rounded-full ${submissionDotStyles[outcome]}`} />{outcomeLabels[outcome]}</div><div className="mt-1 text-2xl font-bold">{counts[outcome]}</div></button>)}</div>{expandedOutcome && <div className="mt-4 max-h-72 overflow-y-auto rounded-lg bg-slate-50 p-3">{outcomeEvents.length ? outcomeEvents.map(eventDetails) : <div className="text-sm text-slate-500">No events with this outcome.</div>}</div>}</section>
 
     <section className="ui-card"><h3 className="text-lg font-semibold">Acceptance by country</h3><p className="mb-4 text-sm text-gray-500">Accepted events divided by accepted plus rejected events. Click a country to see its events.</p><div className="max-h-[32rem] overflow-y-auto">{countryStats.map(item => <div key={item.country} className="border-b last:border-0"><button onClick={() => setExpandedCountry(expandedCountry === item.country ? null : item.country)} className={`grid w-full grid-cols-[minmax(0,1fr)_auto] gap-3 py-3 text-left ${expandedCountry === item.country ? 'text-blue-800' : ''}`}><div className="min-w-0"><div className="font-medium">{item.country !== 'Online' && getCountryFlagOrEmpty(item.country)}{item.country !== 'Online' && getCountryFlagOrEmpty(item.country) ? ' ' : ''}{item.country}</div><div className="text-xs text-gray-400">{item.events.length} submitted event{item.events.length === 1 ? '' : 's'}</div><div className="mt-1 text-xs"><span className="font-medium text-emerald-600">{item.accepted} accepted</span><span className="text-gray-400"> · {item.rejected} rejected · {item.pending} pending</span></div></div><div className="self-center text-right"><div className="text-lg font-bold">{item.acceptance === null ? '—' : `${item.acceptance}%`}</div><div className="whitespace-nowrap text-xs text-gray-400">{item.decisions ? `${item.accepted} of ${item.decisions}` : 'no decisions'}</div></div></button>{expandedCountry === item.country && <div className="mb-3 rounded-lg bg-blue-50 px-3 py-2">{item.events.map(eventItem => <div key={eventItem.event.id} className="flex flex-col gap-2 border-b border-blue-100 py-2 first:pt-0 last:border-0 last:pb-0 sm:flex-row sm:items-center sm:justify-between"><div className="min-w-0"><div className="font-medium text-gray-900">{eventItem.event.name}</div><div className="text-xs text-gray-500">{formatDate(eventItem.event.dateStart, dateFormat)}{eventItem.event.city && !isOnlineLocation(eventItem.event.city) ? ` · ${eventItem.event.city}` : ''}</div></div><OutcomeBadge outcome={eventItem.outcome} /></div>)}</div>}</div>)}{!countryStats.length && <div className="py-8 text-center text-sm text-gray-500">No countries match these filters.</div>}</div></section>
 

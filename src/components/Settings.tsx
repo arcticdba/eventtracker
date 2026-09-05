@@ -79,7 +79,7 @@ export function Settings({ settings, onSettingsChange, onClose }: SettingsProps)
             </label>
 
             <label className="flex items-center justify-between">
-              <span className="text-sm text-gray-700">Show session performance statistics</span>
+              <span className="text-sm text-gray-700">Show session details in statistics</span>
               <input
                 type="checkbox"
                 checked={settings.showSessionPerformance}
