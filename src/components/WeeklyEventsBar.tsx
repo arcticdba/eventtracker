@@ -5,6 +5,7 @@ import { getOverlappingEvents, groupSubmissionsByEvent } from '../utils/getOverl
 import { formatDate } from '../utils/formatDate'
 import { DateFormat } from '../api'
 import { getISOWeek, getISOWeeksInYear, getISOWeekStart, MONTHS, parseDateOnly, toDateOnly } from '../utils/date'
+import { eventDotStyles } from '../ui/styles'
 
 interface Props {
   events: Event[]
@@ -26,12 +27,7 @@ function getWeekMonth(year: number, week: number): number {
 }
 
 function getEventDotColor(event: Event, submissions: Submission[]): string {
-  switch (computeEventState(event.id, submissions)) {
-    case 'selected': return 'bg-green-500'
-    case 'pending': return 'bg-yellow-500'
-    case 'rejected': return 'bg-red-500'
-    default: return 'bg-gray-400'
-  }
+  return eventDotStyles[computeEventState(event.id, submissions)]
 }
 
 export function WeeklyEventsBar({ events, submissions, maxEventsPerMonth, selectedMonth, onMonthSelect, dateFormat }: Props) {
@@ -72,7 +68,7 @@ export function WeeklyEventsBar({ events, submissions, maxEventsPerMonth, select
   }
 
   return (
-    <div className="bg-white rounded-lg shadow px-4 py-3 mb-4 flex-shrink-0">
+    <div className="ui-card mb-4 flex-shrink-0 px-4 py-3">
       <div className="flex items-center gap-2 mb-2">
         <h3 className="text-sm font-medium text-gray-700">Weekly View</h3>
         <span className="text-xs text-gray-500">{visibleYears[0]}–{visibleYears[visibleYears.length - 1]}</span>

@@ -19,7 +19,7 @@ interface CommandPaletteProps {
   onAddSessionToEvent: () => void
   onOpenSettings: () => void
   onSelectEvent: (event: Event) => void
-  onTabChange: (tab: 'events' | 'sessions' | 'statistics' | 'statistics-lab') => void
+  onTabChange: (tab: 'events' | 'sessions' | 'statistics') => void
 }
 
 export function CommandPalette({
@@ -58,7 +58,6 @@ export function CommandPalette({
     { id: 'tab-events', label: 'Go to Events', category: 'navigation', action: () => { onTabChange('events'); onClose() } },
     { id: 'tab-sessions', label: 'Go to Sessions', category: 'navigation', action: () => { onTabChange('sessions'); onClose() } },
     { id: 'tab-stats', label: 'Go to Statistics', category: 'navigation', action: () => { onTabChange('statistics'); onClose() } },
-    { id: 'tab-stats-lab', label: 'Go to Statistics Lab', category: 'navigation', action: () => { onTabChange('statistics-lab'); onClose() } },
 
     // Event quick access (first 5 events matching search)
     ...events
@@ -131,7 +130,7 @@ export function CommandPalette({
   return (
     <div className="fixed inset-0 bg-black/50 flex items-start justify-center pt-[20vh] z-50" onClick={onClose}>
       <div
-        className="bg-white rounded-lg shadow-2xl w-full max-w-lg overflow-hidden"
+        className="w-full max-w-lg overflow-hidden rounded-xl border border-slate-200 bg-white shadow-2xl"
         onClick={e => e.stopPropagation()}
       >
         <div className="p-3 border-b">

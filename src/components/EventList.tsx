@@ -7,6 +7,7 @@ import { formatDate } from '../utils/formatDate'
 import { getCountryFlagOrEmpty } from '../utils/countryFlags'
 import { DateFormat } from '../api'
 import { compareDateOnly, parseDateOnly } from '../utils/date'
+import { eventCardStyles } from '../ui/styles'
 
 interface Props {
   events: Event[]
@@ -44,15 +45,6 @@ interface Props {
 }
 
 const allStates: EventState[] = ['pending', 'selected', 'rejected', 'declined', 'cancelled', 'none']
-
-const stateBackgrounds: Record<EventState, string> = {
-  selected: 'bg-green-50 border-green-200',
-  rejected: 'bg-red-50 border-red-200',
-  declined: 'bg-gray-50 border-gray-200',
-  cancelled: 'bg-gray-100 border-gray-300',
-  pending: 'bg-yellow-50 border-yellow-200',
-  none: 'bg-white border-gray-200'
-}
 
 const stateLabels: Record<EventState, string> = {
   selected: 'Selected',
@@ -446,7 +438,7 @@ export function EventList({ events, search, onSearchChange, submissions, session
             onChange={event => onSearchChange(event.target.value)}
             placeholder="Search events, cities, countries, or series"
             aria-label="Search events"
-            className="w-full rounded-lg border border-gray-300 py-2 pl-9 pr-9 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            className="ui-input w-full pl-9 pr-9"
           />
           {search && <button type="button" onClick={() => onSearchChange('')} aria-label="Clear event search" className="absolute right-2 top-1/2 -translate-y-1/2 rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-700">×</button>}
         </div>
@@ -592,8 +584,8 @@ export function EventList({ events, search, onSearchChange, submissions, session
                   onDoubleClick={() => onEdit(event)}
                   className={`p-3 border rounded-lg cursor-pointer transition ${
                     showMvpFeatures && !event.mvpSubmission && state === 'selected'
-                      ? 'bg-green-50 border-green-400 border-2'
-                      : stateBackgrounds[state]
+                      ? 'border-2 border-emerald-400 bg-emerald-50'
+                      : eventCardStyles[state]
                   } ${isSelected ? 'ring-2 ring-blue-500' : ''}`}
                 >
               <div className="flex justify-between items-start">

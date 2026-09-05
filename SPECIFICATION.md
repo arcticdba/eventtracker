@@ -10,6 +10,13 @@ The application consists of:
 - **Storage**: JSON files for data persistence (data.json, settings.json - not included in repository)
 - **Deployment**: Docker containerized
 
+### Visual System
+
+Shared component classes in `src/index.css` define cards, panels, buttons,
+inputs, typography, and keyboard focus states. Semantic outcome styles are
+centralized in `src/ui/styles.ts` and reused by event cards, submission lists,
+status selectors, timelines, and statistics visualizations.
+
 ---
 
 ## Data Models
@@ -372,55 +379,18 @@ Shows when event is selected:
 
 ### Statistics Tab
 
-Shows analytics for events with at least one selected submission:
+Shows event-focused analytics and counts every event once regardless of how many
+sessions were submitted. Accepted and rejected events form the acceptance-rate
+denominator. The page includes year/format filters, event outcome drill-downs,
+event-based acceptance by country and recurring series, region and season
+breakdowns, yearly performance, and clickable country/city footprint lists. All
+dates use the configured date format.
 
-The adjacent **Statistics Lab** tab provides an experimental alternative while
-leaving this original dashboard unchanged. It emphasizes event outcomes, counts
-each event once regardless of the number of submitted sessions, and uses accepted
-and rejected events as the acceptance-rate denominator. It provides year/format
-filters, event-grouped outcome drill-downs, submitted-name aliases, cities visited,
-clickable event-based acceptance by country and recurring event series, and
-event-performance breakdowns by geographic region and season.
-All event dates in the view use the configured date format.
+### CfC Deadline Reminder
 
-**Year Filter:**
-- Click any year bar to filter all stats to that year
-- Banner shows active filter with clear option
-
-**Summary Cards:**
-- Events Spoken At
-- Events Submitted To
-- Acceptance Rate (events accepted / events submitted)
-- Countries visited
-
-**Year-over-Year Comparison:**
-- Selectable year dropdowns to compare any two years
-- Shows trends for: Events Spoken, Acceptance Rate, Countries, Cities
-- Trend indicators showing percentage change (up/down arrows)
-
-**Charts:**
-- Events by Year (horizontal bar chart, clickable to filter)
-- Events by Region (Europe, North America, Asia, etc.)
-- Events by Season (Spring/Summer/Fall/Winter)
-- Event Format (In-Person vs Remote pie chart)
-- Events by Month (bubble chart with size proportional to count)
-- Top Countries (badges with flag emoji and count, hover shows events)
-- Countries Visited (badge list with flag emojis)
-- Cities Visited (grid list)
-
-**Session Performance:**
-- Checkbox to include/exclude retired sessions
-- Acceptance Rate by Level (100-500) with bar charts
-- Session Health summary:
-  - High Performing: ≥50% acceptance rate, 2+ selections
-  - Needs Rework: <30% acceptance rate, 3+ selections
-- Session Acceptance Rates table:
-  - Columns: Session, Level, Submitted (decided only), Selected, Rejected, Rate
-  - Hover on Submitted/Selected/Rejected counts shows event names
-  - Sessions with pending submissions show yellow "N pending" tag
-  - Hover on pending tag shows event names
-  - Retired sessions show "Retired" tag
-  - Sorted by acceptance rate descending
+The Events page shows a compact amber strip when an event in `none` or `pending`
+state has a Call for Content deadline from today through seven days away. Each
+deadline uses the configured date format and selects its event when clicked.
 
 ### Forms
 

@@ -29,7 +29,7 @@ export function ImportFromSessionize({ onImport, onCancel }: Props) {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg shadow-xl p-6 w-full max-w-md">
+      <div className="w-full max-w-md rounded-xl border border-slate-200 bg-white p-6 shadow-xl">
         <h2 className="text-lg font-semibold mb-4">Import from Sessionize</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
@@ -58,14 +58,14 @@ export function ImportFromSessionize({ onImport, onCancel }: Props) {
             <button
               type="button"
               onClick={onCancel}
-              className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
+              className="ui-button-secondary"
               disabled={loading}
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
+              className="ui-button-primary"
               disabled={loading}
             >
               {loading ? 'Importing...' : 'Import'}

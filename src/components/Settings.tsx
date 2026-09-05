@@ -23,7 +23,7 @@ export function Settings({ settings, onSettingsChange, onClose }: SettingsProps)
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-md">
+      <div className="w-full max-w-md rounded-xl border border-slate-200 bg-white shadow-xl">
         <div className="flex justify-between items-center p-4 border-b">
           <div>
             <h2 className="text-lg font-semibold">Settings <span className="text-gray-400 font-normal">(tracker version {version})</span></h2>
@@ -142,7 +142,7 @@ export function Settings({ settings, onSettingsChange, onClose }: SettingsProps)
               <a
                 href="/api/export/json"
                 download
-                className="flex-1 px-3 py-2 bg-green-600 text-white text-sm rounded hover:bg-green-700 text-center"
+                className="ui-button-secondary flex-1 text-center text-emerald-700"
               >
                 Backup All (JSON)
               </a>
@@ -195,7 +195,7 @@ export function Settings({ settings, onSettingsChange, onClose }: SettingsProps)
         <div className="p-4 border-t bg-gray-50 rounded-b-lg">
           <button
             onClick={onClose}
-            className="w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            className="ui-button-primary w-full"
           >
             Done
           </button>

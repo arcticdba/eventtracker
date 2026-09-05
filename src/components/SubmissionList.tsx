@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Submission, Session, SubmissionState } from '../types'
 import { StateSelector } from './StateSelector'
+import { submissionCardStyles } from '../ui/styles'
 
 const levelColors: Record<string, string> = {
   '100': 'bg-green-100 text-green-700',
@@ -60,13 +61,13 @@ export function SubmissionList({ submissions, sessions, onUpdateState, onUpdateN
       label: 'Selected sessions',
       description: 'Accepted for this event',
       submissions: submissions.filter(submission => submission.state === 'selected'),
-      headingClass: 'text-green-700'
+      headingClass: 'text-emerald-700'
     },
     {
       label: 'Awaiting decision',
       description: 'Submitted but not decided yet',
       submissions: submissions.filter(submission => submission.state === 'submitted'),
-      headingClass: 'text-blue-700'
+      headingClass: 'text-amber-700'
     },
     {
       label: 'Not selected',
@@ -77,14 +78,6 @@ export function SubmissionList({ submissions, sessions, onUpdateState, onUpdateN
       headingClass: 'text-gray-600'
     }
   ].filter(group => group.submissions.length > 0)
-
-  const cardClass: Record<SubmissionState, string> = {
-    selected: 'border-green-300 bg-green-50/70',
-    submitted: 'border-blue-200 bg-blue-50/40',
-    rejected: 'border-red-200 bg-red-50/50',
-    declined: 'border-gray-300 bg-gray-50',
-    cancelled: 'border-gray-300 bg-gray-100/80'
-  }
 
   return (
     <div className="space-y-2">
@@ -108,7 +101,7 @@ export function SubmissionList({ submissions, sessions, onUpdateState, onUpdateN
           const isEditingThis = editingNotes === submission.id
 
           return (
-            <div key={submission.id} className={`p-3 border rounded-lg ${cardClass[submission.state]}`}>
+            <div key={submission.id} className={`rounded-lg border p-3 ${submissionCardStyles[submission.state]}`}>
               <div className="flex justify-between items-start">
                 <div>
                   <h4 className="font-medium text-gray-900">{displayName}</h4>
@@ -154,13 +147,13 @@ export function SubmissionList({ submissions, sessions, onUpdateState, onUpdateN
                     <div className="flex gap-2">
                       <button
                         onClick={() => saveNotes(submission.id)}
-                        className="px-2 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700"
+                        className="ui-button-primary px-2 py-1 text-xs"
                       >
                         Save
                       </button>
                       <button
                         onClick={cancelEditingNotes}
-                        className="px-2 py-1 bg-gray-300 text-gray-700 text-xs rounded hover:bg-gray-400"
+                        className="ui-button-secondary px-2 py-1 text-xs"
                       >
                         Cancel
                       </button>

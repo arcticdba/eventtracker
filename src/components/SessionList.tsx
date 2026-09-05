@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import * as ContextMenu from '@radix-ui/react-context-menu'
-import { Session, Event, Submission, SubmissionState } from '../types'
+import { Session, Event, Submission } from '../types'
+import { submissionBadgeStyles } from '../ui/styles'
 
 interface Props {
   sessions: Session[]
@@ -13,14 +14,6 @@ interface Props {
   onShowActiveChange: (showActive: boolean) => void
   showRetired: boolean
   onShowRetiredChange: (showRetired: boolean) => void
-}
-
-const stateColors: Record<SubmissionState, string> = {
-  submitted: 'bg-blue-100 text-blue-700',
-  selected: 'bg-green-100 text-green-700',
-  rejected: 'bg-red-100 text-red-700',
-  declined: 'bg-orange-100 text-orange-700',
-  cancelled: 'bg-gray-200 text-gray-600'
 }
 
 const levelColors: Record<string, string> = {
@@ -133,7 +126,7 @@ export function SessionList({ sessions, events, submissions, onEdit, onDelete, o
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
               placeholder="Search sessions..."
-              className="w-full pl-8 pr-3 py-1.5 text-sm border rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-400 outline-none"
+              className="ui-input w-full py-1.5 pl-8 pr-3"
             />
             <svg className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -251,22 +244,22 @@ export function SessionList({ sessions, events, submissions, onEdit, onDelete, o
                           {isExpanded ? '▼' : '▶'} {sessionSubmissions.length} event{sessionSubmissions.length !== 1 ? 's' : ''}:
                         </span>
                         {counts.selected > 0 && (
-                          <span className={`px-1.5 py-0.5 rounded ${stateColors.selected}`}>
+                          <span className={`rounded px-1.5 py-0.5 ${submissionBadgeStyles.selected}`}>
                             {counts.selected} selected
                           </span>
                         )}
                         {counts.submitted > 0 && (
-                          <span className={`px-1.5 py-0.5 rounded ${stateColors.submitted}`}>
+                          <span className={`rounded px-1.5 py-0.5 ${submissionBadgeStyles.submitted}`}>
                             {counts.submitted} pending
                           </span>
                         )}
                         {counts.rejected > 0 && (
-                          <span className={`px-1.5 py-0.5 rounded ${stateColors.rejected}`}>
+                          <span className={`rounded px-1.5 py-0.5 ${submissionBadgeStyles.rejected}`}>
                             {counts.rejected} rejected
                           </span>
                         )}
                         {counts.declined > 0 && (
-                          <span className={`px-1.5 py-0.5 rounded ${stateColors.declined}`}>
+                          <span className={`rounded px-1.5 py-0.5 ${submissionBadgeStyles.declined}`}>
                             {counts.declined} declined
                           </span>
                         )}
@@ -279,7 +272,7 @@ export function SessionList({ sessions, events, submissions, onEdit, onDelete, o
                             const isAlternateName = sub.nameUsed && sub.nameUsed !== session.name
                             return (
                               <div key={sub.id} className="flex items-center gap-2 text-xs">
-                                <span className={`px-1.5 py-0.5 rounded ${stateColors[sub.state]}`}>
+                                <span className={`rounded px-1.5 py-0.5 ${submissionBadgeStyles[sub.state]}`}>
                                   {sub.state}
                                 </span>
                                 <span className="text-gray-700">{event.name}</span>

@@ -8,7 +8,6 @@ import { SessionForm } from './components/SessionForm'
 import { SubmissionList } from './components/SubmissionList'
 import { SessionPicker } from './components/SessionPicker'
 import { ImportFromSessionize } from './components/ImportFromSessionize'
-import { Statistics } from './components/Statistics'
 import { StatisticsLab } from './components/StatisticsLab'
 import { MonthlyEventsBar } from './components/MonthlyEventsBar'
 import { WeeklyEventsBar } from './components/WeeklyEventsBar'
@@ -17,10 +16,11 @@ import { CommandPalette } from './components/CommandPalette'
 import { UISettings } from './api'
 import { computeEventState } from './utils/computeEventState'
 import { MONTHS, parseDateOnly } from './utils/date'
+import { formatDate } from './utils/formatDate'
 import { useEventTrackerData } from './hooks/useEventTrackerData'
 import { useUISettings } from './hooks/useUISettings'
 
-type Tab = 'events' | 'sessions' | 'statistics' | 'statistics-lab'
+type Tab = 'events' | 'sessions' | 'statistics'
 
 export default function App() {
   const { events, setEvents, eventSeries, setEventSeries, sessions, setSessions, submissions, setSubmissions } = useEventTrackerData()
@@ -298,14 +298,26 @@ export default function App() {
       })
     : events
 
+  const cfcClosingSoon = events.filter(event => {
+    if (!event.callForContentLastDate) return false
+    const state = computeEventState(event.id, submissions)
+    if (state !== 'none' && state !== 'pending') return false
+    const deadline = parseDateOnly(event.callForContentLastDate)
+    deadline.setHours(0, 0, 0, 0)
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+    const daysRemaining = Math.round((deadline.getTime() - today.getTime()) / 86400000)
+    return daysRemaining >= 0 && daysRemaining <= 7
+  }).sort((a, b) => a.callForContentLastDate.localeCompare(b.callForContentLastDate) || a.name.localeCompare(b.name))
+
   return (
-    <div className="h-[100dvh] flex flex-col bg-gray-100 overflow-hidden">
-      <header className="bg-white shadow flex-shrink-0">
+    <div className="h-[100dvh] flex flex-col bg-slate-100 overflow-hidden">
+      <header className="flex-shrink-0 border-b border-slate-200 bg-white shadow-sm">
         <div className="max-w-6xl mx-auto px-3 sm:px-4 py-3 sm:py-4 flex justify-between items-center gap-2">
           <h1 className="text-lg sm:text-2xl font-bold text-gray-900 truncate">Speaking Event Tracker</h1>
           <button
             onClick={() => setShowCommandPalette(true)}
-            className="flex items-center gap-2 px-3 py-1.5 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg border border-gray-200"
+            className="ui-button-secondary gap-2 py-1.5"
             title="Command Palette (⌘K)"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -315,7 +327,7 @@ export default function App() {
           </button>
           <button
             onClick={() => setShowSettings(true)}
-            className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg"
+            className="ui-button-quiet p-2"
             title="Settings (⌘,)"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -328,47 +340,37 @@ export default function App() {
 
       <main className="flex-1 flex flex-col max-w-6xl w-full mx-auto px-3 py-3 sm:px-4 sm:py-4 overflow-y-auto lg:overflow-hidden">
         {/* Tabs */}
-        <div className="flex items-center gap-4 mb-4 flex-shrink-0">
-          <div className="flex gap-2">
+        <div className="mb-4 flex-shrink-0 overflow-x-auto pb-1">
+          <div className="flex w-max gap-2 rounded-xl border border-slate-200 bg-white p-1 shadow-sm">
             <button
               onClick={() => setActiveTab('events')}
-              className={`px-4 py-2 rounded-lg font-medium ${
+              className={`ui-button px-4 py-2 ${
                 activeTab === 'events'
                   ? 'bg-blue-600 text-white'
-                  : 'bg-white text-gray-600 hover:bg-gray-50'
+                  : 'text-slate-600 hover:bg-slate-100'
               }`}
             >
               Events
             </button>
             <button
               onClick={() => setActiveTab('sessions')}
-              className={`px-4 py-2 rounded-lg font-medium ${
+              className={`ui-button px-4 py-2 ${
                 activeTab === 'sessions'
                   ? 'bg-blue-600 text-white'
-                  : 'bg-white text-gray-600 hover:bg-gray-50'
+                  : 'text-slate-600 hover:bg-slate-100'
               }`}
             >
               Sessions
             </button>
             <button
               onClick={() => setActiveTab('statistics')}
-              className={`px-4 py-2 rounded-lg font-medium ${
+              className={`ui-button px-4 py-2 ${
                 activeTab === 'statistics'
                   ? 'bg-blue-600 text-white'
-                  : 'bg-white text-gray-600 hover:bg-gray-50'
+                  : 'text-slate-600 hover:bg-slate-100'
               }`}
             >
               Statistics
-            </button>
-            <button
-              onClick={() => setActiveTab('statistics-lab')}
-              className={`px-4 py-2 rounded-lg font-medium ${
-                activeTab === 'statistics-lab'
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-white text-gray-600 hover:bg-gray-50'
-              }`}
-            >
-              Statistics Lab
             </button>
           </div>
         </div>
@@ -394,6 +396,22 @@ export default function App() {
                 onMonthSelect={setSelectedMonth}
                 dateFormat={uiSettings.dateFormat}
               />
+            )}
+            {cfcClosingSoon.length > 0 && (
+              <div className="mb-4 flex flex-shrink-0 flex-col gap-2 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 sm:flex-row sm:items-center">
+                <div className="flex shrink-0 items-center gap-2 text-sm font-semibold text-amber-900">
+                  <span aria-hidden="true">◷</span>
+                  CfC closing within 7 days
+                </div>
+                <div className="flex min-w-0 flex-wrap gap-1.5">
+                  {cfcClosingSoon.map(event => (
+                    <button key={event.id} onClick={() => { setSelectedEvent(event); setShowEventForm(false) }} className="rounded-full border border-amber-200 bg-white px-2 py-1 text-xs text-amber-900 hover:border-amber-400 hover:bg-amber-100" title={`Select ${event.name}`}>
+                      <span className="font-medium">{event.name}</span>
+                      <span className="ml-1 text-amber-700">{formatDate(event.callForContentLastDate, uiSettings.dateFormat)}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
             )}
             {/* Year bandwidth warning */}
             {uiSettings.maxEventsPerYear > 0 && (() => {
@@ -426,16 +444,12 @@ export default function App() {
 
         {activeTab === 'statistics' ? (
           <div className="overflow-y-auto lg:flex-1">
-            <Statistics events={events} sessions={sessions} submissions={submissions} dateFormat={uiSettings.dateFormat} showSessionPerformance={uiSettings.showSessionPerformance} />
-          </div>
-        ) : activeTab === 'statistics-lab' ? (
-          <div className="overflow-y-auto lg:flex-1">
             <StatisticsLab events={events} eventSeries={eventSeries} sessions={sessions} submissions={submissions} dateFormat={uiSettings.dateFormat} />
           </div>
         ) : (
           <div className={`grid gap-3 ${activeTab === 'events' && !showEventForm ? 'grid-cols-1 lg:grid-cols-2' : 'grid-cols-1'} lg:flex-1 lg:overflow-hidden`}>
             {/* Left Panel */}
-            <div className="bg-white rounded-lg shadow p-3 sm:p-4 flex flex-col lg:overflow-hidden">
+            <div className="ui-panel flex flex-col lg:overflow-hidden">
               {activeTab === 'events' ? (
                 <>
                   <div className="flex justify-between items-center mb-4 flex-shrink-0">
@@ -461,13 +475,13 @@ export default function App() {
                     <div className="flex gap-2">
                       <button
                         onClick={() => setShowImportModal(true)}
-                        className="px-3 py-1 bg-green-600 text-white text-sm rounded hover:bg-green-700"
+                        className="ui-button-secondary py-1 text-emerald-700"
                       >
                         Import
                       </button>
                       <button
                         onClick={() => { setShowEventForm(true); setEditingEvent(null); setImportedEventData(null) }}
-                        className="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700"
+                        className="ui-button-primary py-1"
                       >
                         + New Event
                       </button>
@@ -533,7 +547,7 @@ export default function App() {
                     <h2 className="text-lg font-semibold">Sessions</h2>
                     <button
                       onClick={() => { setShowSessionForm(true); setEditingSession(null) }}
-                      className="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700"
+                      className="ui-button-primary py-1"
                     >
                       + New Session
                     </button>
@@ -566,7 +580,7 @@ export default function App() {
 
             {/* Right Panel - Submissions for selected event (only show on events tab when not editing) */}
             {activeTab === 'events' && !showEventForm && (
-              <div className="bg-white rounded-lg shadow p-3 sm:p-4 flex flex-col lg:overflow-hidden">
+              <div className="ui-panel flex flex-col lg:overflow-hidden">
                 <div className="flex justify-between items-center mb-4 flex-shrink-0">
                   <h2 className="text-lg font-semibold">
                     {selectedEvent
@@ -576,7 +590,7 @@ export default function App() {
                   {selectedEvent && !showSessionPicker && (
                     <button
                       onClick={() => setShowSessionPicker(true)}
-                      className="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700"
+                      className="ui-button-primary py-1"
                     >
                       + Add Sessions
                     </button>

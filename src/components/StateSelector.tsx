@@ -1,16 +1,9 @@
 import { SubmissionState } from '../types'
+import { submissionBadgeStyles } from '../ui/styles'
 
 interface Props {
   value: SubmissionState
   onChange: (state: SubmissionState) => void
-}
-
-const stateColors: Record<SubmissionState, string> = {
-  submitted: 'bg-blue-100 text-blue-800',
-  selected: 'bg-green-100 text-green-800',
-  rejected: 'bg-red-100 text-red-800',
-  declined: 'bg-gray-100 text-gray-800',
-  cancelled: 'bg-gray-200 text-gray-600'
 }
 
 export function StateSelector({ value, onChange }: Props) {
@@ -18,7 +11,7 @@ export function StateSelector({ value, onChange }: Props) {
     <select
       value={value}
       onChange={e => onChange(e.target.value as SubmissionState)}
-      className={`px-2 py-1 rounded text-sm font-medium cursor-pointer ${stateColors[value]}`}
+      className={`cursor-pointer rounded-lg px-2 py-1 text-sm font-medium ring-1 ${submissionBadgeStyles[value]}`}
     >
       <option value="submitted">Submitted</option>
       <option value="selected">Selected</option>

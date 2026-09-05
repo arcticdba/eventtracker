@@ -323,14 +323,14 @@ export function SessionPicker({ sessions, submissions, eventId, onAdd, onClose }
                           <button
                             type="button"
                             onClick={() => addNewName(session.id)}
-                            className="px-2 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700"
+                            className="ui-button-primary px-2 py-1 text-xs"
                           >
                             Add
                           </button>
                           <button
                             type="button"
                             onClick={() => toggleNewNameInput(session.id)}
-                            className="px-2 py-1 bg-gray-300 text-gray-700 text-xs rounded hover:bg-gray-400"
+                            className="ui-button-secondary px-2 py-1 text-xs"
                           >
                             Cancel
                           </button>
@@ -359,13 +359,13 @@ export function SessionPicker({ sessions, submissions, eventId, onAdd, onClose }
         <button
           onClick={handleAdd}
           disabled={selections.size === 0}
-          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="ui-button-primary"
         >
           Add {selections.size > 0 ? `(${selections.size})` : ''}
         </button>
         <button
           onClick={onClose}
-          className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
+          className="ui-button-secondary"
         >
           Cancel
         </button>

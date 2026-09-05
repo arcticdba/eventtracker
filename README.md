@@ -47,20 +47,9 @@ A React/TypeScript application for tracking speaking engagements, session submis
 - Export individual events to iCal via right-click menu
 
 ### Statistics Dashboard
-- Summary cards: Events spoken at, Events submitted to, Acceptance rate, Countries visited
-- Year-over-year comparison with selectable years and trend indicators
-- Events by year chart (clickable to filter all stats by year)
-- Events by region breakdown
-- Events by season distribution
-- In-person vs remote event ratio
-- Top countries with flag emojis and hover tooltips showing event details
-- Countries and cities visited lists with flag emojis
-- Session performance analytics with acceptance rates by level
-
-### Statistics Lab
-- Experimental, event-performance dashboard available beside the original Statistics tab
+- Event-focused summary cards for submitted, accepted, rejected, and upcoming events
 - Filters by event year and in-person/remote format
-- Acceptance rate based only on selected and rejected decisions
+- Acceptance rate based only on accepted and rejected events
 - Clickable outcome breakdown grouped by event
 - Event outcomes with session titles and submitted aliases available as drill-down details
 - Event-based acceptance rates by country and recurring event series
@@ -72,9 +61,10 @@ A React/TypeScript application for tracking speaking engagements, session submis
 - Link individual editions such as SQLBits 2024 and SQLBits 2025 to one canonical series
 - Create, select, rename, or remove a series from the event editor
 - Removing a series unlinks its events without deleting them
-- Compare event-level acceptance across recurring editions in Statistics Lab
+- Compare event-level acceptance across recurring editions in Statistics
 
 The Events tab can be searched by event name, city, country, or event series.
+An unobtrusive reminder strip highlights actionable CfC deadlines within seven days.
 
 ## Tech Stack
 
@@ -82,6 +72,10 @@ The Events tab can be searched by event name, city, country, or event series.
 - **Styling**: Tailwind CSS
 - **Backend**: Express.js
 - **Storage**: JSON file-based persistence
+
+The interface uses shared semantic styles for cards, controls, focus states,
+and submission outcomes. Accepted is emerald, pending is amber, rejected is
+rose, declined is slate, and cancelled is gray throughout the application.
 
 ## Getting Started
 

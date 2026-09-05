@@ -271,7 +271,7 @@ export function EventForm({ event, initialData, allEvents, eventSeries, submissi
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 p-4 bg-gray-50 rounded-lg">
+    <form onSubmit={handleSubmit} className="space-y-4 rounded-xl border border-slate-200 bg-slate-50 p-4">
       <h3 className="text-sm font-semibold text-gray-800">Event Details</h3>
       <div className="flex gap-3 items-end">
         <div className="flex-1">
@@ -280,7 +280,7 @@ export function EventForm({ event, initialData, allEvents, eventSeries, submissi
             type="text"
             value={name}
             onChange={e => setName(e.target.value)}
-            className="mt-1 block w-full rounded border-gray-300 shadow-sm px-3 py-2 border"
+            className="ui-input mt-1 block w-full"
             required
           />
         </div>
@@ -309,7 +309,7 @@ export function EventForm({ event, initialData, allEvents, eventSeries, submissi
         </div>
         {showNewSeries && <div className="mt-2 flex flex-wrap gap-2 rounded border border-blue-100 bg-blue-50 p-2">
           <input type="text" value={newSeriesName} onChange={e => setNewSeriesName(e.target.value)} onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); void addEventSeries() } }} placeholder="For example, SQLBits" className="min-w-48 flex-1 rounded border border-gray-300 px-3 py-2 text-sm" autoFocus />
-          <button type="button" onClick={() => void addEventSeries()} disabled={creatingSeries || !newSeriesName.trim()} className="rounded bg-blue-600 px-3 py-2 text-sm text-white hover:bg-blue-700 disabled:opacity-50">{creatingSeries ? 'Adding…' : 'Add'}</button>
+          <button type="button" onClick={() => void addEventSeries()} disabled={creatingSeries || !newSeriesName.trim()} className="ui-button-primary">{creatingSeries ? 'Adding…' : 'Add'}</button>
           <button type="button" onClick={() => { setShowNewSeries(false); setNewSeriesName(''); setSeriesError('') }} className="rounded px-3 py-2 text-sm text-gray-600 hover:bg-white">Cancel</button>
         </div>}
         {seriesError && <p className="mt-1 text-sm text-red-600">{seriesError}</p>}
@@ -335,7 +335,7 @@ export function EventForm({ event, initialData, allEvents, eventSeries, submissi
             type="text"
             value={city}
             onChange={e => setCity(e.target.value)}
-            className="mt-1 block w-full rounded border-gray-300 shadow-sm px-3 py-2 border"
+            className="ui-input mt-1 block w-full"
           />
         </div>}
         <div>
@@ -388,7 +388,7 @@ export function EventForm({ event, initialData, allEvents, eventSeries, submissi
           type="url"
           value={url}
           onChange={e => setUrl(e.target.value)}
-          className="mt-1 block w-full rounded border-gray-300 shadow-sm px-3 py-2 border"
+          className="ui-input mt-1 block w-full"
           placeholder="https://..."
         />
       </div>
@@ -399,7 +399,7 @@ export function EventForm({ event, initialData, allEvents, eventSeries, submissi
             type="url"
             value={callForContentUrl}
             onChange={e => setCallForContentUrl(e.target.value)}
-            className="mt-1 block w-full rounded border-gray-300 shadow-sm px-3 py-2 border"
+            className="ui-input mt-1 block w-full"
             placeholder="https://..."
           />
         </div>
@@ -409,7 +409,7 @@ export function EventForm({ event, initialData, allEvents, eventSeries, submissi
             type="text"
             value={loginTool}
             onChange={e => setLoginTool(e.target.value)}
-            className="mt-1 block w-full rounded border-gray-300 shadow-sm px-3 py-2 border"
+            className="ui-input mt-1 block w-full"
             placeholder="Sessionize"
           />
         </div>
@@ -419,7 +419,7 @@ export function EventForm({ event, initialData, allEvents, eventSeries, submissi
             value={callForContentLastDate}
             onChange={setCallForContentLastDate}
             dateFormat={dateFormat}
-            className="mt-1 block w-full rounded border-gray-300 shadow-sm px-3 py-2 border"
+            className="ui-input mt-1 block w-full"
           />
         </div>
       </div>
@@ -429,7 +429,7 @@ export function EventForm({ event, initialData, allEvents, eventSeries, submissi
           value={notes}
           onChange={e => setNotes(e.target.value)}
           rows={3}
-          className="mt-1 block w-full rounded border-gray-300 shadow-sm px-3 py-2 border"
+          className="ui-input mt-1 block w-full"
           placeholder="Any additional notes about this event..."
         />
       </div>
@@ -493,14 +493,14 @@ export function EventForm({ event, initialData, allEvents, eventSeries, submissi
                   <button
                     type="button"
                     onClick={saveEditTravel}
-                    className="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700"
+                    className="ui-button-primary py-1"
                   >
                     Save
                   </button>
                   <button
                     type="button"
                     onClick={cancelEditTravel}
-                    className="px-3 py-1 bg-gray-300 text-gray-700 text-sm rounded hover:bg-gray-400"
+                    className="ui-button-secondary py-1"
                   >
                     Cancel
                   </button>
@@ -562,14 +562,14 @@ export function EventForm({ event, initialData, allEvents, eventSeries, submissi
             <button
               type="button"
               onClick={addTravel}
-              className="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700"
+              className="ui-button-primary py-1"
             >
               Add
             </button>
             <button
               type="button"
               onClick={() => { setShowAddTravel(false); setNewTravelRef('') }}
-              className="px-3 py-1 bg-gray-300 text-gray-700 text-sm rounded hover:bg-gray-400"
+              className="ui-button-secondary py-1"
             >
               Cancel
             </button>
@@ -632,14 +632,14 @@ export function EventForm({ event, initialData, allEvents, eventSeries, submissi
                   <button
                     type="button"
                     onClick={saveEditHotel}
-                    className="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700"
+                    className="ui-button-primary py-1"
                   >
                     Save
                   </button>
                   <button
                     type="button"
                     onClick={cancelEditHotel}
-                    className="px-3 py-1 bg-gray-300 text-gray-700 text-sm rounded hover:bg-gray-400"
+                    className="ui-button-secondary py-1"
                   >
                     Cancel
                   </button>
@@ -703,14 +703,14 @@ export function EventForm({ event, initialData, allEvents, eventSeries, submissi
             <button
               type="button"
               onClick={addHotel}
-              className="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700"
+              className="ui-button-primary py-1"
             >
               Add
             </button>
             <button
               type="button"
               onClick={() => { setShowAddHotel(false); setNewHotelName(''); setNewHotelRef('') }}
-              className="px-3 py-1 bg-gray-300 text-gray-700 text-sm rounded hover:bg-gray-400"
+              className="ui-button-secondary py-1"
             >
               Cancel
             </button>
@@ -735,14 +735,14 @@ export function EventForm({ event, initialData, allEvents, eventSeries, submissi
       <div className="flex gap-2 border-t pt-4">
         <button
           type="submit"
-          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          className="ui-button-primary"
         >
           Save
         </button>
         <button
           type="button"
           onClick={onCancel}
-          className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
+          className="ui-button-secondary"
         >
           Cancel
         </button>

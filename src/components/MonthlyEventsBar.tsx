@@ -5,6 +5,7 @@ import { getOverlappingEvents, groupSubmissionsByEvent } from '../utils/getOverl
 import { formatDate } from '../utils/formatDate'
 import { DateFormat } from '../api'
 import { MONTHS, parseDateOnly } from '../utils/date'
+import { eventDotStyles } from '../ui/styles'
 
 interface Props {
   events: Event[]
@@ -17,20 +18,7 @@ interface Props {
 
 function getEventDotColor(event: Event, submissions: Submission[], isPast: boolean): string {
   const state = computeEventState(event.id, submissions)
-  if (isPast) {
-    switch (state) {
-      case 'selected': return 'bg-green-300'
-      case 'pending': return 'bg-yellow-300'
-      case 'rejected': return 'bg-red-300'
-      default: return 'bg-gray-300'
-    }
-  }
-  switch (state) {
-    case 'selected': return 'bg-green-500'
-    case 'pending': return 'bg-yellow-500'
-    case 'rejected': return 'bg-red-500'
-    default: return 'bg-gray-400'
-  }
+  return `${eventDotStyles[state]} ${isPast ? 'opacity-60' : ''}`
 }
 
 export function MonthlyEventsBar({ events, submissions, selectedMonth, onMonthSelect, maxEventsPerMonth, dateFormat }: Props) {
@@ -69,7 +57,7 @@ export function MonthlyEventsBar({ events, submissions, selectedMonth, onMonthSe
   }
 
   return (
-    <div className="bg-white rounded-lg shadow px-4 py-3 mb-4 flex-shrink-0">
+    <div className="ui-card mb-4 flex-shrink-0 px-4 py-3">
       <div className="flex items-center gap-2 mb-2">
         <h3 className="text-sm font-medium text-gray-700">Monthly View</h3>
         <span className="text-xs text-gray-500">{visibleYears[0]}–{visibleYears[visibleYears.length - 1]}</span>

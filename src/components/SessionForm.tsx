@@ -93,7 +93,7 @@ export function SessionForm({ session, onSave, onCancel }: Props) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 p-4 bg-gray-50 rounded-lg">
+    <form onSubmit={handleSubmit} className="space-y-4 rounded-xl border border-slate-200 bg-slate-50 p-4">
       <div className="flex gap-4 items-end">
         <div className="flex-1">
           <label className="block text-sm font-medium text-gray-700">Name</label>
@@ -112,7 +112,7 @@ export function SessionForm({ session, onSave, onCancel }: Props) {
           <select
             value={level}
             onChange={e => setLevel(e.target.value)}
-            className="mt-1 block w-full rounded border-gray-300 shadow-sm px-3 py-2 border"
+            className="ui-input mt-1 block w-full"
           >
             <option value="100">100</option>
             <option value="200">200</option>
@@ -152,7 +152,7 @@ export function SessionForm({ session, onSave, onCancel }: Props) {
               <button
                 type="button"
                 onClick={addAlternateName}
-                className="px-3 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
+                className="ui-button-secondary"
               >
                 Add
               </button>
@@ -164,7 +164,7 @@ export function SessionForm({ session, onSave, onCancel }: Props) {
           <select
             value={sessionType}
             onChange={e => setSessionType(e.target.value as SessionType)}
-            className="mt-1 block w-full rounded border-gray-300 shadow-sm px-3 py-2 border"
+            className="ui-input mt-1 block w-full"
           >
             {SESSION_TYPES.map(type => (
               <option key={type} value={type}>{type}</option>
@@ -178,7 +178,7 @@ export function SessionForm({ session, onSave, onCancel }: Props) {
           type="text"
           value={summary}
           onChange={e => setSummary(e.target.value)}
-          className="mt-1 block w-full rounded border-gray-300 shadow-sm px-3 py-2 border"
+          className="ui-input mt-1 block w-full"
           placeholder="Brief description, 150 words max"
         />
       </div>
@@ -188,7 +188,7 @@ export function SessionForm({ session, onSave, onCancel }: Props) {
           value={abstract}
           onChange={e => setAbstract(e.target.value)}
           rows={10}
-          className="mt-1 block w-full rounded border-gray-300 shadow-sm px-3 py-2 border"
+          className="ui-input mt-1 block w-full"
           placeholder="Full session description"
         />
       </div>
@@ -198,7 +198,7 @@ export function SessionForm({ session, onSave, onCancel }: Props) {
           value={elevatorPitch}
           onChange={e => setElevatorPitch(e.target.value)}
           rows={2}
-          className="mt-1 block w-full rounded border-gray-300 shadow-sm px-3 py-2 border"
+          className="ui-input mt-1 block w-full"
           placeholder="30-second pitch for this session"
         />
       </div>
@@ -208,7 +208,7 @@ export function SessionForm({ session, onSave, onCancel }: Props) {
           value={goals}
           onChange={e => setGoals(e.target.value)}
           rows={3}
-          className="mt-1 block w-full rounded border-gray-300 shadow-sm px-3 py-2 border"
+          className="ui-input mt-1 block w-full"
           placeholder="What attendees will learn or achieve"
         />
       </div>
@@ -218,7 +218,7 @@ export function SessionForm({ session, onSave, onCancel }: Props) {
           type="url"
           value={materialsUrl}
           onChange={e => setMaterialsUrl(e.target.value)}
-          className="mt-1 block w-full rounded border-gray-300 shadow-sm px-3 py-2 border"
+          className="ui-input mt-1 block w-full"
           placeholder="Link to slides, repo, or resources"
         />
       </div>
@@ -245,7 +245,7 @@ export function SessionForm({ session, onSave, onCancel }: Props) {
             type="text"
             value={primaryTechnology}
             onChange={e => setPrimaryTechnology(e.target.value)}
-            className="mt-1 block w-full rounded border-gray-300 shadow-sm px-3 py-2 border"
+            className="ui-input mt-1 block w-full"
             placeholder="e.g., Azure, .NET, SQL Server"
           />
         </div>
@@ -255,7 +255,7 @@ export function SessionForm({ session, onSave, onCancel }: Props) {
             type="text"
             value={additionalTechnology}
             onChange={e => setAdditionalTechnology(e.target.value)}
-            className="mt-1 block w-full rounded border-gray-300 shadow-sm px-3 py-2 border"
+            className="ui-input mt-1 block w-full"
             placeholder="e.g., Docker, Kubernetes"
           />
         </div>
@@ -266,7 +266,7 @@ export function SessionForm({ session, onSave, onCancel }: Props) {
           value={equipmentNotes}
           onChange={e => setEquipmentNotes(e.target.value)}
           rows={2}
-          className="mt-1 block w-full rounded border-gray-300 shadow-sm px-3 py-2 border"
+          className="ui-input mt-1 block w-full"
           placeholder="Special equipment requirements (e.g., multiple monitors, specific hardware)"
         />
       </div>
@@ -283,14 +283,14 @@ export function SessionForm({ session, onSave, onCancel }: Props) {
       <div className="flex gap-2">
         <button
           type="submit"
-          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          className="ui-button-primary"
         >
           Save
         </button>
         <button
           type="button"
           onClick={onCancel}
-          className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
+          className="ui-button-secondary"
         >
           Cancel
         </button>

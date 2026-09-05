@@ -377,19 +377,19 @@ export function Statistics({ events, sessions, submissions, dateFormat, showSess
 
       {/* Summary Cards */}
       <div className="grid grid-cols-4 gap-4">
-        <div className="bg-white rounded-lg shadow p-4 text-center">
+        <div className="ui-card text-center">
           <div className="text-3xl font-bold text-blue-600">{totalEventsWithSelected}</div>
           <div className="text-sm text-gray-500">Events Spoken At</div>
         </div>
-        <div className="bg-white rounded-lg shadow p-4 text-center">
+        <div className="ui-card text-center">
           <div className="text-3xl font-bold text-green-600">{totalEventsSubmitted}</div>
           <div className="text-sm text-gray-500">Events Submitted To</div>
         </div>
-        <div className="bg-white rounded-lg shadow p-4 text-center">
+        <div className="ui-card text-center">
           <div className="text-3xl font-bold text-orange-600">{acceptanceRate}%</div>
           <div className="text-sm text-gray-500">Acceptance Rate</div>
         </div>
-        <div className="bg-white rounded-lg shadow p-4 text-center">
+        <div className="ui-card text-center">
           <div className="text-3xl font-bold text-purple-600">{uniqueCountries}</div>
           <div className="text-sm text-gray-500">Countries</div>
         </div>
@@ -517,7 +517,7 @@ export function Statistics({ events, sessions, submissions, dateFormat, showSess
 
       <div className="grid md:grid-cols-2 gap-6">
         {/* Events by Year */}
-        <div className="bg-white rounded-lg shadow p-4">
+        <div className="ui-card">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-lg font-semibold">Events by Year</h3>
             {selectedYear && (
@@ -561,7 +561,7 @@ export function Statistics({ events, sessions, submissions, dateFormat, showSess
         </div>
 
         {/* Events by Region */}
-        <div className="bg-white rounded-lg shadow p-4">
+        <div className="ui-card">
           <h3 className="text-lg font-semibold mb-4">Events by Region</h3>
           {Object.keys(eventsByRegion).length > 0 ? (
             <div className="space-y-2">
@@ -601,7 +601,7 @@ export function Statistics({ events, sessions, submissions, dateFormat, showSess
         </div>
 
         {/* Events by Season */}
-        <div className="bg-white rounded-lg shadow p-4">
+        <div className="ui-card">
           <h3 className="text-lg font-semibold mb-4">Events by Season</h3>
           <div className="space-y-2">
             {['Spring', 'Summer', 'Fall', 'Winter'].map(season => {
@@ -637,7 +637,7 @@ export function Statistics({ events, sessions, submissions, dateFormat, showSess
         </div>
 
         {/* Event Format */}
-        <div className="bg-white rounded-lg shadow p-4">
+        <div className="ui-card">
           <h3 className="text-lg font-semibold mb-4">Event Format</h3>
           <div className="flex gap-8">
             <div
@@ -673,7 +673,7 @@ export function Statistics({ events, sessions, submissions, dateFormat, showSess
       </div>
 
       {/* Monthly Heat Map */}
-      <div className="bg-white rounded-lg shadow p-4">
+      <div className="ui-card">
         <h3 className="text-lg font-semibold mb-4">Events by Month</h3>
         <div className="flex justify-between items-end gap-2 px-2">
           {monthNames.map((month, index) => {
@@ -712,7 +712,7 @@ export function Statistics({ events, sessions, submissions, dateFormat, showSess
       </div>
 
       {/* Top Countries */}
-      <div className="bg-white rounded-lg shadow p-4">
+      <div className="ui-card">
         <h3 className="text-lg font-semibold mb-4">Top Countries</h3>
         {topCountries.length > 0 ? (
           <div className="flex flex-wrap gap-2">
@@ -732,7 +732,7 @@ export function Statistics({ events, sessions, submissions, dateFormat, showSess
       </div>
 
       {/* Countries Visited */}
-      <div className="bg-white rounded-lg shadow p-4">
+      <div className="ui-card">
         <h3 className="text-lg font-semibold mb-4">Countries Visited ({uniqueCountries})</h3>
         {countriesVisited.length > 0 ? (
           <div className="flex flex-wrap gap-2">
@@ -775,7 +775,7 @@ export function Statistics({ events, sessions, submissions, dateFormat, showSess
 
         <div className="grid md:grid-cols-2 gap-6">
           {/* Acceptance Rate by Level */}
-          <div className="bg-white rounded-lg shadow p-4">
+          <div className="ui-card">
             <h3 className="text-lg font-semibold mb-4">Acceptance Rate by Level</h3>
             <div className="space-y-3">
               {levels.map(level => {
@@ -826,19 +826,19 @@ export function Statistics({ events, sessions, submissions, dateFormat, showSess
           </div>
 
           {/* High Performing vs Needs Rework */}
-          <div className="bg-white rounded-lg shadow p-4">
+          <div className="ui-card">
             <h3 className="text-lg font-semibold mb-4">Session Health</h3>
             <div className="space-y-4">
               <div>
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="w-3 h-3 rounded-full bg-green-500"></span>
+                  <span className="h-3 w-3 rounded-full bg-emerald-500"></span>
                   <span className="text-sm font-medium text-gray-700">High Performing ({highPerforming.length})</span>
                   <span className="text-xs text-gray-400">≥50% rate, 2+ selections</span>
                 </div>
                 {highPerforming.length > 0 ? (
                   <div className="flex flex-wrap gap-1.5">
                     {highPerforming.slice(0, 8).map(s => (
-                      <span key={s.session.id} className="px-2 py-0.5 bg-green-50 text-green-700 rounded text-xs" title={`${s.acceptanceRate}% (${s.selected}/${s.decided})`}>
+                      <span key={s.session.id} className="rounded bg-emerald-50 px-2 py-0.5 text-xs text-emerald-700" title={`${s.acceptanceRate}% (${s.selected}/${s.decided})`}>
                         {s.session.name.length > 25 ? s.session.name.slice(0, 25) + '...' : s.session.name}
                       </span>
                     ))}
@@ -853,14 +853,14 @@ export function Statistics({ events, sessions, submissions, dateFormat, showSess
 
               <div>
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="w-3 h-3 rounded-full bg-red-500"></span>
+                  <span className="h-3 w-3 rounded-full bg-rose-500"></span>
                   <span className="text-sm font-medium text-gray-700">Needs Rework ({needsRework.length})</span>
                   <span className="text-xs text-gray-400">&lt;30% rate, 3+ selections</span>
                 </div>
                 {needsRework.length > 0 ? (
                   <div className="flex flex-wrap gap-1.5">
                     {needsRework.map(s => (
-                      <span key={s.session.id} className="px-2 py-0.5 bg-red-50 text-red-700 rounded text-xs" title={`${s.acceptanceRate}% (${s.selected}/${s.decided})`}>
+                      <span key={s.session.id} className="rounded bg-rose-50 px-2 py-0.5 text-xs text-rose-700" title={`${s.acceptanceRate}% (${s.selected}/${s.decided})`}>
                         {s.session.name.length > 25 ? s.session.name.slice(0, 25) + '...' : s.session.name}
                       </span>
                     ))}
@@ -874,7 +874,7 @@ export function Statistics({ events, sessions, submissions, dateFormat, showSess
         </div>
 
         {/* Session Acceptance Rates Table */}
-        <div className="bg-white rounded-lg shadow p-4 mt-6">
+        <div className="ui-card mt-6">
           <h3 className="text-lg font-semibold mb-4">Session Acceptance Rates</h3>
           {sessionStats.length > 0 ? (
             <div className="overflow-x-auto">
@@ -899,7 +899,7 @@ export function Statistics({ events, sessions, submissions, dateFormat, showSess
                             <span className="flex-shrink-0 px-1.5 py-0.5 text-xs rounded bg-gray-200 text-gray-600">Retired</span>
                           )}
                           {s.pending > 0 && (
-                            <span className="flex-shrink-0 px-1.5 py-0.5 text-xs rounded bg-yellow-100 text-yellow-700" title={`Pending: ${s.pendingEventNames.join(', ')}`}>
+                            <span className="flex-shrink-0 rounded bg-amber-100 px-1.5 py-0.5 text-xs text-amber-700" title={`Pending: ${s.pendingEventNames.join(', ')}`}>
                               {s.pending} pending
                             </span>
                           )}
@@ -940,7 +940,7 @@ export function Statistics({ events, sessions, submissions, dateFormat, showSess
       )}
 
       {/* Cities List */}
-      <div className="bg-white rounded-lg shadow p-4">
+      <div className="ui-card">
         <h3 className="text-lg font-semibold mb-4">Cities Visited ({uniqueCities})</h3>
         {citiesWithEvents.length > 0 ? (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
